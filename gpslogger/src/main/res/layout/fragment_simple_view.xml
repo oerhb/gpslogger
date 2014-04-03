@@ -4,6 +4,86 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
+
+    <ImageView
+        android:id="@+id/imgSatelliteCount"
+        android:layout_marginTop="6dp"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:src="@drawable/satellite_count"
+        /><TextView android:id="@+id/txtSatelliteCount"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_toRightOf="@id/imgSatelliteCount"
+    android:paddingTop="20px"
+    android:text="13"/>
+
+
+    <ImageView
+        android:id="@+id/imgAltitude"
+        android:layout_marginTop="6dp"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        android:src="@drawable/altitude"
+        android:layout_toRightOf="@id/txtSatelliteCount"
+        /><TextView
+    android:id="@+id/txtAltitude"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_toRightOf="@id/imgAltitude"
+    android:paddingTop="20px"
+    android:text="172.2m"/>
+
+
+
+    <ImageView
+        android:id="@+id/imgAccuracy"
+        android:layout_marginTop="6dp"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        android:src="@drawable/accuracy"
+        android:layout_toRightOf="@id/txtAltitude"
+        /><TextView
+    android:id="@+id/txtAccuracy"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_toRightOf="@id/imgAccuracy"
+    android:paddingTop="20px"
+    android:text="172.2m"/>
+
+    <ImageView
+        android:id="@+id/imgSpeed"
+        android:layout_marginTop="6dp"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        android:src="@drawable/speed"
+        android:layout_toRightOf="@id/txtAccuracy"
+        /><TextView
+    android:id="@+id/txtSpeed"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_toRightOf="@id/imgSpeed"
+    android:paddingTop="20px"
+    android:text="138m/s"/>
+
+    <ImageView
+        android:id="@+id/imgDuration"
+        android:layout_marginTop="6dp"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        android:src="@drawable/duration"
+        android:layout_toRightOf="@id/txtSpeed"
+        /><TextView
+    android:id="@+id/txtDuration"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_toRightOf="@id/imgDuration"
+    android:paddingTop="20px"
+    android:text="12 min"/>
+
+
+
+
     <TableLayout
             android:layout_centerInParent="true"
             android:layout_width="wrap_content"
