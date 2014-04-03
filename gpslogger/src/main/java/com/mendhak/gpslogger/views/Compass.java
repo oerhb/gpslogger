@@ -47,17 +47,17 @@ public class Compass extends View {
 
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(5);
-        paint.setColor(Color.WHITE);
+        paint.setStrokeWidth(3);
+        paint.setColor(Color.BLACK);
 
-        canvas.drawCircle(w/2, h/2, r, paint);
+        canvas.drawCircle(w/2, h/2, r-2, paint);
 
         paint.setColor(Color.RED);
         canvas.drawLine(
                 w/2,
                 h/2,
-                (float)(w/2 + r * Math.sin(-direction)),
-                (float)(h/2 - r * Math.cos(-direction)),
+                (float)(w/2-2 + r * Math.sin(-direction)),
+                (float)(h/2-2 - r * Math.cos(-direction)),
                 paint);
 
     }

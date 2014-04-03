@@ -52,27 +52,12 @@
     android:text="4m"/>
 
     <ImageView
-        android:id="@+id/imgSpeed"
-        android:layout_marginTop="6dp"
-        android:layout_width="22dp"
-        android:layout_height="22dp"
-        android:src="@drawable/speed"
-        android:layout_toRightOf="@id/txtAccuracy"
-        /><TextView
-    android:id="@+id/txtSpeed"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_toRightOf="@id/imgSpeed"
-    android:paddingTop="20px"
-    android:text="138m/s"/>
-
-    <ImageView
         android:id="@+id/imgDuration"
         android:layout_marginTop="6dp"
         android:layout_width="22dp"
         android:layout_height="22dp"
         android:src="@drawable/duration"
-        android:layout_toRightOf="@id/txtSpeed"
+        android:layout_toRightOf="@id/txtAccuracy"
         /><TextView
     android:id="@+id/txtDuration"
     android:layout_width="wrap_content"
@@ -80,6 +65,22 @@
     android:layout_toRightOf="@id/imgDuration"
     android:paddingTop="20px"
     android:text="12 min"/>
+
+    <view android:id="@+id/mycompass"
+          android:layout_height="44dp"
+          android:layout_width="44dp"
+          android:layout_toRightOf="@id/txtDuration"
+          android:layout_marginTop="11dp"
+          class="com.mendhak.gpslogger.views.Compass"/>
+    <TextView
+    android:id="@+id/txtSpeed"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_toRightOf="@id/mycompass"
+    android:paddingTop="22dp"
+    android:text="138m/s\n270°"/>
+
+
 
 
 
@@ -89,7 +90,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
         <TableRow android:id="@+id/rowRose">
-            <view android:id="@+id/mycompass" android:layout_height="50dp" android:layout_width="50dp" class="com.mendhak.gpslogger.views.Compass"/>
+
         </TableRow>
         <TableRow>
 
