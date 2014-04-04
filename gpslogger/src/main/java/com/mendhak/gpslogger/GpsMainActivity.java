@@ -136,7 +136,7 @@ public class GpsMainActivity extends Activity
 
         switch (view) {
             case 0:
-                transaction.replace(R.id.container, new GpsSimpleViewFragment());
+                transaction.replace(R.id.container, new GpsSimpleViewFragment(getApplicationContext()));
                 break;
             case 1:
                 transaction.replace(R.id.container, new GpsDetailedViewFragment());
