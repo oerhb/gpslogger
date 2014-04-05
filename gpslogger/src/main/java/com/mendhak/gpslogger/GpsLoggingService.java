@@ -324,22 +324,6 @@ public class GpsLoggingService extends Service implements IActionListener
         }
     }
 
-    protected void ForceEmailLogFile()
-    {
-
-        Utilities.LogDebug("GpsLoggingService.ForceEmailLogFile");
-        if (AppSettings.isAutoSendEnabled() && Session.getCurrentFileName() != null && Session.getCurrentFileName().length() > 0)
-        {
-            if (IsMainFormVisible())
-            {
-                Utilities.ShowProgress(mainServiceClient.GetActivity(), getString(R.string.autosend_sending),
-                        getString(R.string.please_wait));
-            }
-
-            Utilities.LogInfo("Force emailing Log File");
-            FileSenderFactory.SendFiles(getApplicationContext(), this);
-        }
-    }
 
 
     /**

@@ -245,6 +245,8 @@ public class GpsMainActivity extends Activity
 
     private void enableDisableMenuItems() {
 
+        SetBulbStatus(Session.isStarted());
+
         if(mnuOnePoint != null){
             mnuOnePoint.setEnabled(!Session.isStarted());
         }
@@ -797,6 +799,7 @@ public class GpsMainActivity extends Activity
             ((GenericViewFragment)currentFragment).SetLoggingStarted();
         }
 
+        SetBulbStatus(true);
 
     }
 
@@ -807,6 +810,13 @@ public class GpsMainActivity extends Activity
         if(currentFragment instanceof GenericViewFragment){
             ((GenericViewFragment)currentFragment).SetLoggingStopped();
         }
+
+        SetBulbStatus(false);
+    }
+
+    private void SetBulbStatus(boolean started) {
+        ImageView bulb = (ImageView)findViewById(R.id.notification_bulb);
+        bulb.setImageResource(started ? R.drawable.circle_white : R.drawable.circle_none);
     }
 
     @Override
@@ -821,10 +831,6 @@ public class GpsMainActivity extends Activity
         SetAnnotationButtonMarked(false);
     }
 
-    @Override
-    public Activity GetActivity() {
-        return null;
-    }
 
     @Override
     public void onFileName(String newFileName) {

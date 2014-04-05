@@ -72,12 +72,6 @@ interface IGpsLoggerServiceClient
      */
     public void OnClearAnnotation();
 
-    /**
-     * Returns the activity
-     *
-     * @return
-     */
-    public Activity GetActivity();
 
     /**
      * A new current file name is available.
