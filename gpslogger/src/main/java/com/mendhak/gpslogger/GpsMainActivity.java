@@ -24,9 +24,7 @@ import com.mendhak.gpslogger.senders.osm.OSMHelper;
 import com.mendhak.gpslogger.settings.GeneralSettingsActivity;
 import com.mendhak.gpslogger.settings.LoggingSettingsActivity;
 import com.mendhak.gpslogger.settings.UploadSettingsActivity;
-import com.mendhak.gpslogger.views.GpsDetailedViewFragment;
-import com.mendhak.gpslogger.views.GpsSimpleViewFragment;
-import com.mendhak.gpslogger.views.GpsLegacyFragment;
+import com.mendhak.gpslogger.views.*;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -35,7 +33,7 @@ import java.util.Comparator;
 import java.util.List;
 
 public class GpsMainActivity extends Activity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks, ActionBar.OnNavigationListener, GpsLegacyFragment.IGpsLegacyFragmentListener, IGpsLoggerServiceClient, IActionListener {
+        implements GenericViewFragment.IGpsViewCallback, NavigationDrawerFragment.NavigationDrawerCallbacks, ActionBar.OnNavigationListener, GpsLegacyFragment.IGpsLegacyFragmentListener, IGpsLoggerServiceClient, IActionListener {
 
     private static Intent serviceIntent;
     private GpsLoggingService loggingService;
@@ -837,5 +835,15 @@ public class GpsMainActivity extends Activity
     @Override
     public void OnFailure() {
         Utilities.HideProgress();
+    }
+
+    @Override
+    public void onRequestStartLogging() {
+        Utilities.LogInfo("START LOGGING REQUESTED BY UI");
+    }
+
+    @Override
+    public void onRequestStopLogging() {
+        Utilities.LogInfo("STOP LOGGING REQUESTED BY UI");
     }
 }

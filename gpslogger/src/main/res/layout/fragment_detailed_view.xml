@@ -89,6 +89,17 @@
                     />
         </LinearLayout>
     </RelativeLayout>
+
+    <!--
+            Altitude
+            Speed
+            Direction
+            Satellines
+            Accuracy
+            Travelled
+            Duration
+            -->
+
     <RelativeLayout
             android:layout_marginBottom="5dp"
             android:layout_marginLeft="5dp"
@@ -110,15 +121,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
                 <TextView
-                        android:layout_width="60dp"
+                        android:layout_width="@dimen/view_label_width"
                         android:layout_height="wrap_content"
-                        android:text="Altitude:"
+                        android:text="@string/txt_altitude"
                         android:id="@+id/detailed_altitude_label"/>
 
                 <EditText
+                        android:minWidth="@dimen/view_text_width"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minWidth="200dp"
                         android:id="@+id/detailed_altitude_text"
                         android:text="0.2344"
                         android:editable="false"/>
@@ -131,15 +142,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
                 <TextView
-                        android:layout_width="60dp"
+                        android:layout_width="@dimen/view_label_width"
                         android:layout_height="wrap_content"
-                        android:text="Speed:"
+                        android:text="@string/txt_speed"
                         android:id="@+id/detailed_speed_label"/>
 
                 <EditText
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minWidth="200dp"
+                        android:minWidth="@dimen/view_text_width"
                         android:id="@+id/detailed_speed_text"
                         android:text="0.2344"
                         android:editable="false"/>
@@ -152,15 +163,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
                 <TextView
-                        android:layout_width="60dp"
+                        android:layout_width="@dimen/view_label_width"
                         android:layout_height="wrap_content"
-                        android:text="Direction:"
+                        android:text="@string/txt_satellites"
                         android:id="@+id/detailed_direction_label"/>
 
                 <EditText
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minWidth="200dp"
+                        android:minWidth="@dimen/view_text_width"
                         android:id="@+id/detailed_direction_text"
                         android:text="0.2344"
                         android:editable="false"/>
@@ -173,15 +184,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
                 <TextView
-                        android:layout_width="60dp"
+                        android:layout_width="@dimen/view_label_width"
                         android:layout_height="wrap_content"
-                        android:text="Satellites:"
+                        android:text="@string/txt_satellites"
                         android:id="@+id/detailed_satellites_label"/>
 
                 <EditText
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minWidth="200dp"
+                        android:minWidth="@dimen/view_text_width"
                         android:id="@+id/detailed_satellites_text"
                         android:text="0.2344"
                         android:editable="false"/>
@@ -194,15 +205,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
                 <TextView
-                        android:layout_width="60dp"
+                        android:layout_width="@dimen/view_label_width"
                         android:layout_height="wrap_content"
-                        android:text="Accuracy:"
+                        android:text="@string/txt_accuracy"
                         android:id="@+id/detailed_accuracy_label"/>
 
                 <EditText
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minWidth="200dp"
+                        android:minWidth="@dimen/view_text_width"
                         android:id="@+id/detailed_accuracy_text"
                         android:text="0.2344"
                         android:editable="false"/>
@@ -215,15 +226,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
                 <TextView
-                        android:layout_width="60dp"
+                        android:layout_width="@dimen/view_label_width"
                         android:layout_height="wrap_content"
-                        android:text="Travelled:"
+                        android:text="@string/txt_travel_distance"
                         android:id="@+id/detailed_travelled_label"/>
 
                 <EditText
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minWidth="200dp"
+                        android:minWidth="@dimen/view_text_width"
                         android:id="@+id/detailed_travelled_text"
                         android:text="0.2344"
                         android:editable="false"/>
@@ -236,29 +247,21 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
                 <TextView
-                        android:layout_width="60dp"
+                        android:layout_width="@dimen/view_label_width"
                         android:layout_height="wrap_content"
-                        android:text="Duraction:"
+                        android:text="@string/txt_travel_duration"
                         android:id="@+id/detailed_duration_label"/>
 
                 <EditText
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minWidth="200dp"
+                        android:minWidth="@dimen/view_text_width"
                         android:id="@+id/detailed_duration_text"
                         android:text="0.2344"
                         android:editable="false"/>
             </LinearLayout>
 
-            <!--
-            Altitude
-            Speed
-            Direction
-            Satellines
-            Accuracy
-            Travelled
-            Duration
-            -->
+
 
         </LinearLayout>
     </RelativeLayout>
