@@ -10,12 +10,16 @@ import com.mendhak.gpslogger.R;
 import com.mendhak.gpslogger.common.AppSettings;
 import com.mendhak.gpslogger.common.Session;
 import com.mendhak.gpslogger.common.Utilities;
+import com.mendhak.gpslogger.loggers.FileLoggerFactory;
+import com.mendhak.gpslogger.loggers.IFileLogger;
 import com.mendhak.gpslogger.views.component.ToggleComponent;
 
 import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+import java.util.ListIterator;
 
 /**
  * Created by oceanebelle on 03/04/14.
@@ -61,6 +65,12 @@ public class GpsDetailedViewFragment extends GenericViewFragment {
                 })
                 .build();
 
+        if (Session.hasValidLocation()) {
+            SetLocation(Session.getCurrentLocationInfo());
+        }
+
+        ShowPreferencesSummary();
+
         return rootView;
     }
 
@@ -70,6 +80,8 @@ public class GpsDetailedViewFragment extends GenericViewFragment {
         {
             return;
         }
+
+        ShowPreferencesSummary();
 
         TextView tvLatitude = (TextView) rootView.findViewById(R.id.detailedview_lat_text);
         TextView tvLongitude = (TextView) rootView.findViewById(R.id.detailedview_lon_text);
@@ -268,6 +280,133 @@ public class GpsDetailedViewFragment extends GenericViewFragment {
         sb.append(String.format("%02d", diffSeconds));
         return sb.toString();
     }
+
+
+    /**
+     * Displays a human readable summary of the preferences chosen by the user
+     * on the main form
+     */
+    private void ShowPreferencesSummary()
+    {
+        Utilities.LogDebug("GpsDetailedViewFragment.ShowPreferencesSummary");
+        try
+        {
+            TextView txtLoggingTo = (TextView) rootView.findViewById(R.id.detailedview_loggingto_text);
+            TextView txtFrequency = (TextView) rootView.findViewById(R.id.detailedview_frequency_text);
+            TextView txtDistance = (TextView) rootView.findViewById(R.id.detailedview_distance_text);
+            TextView txtAutoEmail = (TextView) rootView.findViewById(R.id.detailedview_autosend_text);
+
+            List<IFileLogger> loggers = FileLoggerFactory.GetFileLoggers(getActivity().getApplicationContext());
+
+            if (loggers.size() > 0)
+            {
+
+                ListIterator<IFileLogger> li = loggers.listIterator();
+                String logTo = li.next().getName();
+                while (li.hasNext())
+                {
+                    logTo += ", " + li.next().getName();
+                }
+                txtLoggingTo.setText(logTo);
+
+            }
+            else
+            {
+
+                txtLoggingTo.setText(R.string.summary_loggingto_screen);
+
+            }
+
+            if (AppSettings.getMinimumSeconds() > 0)
+            {
+                String descriptiveTime = Utilities.GetDescriptiveTimeString(AppSettings.getMinimumSeconds(),
+                        getActivity().getApplicationContext());
+
+                txtFrequency.setText(descriptiveTime);
+            }
+            else
+            {
+                txtFrequency.setText(R.string.summary_freq_max);
+
+            }
+
+
+            if (AppSettings.getMinimumDistanceInMeters() > 0)
+            {
+                if (AppSettings.shouldUseImperial())
+                {
+                    int minimumDistanceInFeet = Utilities.MetersToFeet(AppSettings.getMinimumDistanceInMeters());
+                    txtDistance.setText(((minimumDistanceInFeet == 1)
+                            ? getString(R.string.foot)
+                            : String.valueOf(minimumDistanceInFeet) + getString(R.string.feet)));
+                }
+                else
+                {
+                    txtDistance.setText(((AppSettings.getMinimumDistanceInMeters() == 1)
+                            ? getString(R.string.meter)
+                            : String.valueOf(AppSettings.getMinimumDistanceInMeters()) + getString(R.string.meters)));
+                }
+            }
+            else
+            {
+                txtDistance.setText(R.string.summary_dist_regardless);
+            }
+
+
+            if (AppSettings.isAutoSendEnabled())
+            {
+                String autoEmailResx;
+
+                if (AppSettings.getAutoSendDelay() == 0)
+                {
+                    autoEmailResx = "autoemail_frequency_whenistop";
+                }
+                else
+                {
+
+                    autoEmailResx = "autoemail_frequency_"
+                            + String.valueOf(AppSettings.getAutoSendDelay()).replace(".", "");
+                }
+
+                String autoEmailDesc = getString(getResources().getIdentifier(autoEmailResx, "string", getActivity().getPackageName()));
+
+                txtAutoEmail.setText(autoEmailDesc);
+            }
+
+
+            showCurrentFileName(Session.getCurrentFileName());
+        }
+        catch (Exception ex)
+        {
+            Utilities.LogError("ShowPreferencesSummary", ex);
+        }
+
+
+    }
+
+    public void showCurrentFileName(String newFileName)
+    {
+        if (newFileName == null || newFileName.length() <= 0)
+        {
+            return;
+        }
+
+        TextView txtFilename = (TextView) rootView.findViewById(R.id.detailedview_file_text);
+
+        if (AppSettings.shouldLogToGpx() || AppSettings.shouldLogToKml())
+        {
+
+
+            txtFilename.setText(Session.getCurrentFileName() + " (" + AppSettings.getGpsLoggerFolder() + ")" );
+        }
+        else
+        {
+            txtFilename.setText("");
+        }
+
+
+    }
+
 
     @Override
     public void SetSatelliteCount(int count) {
