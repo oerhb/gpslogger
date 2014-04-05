@@ -55,7 +55,7 @@ interface IGpsLoggerServiceClient
     /**
      * Asking the calling activity form to clear itself.
      */
-    public void ClearForm();
+    public void OnStartLogging();
 
     /**
      * Asking the calling activity form to indicate that logging has stopped

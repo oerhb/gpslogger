@@ -69,6 +69,16 @@ public class GpsBigViewFragment extends GenericViewFragment implements View.OnTo
     }
 
     @Override
+    public void SetLoggingStarted() {
+
+    }
+
+    @Override
+    public void SetLoggingStopped() {
+
+    }
+
+    @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
     }

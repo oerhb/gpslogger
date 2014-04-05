@@ -76,7 +76,9 @@ public class GpsMainActivity extends Activity
     protected void onResume() {
         Utilities.LogDebug("GpsMainActivity.onResume");
         super.onResume();
+        GetPreferences();
         StartAndBindService();
+        enableDisableMenuItems();
     }
 
     @Override
@@ -538,11 +540,11 @@ public class GpsMainActivity extends Activity
 
             final Dialog dialog = new Dialog(this);
             dialog.setTitle(R.string.osm_pick_file);
-            dialog.setContentView(R.layout.filelist);
+            dialog.setContentView(R.layout.common_filelist);
             ListView displayList = (ListView) dialog.findViewById(R.id.listViewFiles);
 
             displayList.setAdapter(new ArrayAdapter<String>(getApplicationContext(),
-                    R.layout.list_black_text, R.id.list_content, files));
+                    R.layout.common_list_black_text, R.id.list_content, files));
 
             displayList.setOnItemClickListener(new AdapterView.OnItemClickListener()
             {
@@ -610,11 +612,11 @@ public class GpsMainActivity extends Activity
 
                 final Dialog dialog = new Dialog(this);
                 dialog.setTitle(R.string.sharing_pick_file);
-                dialog.setContentView(R.layout.filelist);
+                dialog.setContentView(R.layout.common_filelist);
                 ListView thelist = (ListView) dialog.findViewById(R.id.listViewFiles);
 
                 thelist.setAdapter(new ArrayAdapter<String>(getApplicationContext(),
-                        R.layout.list_black_text, R.id.list_content, files));
+                        R.layout.common_list_black_text, R.id.list_content, files));
 
                 thelist.setOnItemClickListener(new AdapterView.OnItemClickListener()
                 {
@@ -755,6 +757,7 @@ public class GpsMainActivity extends Activity
 
     }
 
+    //IGpsLoggerServiceClient callbacks
 
     @Override
     public void OnStatusMessage(String message) {
@@ -786,13 +789,24 @@ public class GpsMainActivity extends Activity
     }
 
     @Override
-    public void ClearForm() {
+    public void OnStartLogging() {
+        Utilities.LogDebug("OnStartLogging");
+
+        Fragment currentFragment =  fragmentManager.findFragmentById(R.id.container);
+        if(currentFragment instanceof GenericViewFragment){
+            ((GenericViewFragment)currentFragment).SetLoggingStarted();
+        }
+
 
     }
 
     @Override
     public void OnStopLogging() {
         Utilities.LogDebug("OnStopLogging");
+        Fragment currentFragment =  fragmentManager.findFragmentById(R.id.container);
+        if(currentFragment instanceof GenericViewFragment){
+            ((GenericViewFragment)currentFragment).SetLoggingStopped();
+        }
     }
 
     @Override

@@ -25,7 +25,7 @@ public class CustomUrlLoggerActivity extends Activity {
         super.onCreate(savedInstanceState);
         // enable the home button so you can go back to the main screen
         getActionBar().setDisplayHomeAsUpEnabled(true);
-        setContentView(R.layout.customurl);
+        setContentView(R.layout.activity_customurl);
 
 
         EditText urlText = (EditText)findViewById(R.id.customUrlText);

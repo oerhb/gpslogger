@@ -41,7 +41,7 @@ public class Faqtivity extends Activity
 
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.faq);
+        setContentView(R.layout.activity_faq);
 
         WebView browser = (WebView)findViewById(R.id.faqwebview);
         WebSettings settings = browser.getSettings();

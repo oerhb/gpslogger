@@ -257,8 +257,9 @@ public class GpsLoggingService extends Service implements IActionListener
     public void LogOnce()
     {
         SetForceLogOnce(true);
-        if (Session.isStarted())
+        if (Session.isStarted()){
             StartGpsManager();
+        }
         else
         {
             Session.setSinglePointMode(true);
@@ -403,7 +404,7 @@ public class GpsLoggingService extends Service implements IActionListener
         GetPreferences();
         Notify();
         ResetCurrentFileName(true);
-        ClearForm();
+        NotifyClientStarted();
         StartGpsManager();
 
     }
@@ -411,11 +412,11 @@ public class GpsLoggingService extends Service implements IActionListener
     /**
      * Asks the main service client to clear its form.
      */
-    private void ClearForm()
+    private void NotifyClientStarted()
     {
         if (IsMainFormVisible())
         {
-            mainServiceClient.ClearForm();
+            mainServiceClient.OnStartLogging();
         }
     }
 
@@ -438,7 +439,7 @@ public class GpsLoggingService extends Service implements IActionListener
         RemoveNotification();
         StopAlarm();
         StopGpsManager();
-        StopMainActivity();
+        NotifyClientStopped();
     }
 
     /**
@@ -693,7 +694,7 @@ public class GpsLoggingService extends Service implements IActionListener
     /**
      * Notifies main form that logging has stopped
      */
-    void StopMainActivity()
+    void NotifyClientStopped()
     {
         if (IsMainFormVisible())
         {

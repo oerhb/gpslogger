@@ -17,6 +17,8 @@ public abstract class GenericViewFragment extends Fragment {
 
     public abstract void SetLocation(Location locationInfo);
     public abstract void SetSatelliteCount(int count);
+    public abstract void SetLoggingStarted();
+    public abstract void SetLoggingStopped();
 
     protected void requestStartLogging() {
         if (gpsCallback != null) {

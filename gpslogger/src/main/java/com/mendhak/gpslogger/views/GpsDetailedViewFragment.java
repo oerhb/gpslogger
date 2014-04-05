@@ -62,4 +62,14 @@ public class GpsDetailedViewFragment extends GenericViewFragment {
     public void SetSatelliteCount(int count) {
 
     }
+
+    @Override
+    public void SetLoggingStarted() {
+
+    }
+
+    @Override
+    public void SetLoggingStopped() {
+
+    }
 }
