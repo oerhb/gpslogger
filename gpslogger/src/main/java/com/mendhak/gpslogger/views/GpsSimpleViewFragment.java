@@ -34,6 +34,7 @@ public class GpsSimpleViewFragment extends GenericViewFragment  {
 
 
     private View rootView;
+    private ToggleComponent toggleComponent;
 
     public static final GpsSimpleViewFragment newInstance() {
 
@@ -65,7 +66,7 @@ public class GpsSimpleViewFragment extends GenericViewFragment  {
         rootView = inflater.inflate(R.layout.fragment_simple_view, container, false);
 
         // Toggle the play and pause.
-        ToggleComponent.getBuilder()
+        toggleComponent.getBuilder()
                 .addOnView(rootView.findViewById(R.id.simple_play))
                 .addOffView(rootView.findViewById(R.id.simple_stop))
                 .setDefaultState(!Session.isStarted())
@@ -190,12 +191,14 @@ public class GpsSimpleViewFragment extends GenericViewFragment  {
 
     @Override
     public void SetLoggingStarted() {
-
+        toggleComponent.setEnabled(true);
     }
 
     @Override
     public void SetLoggingStopped() {
         TextView txtSatelliteCount = (TextView)rootView.findViewById(R.id.txtSatelliteCount);
         txtSatelliteCount.setText("-");
+
+        toggleComponent.setEnabled(false);
     }
 }

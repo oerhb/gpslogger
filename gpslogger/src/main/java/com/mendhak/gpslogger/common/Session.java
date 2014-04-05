@@ -47,6 +47,7 @@ public class Session extends Application
     private static String description = "";
     private static boolean isSinglePointMode = false;
     private static int retryTimeout=0;
+    private static boolean waitingForLocation;
 
     public static boolean isSinglePointMode()
     {
@@ -420,4 +421,11 @@ public class Session extends Application
         description = newDescription;
     }
 
+    public static void setWaitingForLocation(boolean waitingForLocation) {
+        Session.waitingForLocation = waitingForLocation;
+    }
+
+    public static boolean isWaitingForLocation() {
+        return waitingForLocation;
+    }
 }

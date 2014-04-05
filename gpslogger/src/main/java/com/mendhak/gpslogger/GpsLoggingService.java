@@ -561,6 +561,11 @@ public class GpsLoggingService extends Service implements IActionListener
             return;
         }
 
+        if(mainServiceClient != null){
+            mainServiceClient.OnWaitingForLocation(true);
+            Session.setWaitingForLocation(true);
+        }
+
         SetStatus(R.string.started);
     }
 
@@ -596,6 +601,11 @@ public class GpsLoggingService extends Service implements IActionListener
             gpsLocationManager.removeGpsStatusListener(gpsLocationListener);
         }
 
+
+        if(mainServiceClient != null){
+            Session.setWaitingForLocation(false);
+            mainServiceClient.OnWaitingForLocation(false);
+        }
         SetStatus(getString(R.string.stopped));
     }
 

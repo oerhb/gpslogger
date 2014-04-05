@@ -81,4 +81,10 @@ interface IGpsLoggerServiceClient
     public void onFileName(String newFileName);
 
 
+    /**
+     * Indicates that the location manager has started waiting for its next location
+     */
+    public void OnWaitingForLocation(boolean inProgress);
+
+
 }

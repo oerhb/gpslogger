@@ -79,6 +79,7 @@ public class GpsMainActivity extends Activity
         GetPreferences();
         StartAndBindService();
         enableDisableMenuItems();
+
     }
 
     @Override
@@ -245,6 +246,7 @@ public class GpsMainActivity extends Activity
 
     private void enableDisableMenuItems() {
 
+        OnWaitingForLocation(Session.isWaitingForLocation());
         SetBulbStatus(Session.isStarted());
 
         if(mnuOnePoint != null){
@@ -331,6 +333,7 @@ public class GpsMainActivity extends Activity
 
     private void LogSinglePoint() {
         loggingService.LogOnce();
+        enableDisableMenuItems();
     }
 
     /**
@@ -836,6 +839,13 @@ public class GpsMainActivity extends Activity
     public void onFileName(String newFileName) {
 
     }
+
+    @Override
+    public void OnWaitingForLocation(boolean inProgress) {
+        ProgressBar fixBar = (ProgressBar)findViewById(R.id.progressBarGpsFix);
+        fixBar.setVisibility(inProgress ? View.VISIBLE : View.INVISIBLE);
+    }
+
 
     // IActionListener callbacks
     @Override
