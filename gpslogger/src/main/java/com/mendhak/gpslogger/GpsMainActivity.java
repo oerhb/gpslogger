@@ -141,6 +141,7 @@ public class GpsMainActivity extends Activity
                 break;
             default:
             case 2:
+                getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
                 transaction.replace(R.id.container, GpsBigFragment.newInstance());
                 break;
         }

@@ -10,24 +10,29 @@
 
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Large Text"
-        android:id="@+id/textViewLocation"
+        android:text="23.1714"
+        android:id="@+id/textViewLat"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginLeft="17dp"
-        android:layout_marginTop="116dp"/>
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:textSize="100dp"/>
 
-    <Button
-        android:layout_width="wrap_content"
+    <TextView
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="New Button"
-        android:id="@+id/buttonStart"
-        android:layout_centerVertical="true"
-        android:layout_alignLeft="@+id/textViewLocation"
-        android:layout_alignStart="@+id/textViewLocation"/>
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="-121.7348"
+        android:id="@+id/textViewLong"
+        android:layout_below="@+id/textViewLat"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@+id/textViewLat"
+        android:layout_alignEnd="@+id/textViewLat"
+        android:textSize="100dp"/>
 
 </RelativeLayout>
