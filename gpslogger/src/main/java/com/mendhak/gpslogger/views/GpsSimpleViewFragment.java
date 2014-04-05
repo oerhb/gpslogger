@@ -10,10 +10,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TableRow;
+import android.widget.TextView;
 import com.mendhak.gpslogger.R;
 import com.mendhak.gpslogger.common.Session;
 import com.mendhak.gpslogger.views.component.ToggleComponent;
+
+import java.text.NumberFormat;
 
 /**
  * Created by oceanebelle on 03/04/14.
@@ -31,6 +35,8 @@ public class GpsSimpleViewFragment extends GenericViewFragment implements Sensor
     private float[] matrixR;
     private float[] matrixI;
     private float[] matrixValues;
+
+    private View rootView;
 
     public static final GpsSimpleViewFragment newInstance() {
 
@@ -59,12 +65,12 @@ public class GpsSimpleViewFragment extends GenericViewFragment implements Sensor
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // TODO: Inflates the simple layout
 
-        View mainView = inflater.inflate(R.layout.fragment_simple_view, container, false);
+        rootView = inflater.inflate(R.layout.fragment_simple_view, container, false);
 
         // Toggle the play and pause.
         ToggleComponent.getBuilder()
-                .addOnView(mainView.findViewById(R.id.simple_play))
-                .addOffView(mainView.findViewById(R.id.simple_stop))
+                .addOnView(rootView.findViewById(R.id.simple_play))
+                .addOffView(rootView.findViewById(R.id.simple_stop))
                 .setDefaultState(!Session.isStarted())
                 .addHandler(new ToggleComponent.ToggleHandler() {
                     @Override
@@ -81,8 +87,8 @@ public class GpsSimpleViewFragment extends GenericViewFragment implements Sensor
         if(getActivity() != null){
             this.context = getActivity().getApplicationContext();
 
-            TableRow rowRose = (TableRow) mainView.findViewById(R.id.rowRose);
-            myCompass = (Compass) mainView.findViewById(R.id.mycompass);
+            TableRow rowRose = (TableRow) rootView.findViewById(R.id.rowRose);
+            myCompass = (Compass) rootView.findViewById(R.id.mycompass);
 
 
             sensorManager = (SensorManager) context.getSystemService(context.SENSOR_SERVICE);
@@ -98,7 +104,7 @@ public class GpsSimpleViewFragment extends GenericViewFragment implements Sensor
         }
 
 
-        return mainView;
+        return rootView;
     }
 
     @Override
@@ -167,11 +173,25 @@ public class GpsSimpleViewFragment extends GenericViewFragment implements Sensor
     @Override
     public void SetLocation(Location locationInfo) {
 
+        NumberFormat nf = NumberFormat.getInstance();
+        nf.setMaximumFractionDigits(3);
+
+        EditText txtLatitude = (EditText)rootView.findViewById(R.id.simple_lat_text);
+        txtLatitude.setText(String.valueOf(locationInfo.getLatitude()));
+
+        EditText txtLongitude = (EditText)rootView.findViewById(R.id.simple_lon_text);
+        txtLongitude.setText(String.valueOf(locationInfo.getLongitude()));
+
+        TextView txtAccuracy = (TextView)rootView.findViewById(R.id.txtAccuracy);
+        txtAccuracy.setText(getString(R.string.accuracy_within, nf.format(locationInfo.getAccuracy()),
+                getString(R.string.meters)));
+
     }
 
     @Override
     public void SetSatelliteCount(int count) {
-
+        TextView txtSatelliteCount = (TextView)rootView.findViewById(R.id.txtSatelliteCount);
+        txtSatelliteCount.setText(String.valueOf(count));
     }
 
     @Override
@@ -181,6 +201,7 @@ public class GpsSimpleViewFragment extends GenericViewFragment implements Sensor
 
     @Override
     public void SetLoggingStopped() {
-
+        TextView txtSatelliteCount = (TextView)rootView.findViewById(R.id.txtSatelliteCount);
+        txtSatelliteCount.setText("-");
     }
 }

@@ -5,67 +5,65 @@
                 android:layout_height="match_parent">
 
 
-
-
-
-
-
-
     <TableLayout
-            android:layout_centerInParent="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
         <TableRow android:id="@+id/rowRose">
 
         </TableRow>
+
         <TableRow>
 
             <LinearLayout
-                    android:gravity="center"
-                    android:orientation="horizontal"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_alignParentLeft="true"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-                <TextView
-                        android:layout_alignParentLeft="true"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Lat:"
-                        android:id="@+id/simple_lat_label"/>
+                    android:layout_height="wrap_content"
+                    android:text="Lat:"
+                    android:id="@+id/simple_lat_label"/>
 
                 <EditText
-                        android:layout_alignParentRight="true"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:minWidth="100dp"
-                        android:id="@+id/simple_lon_text"
-                        android:editable="false"/>
+                    android:layout_alignParentRight="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="100dp"
+                    android:id="@+id/simple_lon_text"
+                    android:editable="false"/>
 
                 <TextView
-                        android:layout_toLeftOf="@id/simple_lon_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Lon:"
-                        android:id="@+id/simple_lon_label"/>
+                    android:layout_toLeftOf="@id/simple_lon_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Lon:"
+                    android:id="@+id/simple_lon_label"/>
 
                 <EditText
-                        android:layout_toRightOf="@id/simple_lat_label"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:minWidth="100dp"
-                        android:id="@+id/simple_lat_text"
-                        android:editable="false"/>
+                    android:layout_toRightOf="@id/simple_lat_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="100dp"
+                    android:id="@+id/simple_lat_text"
+                    android:editable="false"/>
 
 
             </LinearLayout>
         </TableRow>
 
         <TableRow>
+
             <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content">
-            <!-- TODO: Only one of the following views should be displayed -->
-            <ImageView
+                android:orientation="vertical"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content">
+                <!-- TODO: Only one of the following views should be displayed -->
+                <ImageView
                     android:layout_height="100dp"
                     android:layout_width="100dp"
                     android:layout_margin="10dp"
@@ -74,7 +72,8 @@
                     android:id="@+id/simple_play"
                     android:src="@android:drawable/ic_media_play"
                     />
-            <ImageView
+
+                <ImageView
                     android:layout_height="100dp"
                     android:layout_width="100dp"
                     android:layout_margin="10dp"
@@ -85,96 +84,108 @@
                     />
             </LinearLayout>
         </TableRow>
+
         <TableRow>
+
             <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="horizontal">
+
+
+                <ImageView
+                    android:id="@+id/imgSatelliteCount"
+                    android:layout_marginTop="6dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/satellite_count"
+                    />
+
+                <TextView
+                    android:id="@+id/txtSatelliteCount"
+                    android:layout_gravity="center"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/imgSatelliteCount"
+                    android:paddingTop="20px"
+                    android:text="-"/>
+
+
+                <ImageView
+                    android:id="@+id/imgAltitude"
                     android:layout_gravity="center"
-                    android:orientation="horizontal">
+                    android:layout_marginTop="6dp"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:src="@drawable/altitude"
+                    android:layout_toRightOf="@id/txtSatelliteCount"
+                    />
 
-
-                <ImageView
-                        android:id="@+id/imgSatelliteCount"
-                        android:layout_marginTop="6dp"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/satellite_count"
-                        /><TextView android:id="@+id/txtSatelliteCount"
-                                    android:layout_gravity="center"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_toRightOf="@id/imgSatelliteCount"
-                                    android:paddingTop="20px"
-                                    android:text="13"/>
-
-
-                <ImageView
-                        android:id="@+id/imgAltitude"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="6dp"
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
-                        android:src="@drawable/altitude"
-                        android:layout_toRightOf="@id/txtSatelliteCount"
-                        /><TextView
+                <TextView
                     android:id="@+id/txtAltitude"
                     android:layout_gravity="center"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@id/imgAltitude"
                     android:paddingTop="20px"
-                    android:text="172.2m"/>
-
+                    android:text="-"/>
 
 
                 <ImageView
-                        android:id="@+id/imgAccuracy"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="6dp"
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
-                        android:src="@drawable/accuracy"
-                        android:layout_toRightOf="@id/txtAltitude"
-                        /><TextView
+                    android:id="@+id/imgAccuracy"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="6dp"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:src="@drawable/accuracy"
+                    android:layout_toRightOf="@id/txtAltitude"
+                    />
+
+                <TextView
                     android:id="@+id/txtAccuracy"
                     android:layout_gravity="center"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@id/imgAccuracy"
                     android:paddingTop="20px"
-                    android:text="4m"/>
+                    android:text="-"/>
 
                 <ImageView
-                        android:id="@+id/imgDuration"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="6dp"
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
-                        android:src="@drawable/duration"
-                        android:layout_toRightOf="@id/txtAccuracy"
-                        /><TextView
+                    android:id="@+id/imgDuration"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="6dp"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:src="@drawable/duration"
+                    android:layout_toRightOf="@id/txtAccuracy"
+                    />
+
+                <TextView
                     android:id="@+id/txtDuration"
                     android:layout_gravity="center"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@id/imgDuration"
                     android:paddingTop="20px"
-                    android:text="12 min"/>
+                    android:text="-"/>
 
-                <view android:id="@+id/mycompass"
-                      android:layout_height="44dp"
-                      android:layout_width="44dp"
-                      android:layout_toRightOf="@id/txtDuration"
-                      android:layout_marginTop="11dp"
-                      class="com.mendhak.gpslogger.views.Compass"/>
+                <view
+                    android:id="@+id/mycompass"
+                    android:layout_height="44dp"
+                    android:layout_width="44dp"
+                    android:layout_toRightOf="@id/txtDuration"
+                    android:layout_marginTop="11dp"
+                    class="com.mendhak.gpslogger.views.Compass"/>
+
                 <TextView
-                        android:id="@+id/txtSpeed"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_toRightOf="@id/mycompass"
-                        android:paddingTop="22dp"
-                        android:text="138m/s\n270°"/>
+                    android:id="@+id/txtSpeed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/mycompass"
+                    android:paddingTop="22dp"
+                    android:text="-\n"/>
 
 
             </LinearLayout>
