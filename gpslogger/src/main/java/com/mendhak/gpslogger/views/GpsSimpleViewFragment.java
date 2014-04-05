@@ -1,9 +1,6 @@
 package com.mendhak.gpslogger.views;
 
 import android.content.Context;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -11,21 +8,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.TableRow;
 import android.widget.TextView;
 import com.mendhak.gpslogger.R;
 import com.mendhak.gpslogger.common.Session;
 import com.mendhak.gpslogger.views.component.ToggleComponent;
 
-import java.text.DateFormat;
 import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * Created by oceanebelle on 03/04/14.
  */
-public class GpsSimpleViewFragment extends GenericViewFragment  {
+public class GpsSimpleViewFragment extends GenericViewFragment {
 
     Context context;
 
@@ -33,15 +26,18 @@ public class GpsSimpleViewFragment extends GenericViewFragment  {
     Compass myCompass;
 
 
-
     private View rootView;
     private ToggleComponent toggleComponent;
+
+    public GpsSimpleViewFragment() {
+
+    }
 
     public static final GpsSimpleViewFragment newInstance() {
 
         GpsSimpleViewFragment fragment = new GpsSimpleViewFragment();
         Bundle bundle = new Bundle(1);
-        bundle.putInt("a_number",1);
+        bundle.putInt("a_number", 1);
 
         fragment.setArguments(bundle);
         return fragment;
@@ -49,13 +45,8 @@ public class GpsSimpleViewFragment extends GenericViewFragment  {
 
     }
 
-    public GpsSimpleViewFragment() {
-
-    }
-
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
     }
@@ -83,12 +74,12 @@ public class GpsSimpleViewFragment extends GenericViewFragment  {
                 })
                 .build();
 
-        if(Session.hasValidLocation()){
+        if (Session.hasValidLocation()) {
             SetLocation(Session.getCurrentLocationInfo());
         }
 
 
-        if(getActivity() != null){
+        if (getActivity() != null) {
             this.context = getActivity().getApplicationContext();
             myCompass = (Compass) rootView.findViewById(R.id.mycompass);
 
@@ -111,93 +102,118 @@ public class GpsSimpleViewFragment extends GenericViewFragment  {
     }
 
 
-
     @Override
     public void SetLocation(Location locationInfo) {
 
         NumberFormat nf = NumberFormat.getInstance();
         nf.setMaximumFractionDigits(3);
 
-        EditText txtLatitude = (EditText)rootView.findViewById(R.id.simple_lat_text);
+        EditText txtLatitude = (EditText) rootView.findViewById(R.id.simple_lat_text);
         txtLatitude.setText(String.valueOf(locationInfo.getLatitude()));
 
-        EditText txtLongitude = (EditText)rootView.findViewById(R.id.simple_lon_text);
+        EditText txtLongitude = (EditText) rootView.findViewById(R.id.simple_lon_text);
         txtLongitude.setText(String.valueOf(locationInfo.getLongitude()));
 
-        TextView txtAccuracy = (TextView)rootView.findViewById(R.id.txtAccuracy);
-        txtAccuracy.setText(nf.format(locationInfo.getAccuracy()) +  getString(R.string.meters));
-
-        TextView txtAltitude = (TextView)rootView.findViewById(R.id.txtAltitude);
-        txtAltitude.setText(nf.format(locationInfo.getAltitude()) + getString(R.string.meters));
-
-
-        float speed = locationInfo.getSpeed();
-        String unit;
-        if (speed > 0.277)
-        {
-            speed = speed * 3.6f;
-            unit = getString(R.string.kilometers_per_hour);
-        }
-        else
-        {
-            unit = getString(R.string.meters_per_second);
+        if (locationInfo.hasAccuracy()) {
+            TextView txtAccuracy = (TextView) rootView.findViewById(R.id.txtAccuracy);
+            txtAccuracy.setText(nf.format(locationInfo.getAccuracy()) + getString(R.string.meters));
         }
 
-        TextView txtSpeed = (TextView)rootView.findViewById(R.id.txtSpeed);
-        txtSpeed.setText(String.valueOf(nf.format(speed)) + unit + "\n"
-                + String.valueOf(Math.round(locationInfo.getBearing()))
-                + getString(R.string.degree_symbol) );
-        if(myCompass != null){
-            myCompass.update((float)Math.toRadians(-1 * locationInfo.getBearing()));
+        if (locationInfo.hasAltitude()) {
+            TextView txtAltitude = (TextView) rootView.findViewById(R.id.txtAltitude);
+            txtAltitude.setText(nf.format(locationInfo.getAltitude()) + getString(R.string.meters));
         }
 
-        TextView txtDuration = (TextView)rootView.findViewById(R.id.txtDuration);
+        if (locationInfo.hasSpeed() && locationInfo.hasBearing()) {
 
+            float speed = locationInfo.getSpeed();
+            String unit;
+            if (speed > 0.277) {
+                speed = speed * 3.6f;
+                unit = getString(R.string.kilometers_per_hour);
+            } else {
+                unit = getString(R.string.meters_per_second);
+            }
+
+            TextView txtSpeed = (TextView) rootView.findViewById(R.id.txtSpeed);
+            txtSpeed.setText(String.valueOf(nf.format(speed)) + unit + "\n"
+                    + String.valueOf(Math.round(locationInfo.getBearing()))
+                    + getString(R.string.degree_symbol));
+            if (myCompass != null) {
+                myCompass.update((float) Math.toRadians(-1 * locationInfo.getBearing()));
+            }
+        }
+
+        TextView txtDuration = (TextView) rootView.findViewById(R.id.txtDuration);
 
         long startTime = Session.getStartTimeStamp();
-        Date d = new Date(startTime);
         long currentTime = System.currentTimeMillis();
         String duration = getInterval(startTime, currentTime);
 
         txtDuration.setText(duration);
-
     }
 
-    private String getInterval(long startTime, long endTime)
-    {
+    private void clearLocationDisplay() {
+        NumberFormat nf = NumberFormat.getInstance();
+        nf.setMaximumFractionDigits(3);
+
+        EditText txtLatitude = (EditText) rootView.findViewById(R.id.simple_lat_text);
+        txtLatitude.setText("-");
+
+        EditText txtLongitude = (EditText) rootView.findViewById(R.id.simple_lon_text);
+        txtLongitude.setText("-");
+
+
+        TextView txtAccuracy = (TextView) rootView.findViewById(R.id.txtAccuracy);
+        txtAccuracy.setText("-");
+
+
+        TextView txtAltitude = (TextView) rootView.findViewById(R.id.txtAltitude);
+        txtAltitude.setText("-");
+
+
+        TextView txtSpeed = (TextView) rootView.findViewById(R.id.txtSpeed);
+        txtSpeed.setText("-");
+
+
+        TextView txtDuration = (TextView) rootView.findViewById(R.id.txtDuration);
+
+        txtDuration.setText("-");
+    }
+
+    private String getInterval(long startTime, long endTime) {
         StringBuffer sb = new StringBuffer();
         long diff = endTime - startTime;
         long diffSeconds = diff / 1000 % 60;
         long diffMinutes = diff / (60 * 1000) % 60;
         long diffHours = diff / (60 * 60 * 1000) % 24;
         long diffDays = diff / (24 * 60 * 60 * 1000);
-        if (diffDays > 0)
-        {
+        if (diffDays > 0) {
             sb.append(diffDays + " days ");
         }
-        if (diffHours > 0)
-        {
-            sb.append(String.format("%02d", diffHours)+":");
+        if (diffHours > 0) {
+            sb.append(String.format("%02d", diffHours) + ":");
         }
-        sb.append(String.format("%02d", diffMinutes)+":");
+        sb.append(String.format("%02d", diffMinutes) + ":");
         sb.append(String.format("%02d", diffSeconds));
         return sb.toString();
     }
 
     @Override
     public void SetSatelliteCount(int count) {
-        TextView txtSatelliteCount = (TextView)rootView.findViewById(R.id.txtSatelliteCount);
+        TextView txtSatelliteCount = (TextView) rootView.findViewById(R.id.txtSatelliteCount);
         txtSatelliteCount.setText(String.valueOf(count));
     }
 
     @Override
     public void SetLoggingStarted() {
+        clearLocationDisplay();
         toggleComponent.SetEnabled(false);
     }
 
     @Override
     public void SetLoggingStopped() {
-        TextView txtSatelliteCount = (TextView)rootView.findViewById(R.id.txtSatelliteCount);
+        TextView txtSatelliteCount = (TextView) rootView.findViewById(R.id.txtSatelliteCount);
         txtSatelliteCount.setText("-");
 
         toggleComponent.SetEnabled(true);
