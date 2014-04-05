@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.view.*;
 import android.support.v4.widget.DrawerLayout;
 import android.widget.*;
@@ -135,6 +136,12 @@ public class GpsMainActivity extends Activity
     }
 
     private void changeMainView(int view) {
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor editor   = prefs.edit();
+        editor.putInt("dropdownview", view);
+        editor.commit();
+
         FragmentTransaction transaction = fragmentManager.beginTransaction();
 
         switch (view) {
@@ -204,7 +211,10 @@ public class GpsMainActivity extends Activity
         SpinnerAdapter spinnerAdapter = ArrayAdapter.createFromResource(actionBar.getThemedContext(), R.array.gps_main_views, android.R.layout.simple_spinner_dropdown_item);
 
         actionBar.setListNavigationCallbacks(spinnerAdapter, this);
-        actionBar.setDisplayShowTitleEnabled(false);
+
+        //Reload the user's previously selected view
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        actionBar.setSelectedNavigationItem(prefs.getInt("dropdownview",0));
 
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setTitle("");

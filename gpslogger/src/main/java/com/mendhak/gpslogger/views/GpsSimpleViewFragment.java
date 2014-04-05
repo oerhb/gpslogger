@@ -1,7 +1,6 @@
 package com.mendhak.gpslogger.views;
 
 import android.content.Context;
-import android.hardware.SensorManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -22,7 +21,6 @@ public class GpsSimpleViewFragment extends GenericViewFragment {
 
     Context context;
 
-    SensorManager sensorManager;
     Compass myCompass;
 
 
@@ -81,7 +79,7 @@ public class GpsSimpleViewFragment extends GenericViewFragment {
 
         if (getActivity() != null) {
             this.context = getActivity().getApplicationContext();
-            myCompass = (Compass) rootView.findViewById(R.id.mycompass);
+            myCompass = (Compass) rootView.findViewById(R.id.simpleview_compass);
 
         }
 
@@ -115,12 +113,12 @@ public class GpsSimpleViewFragment extends GenericViewFragment {
         txtLongitude.setText(String.valueOf(locationInfo.getLongitude()));
 
         if (locationInfo.hasAccuracy()) {
-            TextView txtAccuracy = (TextView) rootView.findViewById(R.id.txtAccuracy);
+            TextView txtAccuracy = (TextView) rootView.findViewById(R.id.simpleview_txtAccuracy);
             txtAccuracy.setText(nf.format(locationInfo.getAccuracy()) + getString(R.string.meters));
         }
 
         if (locationInfo.hasAltitude()) {
-            TextView txtAltitude = (TextView) rootView.findViewById(R.id.txtAltitude);
+            TextView txtAltitude = (TextView) rootView.findViewById(R.id.simpleview_txtAltitude);
             txtAltitude.setText(nf.format(locationInfo.getAltitude()) + getString(R.string.meters));
         }
 
@@ -135,7 +133,7 @@ public class GpsSimpleViewFragment extends GenericViewFragment {
                 unit = getString(R.string.meters_per_second);
             }
 
-            TextView txtSpeed = (TextView) rootView.findViewById(R.id.txtSpeed);
+            TextView txtSpeed = (TextView) rootView.findViewById(R.id.simpleview_txtSpeed);
             txtSpeed.setText(String.valueOf(nf.format(speed)) + unit + "\n"
                     + String.valueOf(Math.round(locationInfo.getBearing()))
                     + getString(R.string.degree_symbol));
@@ -144,7 +142,7 @@ public class GpsSimpleViewFragment extends GenericViewFragment {
             }
         }
 
-        TextView txtDuration = (TextView) rootView.findViewById(R.id.txtDuration);
+        TextView txtDuration = (TextView) rootView.findViewById(R.id.simpleview_txtDuration);
 
         long startTime = Session.getStartTimeStamp();
         long currentTime = System.currentTimeMillis();
@@ -164,19 +162,19 @@ public class GpsSimpleViewFragment extends GenericViewFragment {
         txtLongitude.setText("-");
 
 
-        TextView txtAccuracy = (TextView) rootView.findViewById(R.id.txtAccuracy);
+        TextView txtAccuracy = (TextView) rootView.findViewById(R.id.simpleview_txtAccuracy);
         txtAccuracy.setText("-");
 
 
-        TextView txtAltitude = (TextView) rootView.findViewById(R.id.txtAltitude);
+        TextView txtAltitude = (TextView) rootView.findViewById(R.id.simpleview_txtAltitude);
         txtAltitude.setText("-");
 
 
-        TextView txtSpeed = (TextView) rootView.findViewById(R.id.txtSpeed);
+        TextView txtSpeed = (TextView) rootView.findViewById(R.id.simpleview_txtSpeed);
         txtSpeed.setText("-");
 
 
-        TextView txtDuration = (TextView) rootView.findViewById(R.id.txtDuration);
+        TextView txtDuration = (TextView) rootView.findViewById(R.id.simpleview_txtDuration);
 
         txtDuration.setText("-");
     }
@@ -201,7 +199,7 @@ public class GpsSimpleViewFragment extends GenericViewFragment {
 
     @Override
     public void SetSatelliteCount(int count) {
-        TextView txtSatelliteCount = (TextView) rootView.findViewById(R.id.txtSatelliteCount);
+        TextView txtSatelliteCount = (TextView) rootView.findViewById(R.id.simpleview_txtSatelliteCount);
         txtSatelliteCount.setText(String.valueOf(count));
     }
 
@@ -213,7 +211,7 @@ public class GpsSimpleViewFragment extends GenericViewFragment {
 
     @Override
     public void SetLoggingStopped() {
-        TextView txtSatelliteCount = (TextView) rootView.findViewById(R.id.txtSatelliteCount);
+        TextView txtSatelliteCount = (TextView) rootView.findViewById(R.id.simpleview_txtSatelliteCount);
         txtSatelliteCount.setText("-");
 
         toggleComponent.SetEnabled(true);

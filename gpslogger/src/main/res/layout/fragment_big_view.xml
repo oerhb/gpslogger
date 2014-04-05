@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="..."
-        android:id="@+id/textViewLat"
+        android:id="@+id/bigview_text_lat"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -27,12 +27,12 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="..."
-        android:id="@+id/textViewLong"
-        android:layout_below="@+id/textViewLat"
+        android:id="@+id/bigview_text_long"
+        android:layout_below="@+id/bigview_text_lat"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignRight="@+id/textViewLat"
-        android:layout_alignEnd="@+id/textViewLat"
+        android:layout_alignRight="@+id/bigview_text_lat"
+        android:layout_alignEnd="@+id/bigview_text_lat"
         android:textSize="100dp"/>
 
 </RelativeLayout>

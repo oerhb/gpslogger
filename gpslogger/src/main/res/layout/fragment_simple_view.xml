@@ -10,10 +10,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
-        <TableRow android:id="@+id/rowRose">
-
-        </TableRow>
-
         <TableRow>
 
             <LinearLayout
@@ -34,22 +30,22 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:minWidth="100dp"
-                    android:id="@+id/simple_lon_text"
+                    android:id="@+id/simple_lat_text"
                     android:editable="false"/>
 
                 <TextView
-                    android:layout_toLeftOf="@id/simple_lon_text"
+                    android:layout_toLeftOf="@id/simple_lat_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Lon:"
                     android:id="@+id/simple_lon_label"/>
 
                 <EditText
-                    android:layout_toRightOf="@id/simple_lat_label"
+                    android:layout_toRightOf="@id/simple_lon_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:minWidth="100dp"
-                    android:id="@+id/simple_lat_text"
+                    android:id="@+id/simple_lon_text"
                     android:editable="false"/>
 
 
@@ -97,7 +93,7 @@
 
 
                 <ImageView
-                    android:id="@+id/imgAltitude"
+                    android:id="@+id/simpleview_imgAltitude"
                     android:layout_gravity="center"
                     android:layout_marginTop="6dp"
                     android:layout_width="22dp"
@@ -107,50 +103,50 @@
                     />
 
                 <TextView
-                    android:id="@+id/txtAltitude"
+                    android:id="@+id/simpleview_txtAltitude"
                     android:layout_gravity="center"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@id/imgAltitude"
+                    android:layout_toRightOf="@id/simpleview_imgAltitude"
                     android:paddingTop="20px"
                     android:text="-"/>
 
 
                 <ImageView
-                    android:id="@+id/imgAccuracy"
+                    android:id="@+id/simpleview_imgAccuracy"
                     android:layout_gravity="center"
                     android:layout_marginTop="6dp"
                     android:layout_width="22dp"
                     android:layout_height="22dp"
                     android:src="@drawable/accuracy"
-                    android:layout_toRightOf="@id/txtAltitude"
+                    android:layout_toRightOf="@id/simpleview_txtAltitude"
                     />
 
                 <TextView
-                    android:id="@+id/txtAccuracy"
+                    android:id="@+id/simpleview_txtAccuracy"
                     android:layout_gravity="center"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@id/imgAccuracy"
+                    android:layout_toRightOf="@id/simpleview_imgAccuracy"
                     android:paddingTop="20px"
                     android:text="-"/>
 
                 <ImageView
-                    android:id="@+id/imgDuration"
+                    android:id="@+id/simpleview_imgDuration"
                     android:layout_gravity="center"
                     android:layout_marginTop="6dp"
                     android:layout_width="22dp"
                     android:layout_height="22dp"
                     android:src="@drawable/duration"
-                    android:layout_toRightOf="@id/txtAccuracy"
+                    android:layout_toRightOf="@id/simpleview_txtAccuracy"
                     />
 
                 <TextView
-                    android:id="@+id/txtDuration"
+                    android:id="@+id/simpleview_txtDuration"
                     android:layout_gravity="center"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@id/imgDuration"
+                    android:layout_toRightOf="@id/simpleview_imgDuration"
                     android:paddingTop="20px"
                     android:text="-"/>
 
@@ -164,7 +160,7 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:id="@+id/imgSatelliteCount"
+                    android:id="@+id/simpleview_imgSatelliteCount"
                     android:layout_marginTop="6dp"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
@@ -173,28 +169,28 @@
                     />
 
                 <TextView
-                    android:id="@+id/txtSatelliteCount"
+                    android:id="@+id/simpleview_txtSatelliteCount"
                     android:layout_gravity="center"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@id/imgSatelliteCount"
+                    android:layout_toRightOf="@id/simpleview_imgSatelliteCount"
                     android:paddingTop="20px"
                     android:text="-"/>
 
 
                 <view
-                    android:id="@+id/mycompass"
+                    android:id="@+id/simpleview_compass"
                     android:layout_height="44dp"
                     android:layout_width="44dp"
-                    android:layout_toRightOf="@id/txtSatelliteCount"
+                    android:layout_toRightOf="@id/simpleview_txtSatelliteCount"
                     android:layout_marginTop="11dp"
                     class="com.mendhak.gpslogger.views.Compass"/>
 
                 <TextView
-                    android:id="@+id/txtSpeed"
+                    android:id="@+id/simpleview_txtSpeed"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@id/mycompass"
+                    android:layout_toRightOf="@id/simpleview_compass"
                     android:paddingTop="22dp"
                     android:text="-\n"/>
 

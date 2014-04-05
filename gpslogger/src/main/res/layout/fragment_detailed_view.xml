@@ -29,15 +29,15 @@
                     android:layout_height="wrap_content"
                     android:text="Lat:"
                     android:textSize="20dp"
-                    android:id="@+id/detailed_lat_label"/>
+                    android:id="@+id/detailedview_lat_label"/>
 
             <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:minWidth="200dp"
                     android:textSize="50dp"
-                    android:id="@+id/detailed_lat_text"
-                    android:text="0.2344"
+                    android:id="@+id/detailedview_lat_text"
+                    android:text=""
                     android:editable="false"/>
         </LinearLayout>
         <LinearLayout
@@ -51,15 +51,15 @@
                     android:layout_height="wrap_content"
                     android:text="Lon:"
                     android:textSize="20dp"
-                    android:id="@+id/detailed_lon_label"/>
+                    android:id="@+id/detailedview_lon_label"/>
 
             <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:minWidth="200dp"
                     android:textSize="50dp"
-                    android:text="0.2344"
-                    android:id="@+id/detailed_lon_text"
+                    android:text=""
+                    android:id="@+id/detailedview_lon_text"
                     android:editable="false"/>
         </LinearLayout>
         </LinearLayout>
@@ -75,7 +75,7 @@
                     android:layout_margin="10dp"
                     android:layout_gravity="center"
                     android:background="?android:selectableItemBackground"
-                    android:id="@+id/detailed_play"
+                    android:id="@+id/detailedview_play"
                     android:src="@android:drawable/ic_media_play"
                     />
             <ImageView
@@ -84,7 +84,7 @@
                     android:layout_margin="10dp"
                     android:layout_gravity="center"
                     android:background="?android:selectableItemBackground"
-                    android:id="@+id/detailed_stop"
+                    android:id="@+id/detailedview_stop"
                     android:src="@android:drawable/ic_media_pause"
                     />
         </LinearLayout>
@@ -115,6 +115,23 @@
                 android:layout_height="wrap_content">
 
             <LinearLayout
+                android:layout_margin="5dp"
+                android:layout_alignParentLeft="true"
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+
+                <EditText
+                    android:minWidth="@dimen/view_text_width"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/detailedview_datetime_text"
+                    android:text=""
+                    android:editable="false"/>
+            </LinearLayout>
+
+            <LinearLayout
                     android:layout_margin="5dp"
                     android:layout_alignParentLeft="true"
                     android:orientation="horizontal"
@@ -124,14 +141,14 @@
                         android:layout_width="@dimen/view_label_width"
                         android:layout_height="wrap_content"
                         android:text="@string/txt_altitude"
-                        android:id="@+id/detailed_altitude_label"/>
+                        android:id="@+id/detailedview_altitude_label"/>
 
                 <EditText
                         android:minWidth="@dimen/view_text_width"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/detailed_altitude_text"
-                        android:text="0.2344"
+                        android:id="@+id/detailedview_altitude_text"
+                        android:text=""
                         android:editable="false"/>
             </LinearLayout>
 
@@ -145,14 +162,35 @@
                         android:layout_width="@dimen/view_label_width"
                         android:layout_height="wrap_content"
                         android:text="@string/txt_speed"
-                        android:id="@+id/detailed_speed_label"/>
+                        android:id="@+id/detailedview_speed_label"/>
 
                 <EditText
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:minWidth="@dimen/view_text_width"
-                        android:id="@+id/detailed_speed_text"
-                        android:text="0.2344"
+                        android:id="@+id/detailedview_speed_text"
+                        android:text=""
+                        android:editable="false"/>
+            </LinearLayout>
+
+            <LinearLayout
+                    android:layout_margin="5dp"
+                    android:layout_alignParentLeft="true"
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                <TextView
+                        android:layout_width="@dimen/view_label_width"
+                        android:layout_height="wrap_content"
+                        android:text="@string/txt_direction"
+                        android:id="@+id/detailedview_direction_label"/>
+
+                <EditText
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minWidth="@dimen/view_text_width"
+                        android:id="@+id/detailedview_direction_text"
+                        android:text=""
                         android:editable="false"/>
             </LinearLayout>
 
@@ -166,35 +204,14 @@
                         android:layout_width="@dimen/view_label_width"
                         android:layout_height="wrap_content"
                         android:text="@string/txt_satellites"
-                        android:id="@+id/detailed_direction_label"/>
+                        android:id="@+id/detailedview_satellites_label"/>
 
                 <EditText
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:minWidth="@dimen/view_text_width"
-                        android:id="@+id/detailed_direction_text"
-                        android:text="0.2344"
-                        android:editable="false"/>
-            </LinearLayout>
-
-            <LinearLayout
-                    android:layout_margin="5dp"
-                    android:layout_alignParentLeft="true"
-                    android:orientation="horizontal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-                <TextView
-                        android:layout_width="@dimen/view_label_width"
-                        android:layout_height="wrap_content"
-                        android:text="@string/txt_satellites"
-                        android:id="@+id/detailed_satellites_label"/>
-
-                <EditText
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:minWidth="@dimen/view_text_width"
-                        android:id="@+id/detailed_satellites_text"
-                        android:text="0.2344"
+                        android:id="@+id/detailedview_satellites_text"
+                        android:text=""
                         android:editable="false"/>
             </LinearLayout>
 
@@ -208,14 +225,14 @@
                         android:layout_width="@dimen/view_label_width"
                         android:layout_height="wrap_content"
                         android:text="@string/txt_accuracy"
-                        android:id="@+id/detailed_accuracy_label"/>
+                        android:id="@+id/detailedview_accuracy_label"/>
 
                 <EditText
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:minWidth="@dimen/view_text_width"
-                        android:id="@+id/detailed_accuracy_text"
-                        android:text="0.2344"
+                        android:id="@+id/detailedview_accuracy_text"
+                        android:text=""
                         android:editable="false"/>
             </LinearLayout>
 
@@ -229,14 +246,14 @@
                         android:layout_width="@dimen/view_label_width"
                         android:layout_height="wrap_content"
                         android:text="@string/txt_travel_distance"
-                        android:id="@+id/detailed_travelled_label"/>
+                        android:id="@+id/detailedview_travelled_label"/>
 
                 <EditText
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:minWidth="@dimen/view_text_width"
-                        android:id="@+id/detailed_travelled_text"
-                        android:text="0.2344"
+                        android:id="@+id/detailedview_travelled_text"
+                        android:text=""
                         android:editable="false"/>
             </LinearLayout>
 
@@ -250,20 +267,148 @@
                         android:layout_width="@dimen/view_label_width"
                         android:layout_height="wrap_content"
                         android:text="@string/txt_travel_duration"
-                        android:id="@+id/detailed_duration_label"/>
+                        android:id="@+id/detailedview_duration_label"/>
 
                 <EditText
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:minWidth="@dimen/view_text_width"
-                        android:id="@+id/detailed_duration_text"
-                        android:text="0.2344"
+                        android:id="@+id/detailedview_duration_text"
+                        android:text=""
                         android:editable="false"/>
             </LinearLayout>
 
 
 
         </LinearLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+
+        android:background="@drawable/rounded_gray_thin"
+
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_margin="5dp"
+                android:layout_alignParentLeft="true"
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="@dimen/view_label_width"
+                    android:layout_height="wrap_content"
+                    android:text="@string/summary_loggingto"
+                    android:id="@+id/detailedview_loggingto_label"/>
+
+                <EditText
+                    android:minWidth="@dimen/view_text_width"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/detailedview_loggingto_text"
+                    android:text=""
+                    android:editable="false"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_margin="5dp"
+                android:layout_alignParentLeft="true"
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="@dimen/view_label_width"
+                    android:layout_height="wrap_content"
+                    android:text="@string/summary_freq_every"
+                    android:id="@+id/detailedview_frequency_label"/>
+
+                <EditText
+                    android:minWidth="@dimen/view_text_width"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/detailedview_frequency_text"
+                    android:text=""
+                    android:editable="false"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_margin="5dp"
+                android:layout_alignParentLeft="true"
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="@dimen/view_label_width"
+                    android:layout_height="wrap_content"
+                    android:text="@string/summary_dist"
+                    android:id="@+id/detailedview_distance_label"/>
+
+                <EditText
+                    android:minWidth="@dimen/view_text_width"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/detailedview_distance_text"
+                    android:text=""
+                    android:editable="false"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_margin="5dp"
+                android:layout_alignParentLeft="true"
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="@dimen/view_label_width"
+                    android:layout_height="wrap_content"
+                    android:text="@string/summary_current_filename"
+                    android:id="@+id/detailedview_file_label"/>
+
+                <EditText
+                    android:minWidth="@dimen/view_text_width"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/detailedview_file_text"
+                    android:text=""
+                    android:editable="false"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_margin="5dp"
+                android:layout_alignParentLeft="true"
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="@dimen/view_label_width"
+                    android:layout_height="wrap_content"
+                    android:text="@string/summary_autosend"
+                    android:id="@+id/detailedview_autosend_label"/>
+
+                <EditText
+                    android:minWidth="@dimen/view_text_width"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/detailedview_autosend_text"
+                    android:text=""
+                    android:editable="false"/>
+            </LinearLayout>
+        </LinearLayout>
+
     </RelativeLayout>
 
 </LinearLayout>

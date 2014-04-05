@@ -40,10 +40,10 @@ public class GpsBigViewFragment extends GenericViewFragment implements View.OnTo
         rootView = inflater.inflate(R.layout.fragment_big_view, container, false);
         getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
-        TextView txtLat = (TextView)rootView.findViewById(R.id.textViewLat);
+        TextView txtLat = (TextView)rootView.findViewById(R.id.bigview_text_lat);
         txtLat.setOnTouchListener(this);
 
-        TextView txtLong = (TextView)rootView.findViewById(R.id.textViewLong);
+        TextView txtLong = (TextView)rootView.findViewById(R.id.bigview_text_long);
         txtLong.setOnTouchListener(this);
 
         setCurrentlyLogging(Session.isStarted());
@@ -55,10 +55,10 @@ public class GpsBigViewFragment extends GenericViewFragment implements View.OnTo
     @Override
     public void SetLocation(Location locationInfo) {
         if(locationInfo != null){
-            TextView txtLat = (TextView)rootView.findViewById(R.id.textViewLat);
+            TextView txtLat = (TextView)rootView.findViewById(R.id.bigview_text_lat);
             txtLat.setText(String.valueOf(locationInfo.getLatitude()));
 
-            TextView txtLong = (TextView)rootView.findViewById(R.id.textViewLong);
+            TextView txtLong = (TextView)rootView.findViewById(R.id.bigview_text_long);
             txtLong.setText(String.valueOf(locationInfo.getLongitude()));
         }
     }
