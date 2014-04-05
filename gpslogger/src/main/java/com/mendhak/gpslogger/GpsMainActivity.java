@@ -852,19 +852,19 @@ public class GpsMainActivity extends Activity
     //These methods come from the fragments
     @Override
     public void onRequestStartLogging() {
-        Utilities.LogInfo("START LOGGING REQUESTED BY UI");
+        Utilities.LogInfo("GpsMainActivity.onRequestStartLogging");
         StartLogging();
     }
 
     @Override
     public void onRequestStopLogging() {
-        Utilities.LogInfo("STOP LOGGING REQUESTED BY UI");
+        Utilities.LogInfo("GpsMainActivity.onRequestStopLogging");
         StopLogging();
     }
 
     @Override
     public void onRequestToggleLogging() {
-        Utilities.LogInfo("TOGGLE LOGGING REQUESTED BY UI");
+        Utilities.LogInfo("GpsMainActivity.onRequestToggleLogging");
 
         if(Session.isStarted()){
             StopLogging();
@@ -893,6 +893,7 @@ public class GpsMainActivity extends Activity
      */
     private void GetPreferences()
     {
+        Utilities.LogDebug("GpsMainActivity.GetPreferences");
         Utilities.PopulateAppSettings(getApplicationContext());
         //ShowPreferencesSummary();
     }

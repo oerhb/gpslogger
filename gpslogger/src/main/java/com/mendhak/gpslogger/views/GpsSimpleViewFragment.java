@@ -17,24 +17,21 @@ import com.mendhak.gpslogger.R;
 import com.mendhak.gpslogger.common.Session;
 import com.mendhak.gpslogger.views.component.ToggleComponent;
 
+import java.text.DateFormat;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by oceanebelle on 03/04/14.
  */
-public class GpsSimpleViewFragment extends GenericViewFragment implements SensorEventListener {
+public class GpsSimpleViewFragment extends GenericViewFragment  {
 
     Context context;
 
     SensorManager sensorManager;
     Compass myCompass;
-    private Sensor sensorAccelerometer;
-    private Sensor sensorMagneticField;
-    private float[] valuesAccelerometer;
-    private float[] valuesMagneticField;
-    private float[] matrixR;
-    private float[] matrixI;
-    private float[] matrixValues;
+
 
     private View rootView;
 
@@ -84,23 +81,15 @@ public class GpsSimpleViewFragment extends GenericViewFragment implements Sensor
                 })
                 .build();
 
+        if(Session.hasValidLocation()){
+            SetLocation(Session.getCurrentLocationInfo());
+        }
+
+
         if(getActivity() != null){
             this.context = getActivity().getApplicationContext();
-
-            TableRow rowRose = (TableRow) rootView.findViewById(R.id.rowRose);
             myCompass = (Compass) rootView.findViewById(R.id.mycompass);
 
-
-            sensorManager = (SensorManager) context.getSystemService(context.SENSOR_SERVICE);
-            sensorAccelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-            sensorMagneticField = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
-
-            valuesAccelerometer = new float[3];
-            valuesMagneticField = new float[3];
-
-            matrixR = new float[9];
-            matrixI = new float[9];
-            matrixValues = new float[3];
         }
 
 
@@ -109,66 +98,17 @@ public class GpsSimpleViewFragment extends GenericViewFragment implements Sensor
 
     @Override
     public void onResume() {
-        sensorManager.registerListener(this,
-                sensorAccelerometer,
-                SensorManager.SENSOR_DELAY_NORMAL);
-        sensorManager.registerListener(this,
-                sensorMagneticField,
-                SensorManager.SENSOR_DELAY_NORMAL);
+
         super.onResume();
     }
 
     @Override
     public void onPause() {
-        sensorManager.registerListener(this,
-                sensorAccelerometer,
-                SensorManager.SENSOR_DELAY_NORMAL);
-        sensorManager.registerListener(this,
-                sensorMagneticField,
-                SensorManager.SENSOR_DELAY_NORMAL);
+
         super.onPause();
     }
 
-    @Override
-    public void onSensorChanged(SensorEvent event) {
-        switch (event.sensor.getType()) {
-            case Sensor.TYPE_ACCELEROMETER:
-                for (int i = 0; i < 3; i++) {
-                    valuesAccelerometer[i] = event.values[i];
-                }
-                break;
-            case Sensor.TYPE_MAGNETIC_FIELD:
-                for (int i = 0; i < 3; i++) {
-                    valuesMagneticField[i] = event.values[i];
-                }
-                break;
-        }
 
-        boolean success = SensorManager.getRotationMatrix(
-                matrixR,
-                matrixI,
-                valuesAccelerometer,
-                valuesMagneticField);
-
-        if (success) {
-            SensorManager.getOrientation(matrixR, matrixValues);
-
-            double azimuth = Math.toDegrees(matrixValues[0]);
-            double pitch = Math.toDegrees(matrixValues[1]);
-            double roll = Math.toDegrees(matrixValues[2]);
-
-
-            if(myCompass != null){
-                myCompass.update(matrixValues[0]);
-            }
-
-        }
-    }
-
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int i) {
-
-    }
 
     @Override
     public void SetLocation(Location locationInfo) {
@@ -183,9 +123,63 @@ public class GpsSimpleViewFragment extends GenericViewFragment implements Sensor
         txtLongitude.setText(String.valueOf(locationInfo.getLongitude()));
 
         TextView txtAccuracy = (TextView)rootView.findViewById(R.id.txtAccuracy);
-        txtAccuracy.setText(getString(R.string.accuracy_within, nf.format(locationInfo.getAccuracy()),
-                getString(R.string.meters)));
+        txtAccuracy.setText(nf.format(locationInfo.getAccuracy()) +  getString(R.string.meters));
 
+        TextView txtAltitude = (TextView)rootView.findViewById(R.id.txtAltitude);
+        txtAltitude.setText(nf.format(locationInfo.getAltitude()) + getString(R.string.meters));
+
+
+        float speed = locationInfo.getSpeed();
+        String unit;
+        if (speed > 0.277)
+        {
+            speed = speed * 3.6f;
+            unit = getString(R.string.kilometers_per_hour);
+        }
+        else
+        {
+            unit = getString(R.string.meters_per_second);
+        }
+
+        TextView txtSpeed = (TextView)rootView.findViewById(R.id.txtSpeed);
+        txtSpeed.setText(String.valueOf(nf.format(speed)) + unit + "\n"
+                + String.valueOf(Math.round(locationInfo.getBearing()))
+                + getString(R.string.degree_symbol) );
+        if(myCompass != null){
+            myCompass.update((float)Math.toRadians(-1 * locationInfo.getBearing()));
+        }
+
+        TextView txtDuration = (TextView)rootView.findViewById(R.id.txtDuration);
+
+
+        long startTime = Session.getStartTimeStamp();
+        Date d = new Date(startTime);
+        long currentTime = System.currentTimeMillis();
+        String duration = getInterval(startTime, currentTime);
+
+        txtDuration.setText(duration);
+
+    }
+
+    private String getInterval(long startTime, long endTime)
+    {
+        StringBuffer sb = new StringBuffer();
+        long diff = endTime - startTime;
+        long diffSeconds = diff / 1000 % 60;
+        long diffMinutes = diff / (60 * 1000) % 60;
+        long diffHours = diff / (60 * 60 * 1000) % 24;
+        long diffDays = diff / (24 * 60 * 60 * 1000);
+        if (diffDays > 0)
+        {
+            sb.append(diffDays + " days ");
+        }
+        if (diffHours > 0)
+        {
+            sb.append(String.format("%02d", diffHours)+":");
+        }
+        sb.append(String.format("%02d", diffMinutes)+":");
+        sb.append(String.format("%02d", diffSeconds));
+        return sb.toString();
     }
 
     @Override

@@ -57,6 +57,8 @@ public class Utilities
 
     public static void LogInfo(String message)
     {
+
+
         if (LOGLEVEL >= 3)
         {
             Log.i("GPSLogger", message);
