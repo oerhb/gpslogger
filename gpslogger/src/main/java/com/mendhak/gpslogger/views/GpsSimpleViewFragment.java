@@ -31,8 +31,27 @@ public class GpsSimpleViewFragment extends GenericViewFragment implements Sensor
     private float[] matrixI;
     private float[] matrixValues;
 
-    public GpsSimpleViewFragment(Context context) {
-        this.context = context;
+    public static final GpsSimpleViewFragment newInstance() {
+
+        GpsSimpleViewFragment fragment = new GpsSimpleViewFragment();
+        Bundle bundle = new Bundle(1);
+        bundle.putInt("a_number",1);
+
+        fragment.setArguments(bundle);
+        return fragment;
+
+
+    }
+
+    public GpsSimpleViewFragment() {
+
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+
     }
 
     @Override
@@ -58,22 +77,25 @@ public class GpsSimpleViewFragment extends GenericViewFragment implements Sensor
                 })
                 .build();
 
-        TableRow rowRose = (TableRow) mainView.findViewById(R.id.rowRose);
-        myCompass = (Compass) mainView.findViewById(R.id.mycompass);
+        if(getActivity() != null){
+            this.context = getActivity().getApplicationContext();
+
+            TableRow rowRose = (TableRow) mainView.findViewById(R.id.rowRose);
+            myCompass = (Compass) mainView.findViewById(R.id.mycompass);
 
 
-        sensorManager = (SensorManager) context.getSystemService(context.SENSOR_SERVICE);
-        sensorAccelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        sensorMagneticField = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+            sensorManager = (SensorManager) context.getSystemService(context.SENSOR_SERVICE);
+            sensorAccelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+            sensorMagneticField = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
 
-        valuesAccelerometer = new float[3];
-        valuesMagneticField = new float[3];
+            valuesAccelerometer = new float[3];
+            valuesMagneticField = new float[3];
 
-        matrixR = new float[9];
-        matrixI = new float[9];
-        matrixValues = new float[3];
+            matrixR = new float[9];
+            matrixI = new float[9];
+            matrixValues = new float[3];
+        }
 
-//        myCompass.update((float)Math.toRadians(-221));
 
         return mainView;
     }

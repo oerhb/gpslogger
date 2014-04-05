@@ -84,7 +84,7 @@
     <string-array name="gps_main_views">
         <item>@string/view_simple</item>
         <item>@string/view_detailed</item>
-        <item>@string/view_legacy</item>
+        <item>@string/view_big</item>
     </string-array>
 
 

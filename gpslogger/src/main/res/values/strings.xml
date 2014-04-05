@@ -458,6 +458,6 @@
 
     <string name="view_simple">Simple View</string>
     <string name="view_detailed">Detailed View</string>
-    <string name="view_legacy">Legacy</string>
+    <string name="view_big">Big</string>
 
 </resources>

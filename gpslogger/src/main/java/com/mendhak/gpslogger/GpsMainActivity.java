@@ -33,7 +33,7 @@ import java.util.Comparator;
 import java.util.List;
 
 public class GpsMainActivity extends Activity
-        implements GenericViewFragment.IGpsViewCallback, NavigationDrawerFragment.NavigationDrawerCallbacks, ActionBar.OnNavigationListener, GpsLegacyFragment.IGpsLegacyFragmentListener, IGpsLoggerServiceClient, IActionListener {
+        implements GenericViewFragment.IGpsViewCallback, NavigationDrawerFragment.NavigationDrawerCallbacks, ActionBar.OnNavigationListener, IGpsLoggerServiceClient, IActionListener {
 
     private static Intent serviceIntent;
     private GpsLoggingService loggingService;
@@ -134,14 +134,14 @@ public class GpsMainActivity extends Activity
 
         switch (view) {
             case 0:
-                transaction.replace(R.id.container, new GpsSimpleViewFragment(getApplicationContext()));
+                transaction.replace(R.id.container, GpsSimpleViewFragment.newInstance());
                 break;
             case 1:
-                transaction.replace(R.id.container, new GpsDetailedViewFragment());
+                transaction.replace(R.id.container, GpsDetailedViewFragment.newInstance());
                 break;
             default:
             case 2:
-                transaction.replace(R.id.container, GpsLegacyFragment.newInstance());
+                transaction.replace(R.id.container, GpsBigFragment.newInstance());
                 break;
         }
         transaction.commit();
@@ -319,8 +319,6 @@ public class GpsMainActivity extends Activity
     }
 
     private void LogSinglePoint() {
-//        GpsLegacyFragment frag = (GpsLegacyFragment)getFragmentManager().findFragmentById(R.id.container);
-//        frag.setCurrentlyLogging(true);
         loggingService.LogOnce();
     }
 
@@ -665,26 +663,6 @@ public class GpsMainActivity extends Activity
     }
 
 
-    @Override
-    public void OnNewGpsLegacyMessage(String message) {
-        Utilities.LogDebug(message);
-    }
-
-    @Override
-    public void OnGpsLegacyButtonClick() {
-        Utilities.LogDebug("Starting logging");
-
-        if (!Session.isStarted())
-        {
-            loggingService.StartLogging();
-        }
-        else
-        {
-            loggingService.StopLogging();
-        }
-    }
-
-
 
     /**
      * Provides a connection to the GPS Logging Service
@@ -783,9 +761,7 @@ public class GpsMainActivity extends Activity
 
     @Override
     public void OnLocationUpdate(Location loc) {
-        GpsLegacyFragment frag = (GpsLegacyFragment)getFragmentManager().findFragmentById(R.id.container);
-        //frag.onTextUpdate(String.valueOf(loc.getLatitude()));
-        frag.setLocationInfo(loc);
+
     }
 
     @Override
@@ -800,8 +776,7 @@ public class GpsMainActivity extends Activity
 
     @Override
     public void OnStopLogging() {
-        GpsLegacyFragment frag = (GpsLegacyFragment)getFragmentManager().findFragmentById(R.id.container);
-        frag.onTextUpdate("Stopped logging");
+
     }
 
     @Override
