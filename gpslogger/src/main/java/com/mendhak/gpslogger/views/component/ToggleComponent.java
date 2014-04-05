@@ -27,17 +27,21 @@ public class ToggleComponent {
             this.toggleComponent = toggleComponent;
         }
 
-        public ToggleBuilder addOnView(View onView) {
+        public ToggleBuilder addOnView(View view) {
             ensureNotBuilt();
-            if (this.toggleComponent.on != null) throw new IllegalStateException("On View already set");
-            this.toggleComponent.on = onView;
+            if (this.toggleComponent.on != null || view == null) {
+                throw new IllegalStateException("On View already set or invalid view");
+            }
+            this.toggleComponent.on = view;
             return this;
         }
 
-        public ToggleBuilder addOffView(View onView) {
+        public ToggleBuilder addOffView(View view) {
             ensureNotBuilt();
-            if (this.toggleComponent.off != null) throw new IllegalStateException("Off View already set");
-            this.toggleComponent.off = onView;
+            if (this.toggleComponent.off != null || view == null) {
+                throw new IllegalStateException("Off View already set or invalid view");
+            }
+            this.toggleComponent.off = view;
             return this;
         }
 
@@ -60,9 +64,10 @@ public class ToggleComponent {
             }
         }
 
-        public void build() {
+        public ToggleComponent build() {
             this.toggleComponent.initialiseView(this.toggleComponent.on, this.toggleComponent.off);
             this.built = true;
+            return this.toggleComponent;
         }
     }
 
