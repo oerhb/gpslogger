@@ -48,6 +48,7 @@ public class GpsMainActivity extends Activity
 
     MenuItem mnuAnnotate;
     MenuItem mnuOnePoint;
+    private boolean annotationMarked;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -264,27 +265,19 @@ public class GpsMainActivity extends Activity
             }
             else
             {
-                mnuAnnotate.setIcon(R.drawable.annotate2);
+                if (annotationMarked)
+                {
+                    mnuAnnotate.setIcon(R.drawable.annotate2_active);
+                }
+                else
+                {
+                    mnuAnnotate.setIcon(R.drawable.annotate2);
+                }
             }
 
         }
     }
 
-    public void SetAnnotationButtonMarked(boolean marked)
-    {
-        if(mnuAnnotate == null){
-            return;
-        }
-
-        if (marked)
-        {
-            mnuAnnotate.setIcon(R.drawable.annotate2_active);
-        }
-        else
-        {
-            mnuAnnotate.setIcon(R.drawable.annotate2);
-        }
-    }
 
 
     /**
@@ -825,13 +818,16 @@ public class GpsMainActivity extends Activity
     @Override
     public void OnSetAnnotation() {
         Utilities.LogDebug("GpsMainActivity.OnSetAnnotation");
-        SetAnnotationButtonMarked(true);
+        this.annotationMarked = true;
+        enableDisableMenuItems();
     }
 
     @Override
     public void OnClearAnnotation() {
         Utilities.LogDebug("GpsMainActivity.OnClearAnnotation");
-        SetAnnotationButtonMarked(false);
+        this.annotationMarked = false;
+        enableDisableMenuItems();
+
     }
 
 

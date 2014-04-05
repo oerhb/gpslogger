@@ -15,6 +15,18 @@ public class ToggleComponent {
 
     ToggleComponent() {}
 
+    public void SetEnabled(boolean enabled)
+    {
+
+        if (enabled) {
+            on.setVisibility(View.VISIBLE);
+            off.setVisibility(View.GONE);
+        } else {
+            on.setVisibility(View.GONE);
+            off.setVisibility(View.VISIBLE);
+        }
+    }
+
     public static ToggleBuilder getBuilder () {
         return new ToggleBuilder(new ToggleComponent());
     }
@@ -77,13 +89,7 @@ public class ToggleComponent {
 
     private void initialiseView(View viewOn, View viewOff) {
 
-        if (this.enabled) {
-            on.setVisibility(View.VISIBLE);
-            off.setVisibility(View.GONE);
-        } else {
-            on.setVisibility(View.GONE);
-            off.setVisibility(View.VISIBLE);
-        }
+        SetEnabled(this.enabled);
 
         viewOn.setOnClickListener(new View.OnClickListener() {
             @Override
