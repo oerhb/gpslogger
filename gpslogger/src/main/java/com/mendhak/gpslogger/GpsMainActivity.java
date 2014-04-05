@@ -752,22 +752,27 @@ public class GpsMainActivity extends Activity
 
     @Override
     public void OnStatusMessage(String message) {
-
+        Utilities.LogDebug(message);
     }
 
     @Override
     public void OnFatalMessage(String message) {
-
+        Utilities.LogDebug(message);
     }
 
     @Override
     public void OnLocationUpdate(Location loc) {
+        Utilities.LogDebug("Received location update");
+        Fragment currentFragment =  fragmentManager.findFragmentById(R.id.container);
+        if(currentFragment instanceof GenericViewFragment){
+            ((GenericViewFragment)currentFragment).SetLocation(loc);
+        }
 
     }
 
     @Override
     public void OnSatelliteCount(int count) {
-
+        Utilities.LogDebug("Satellites: " + String.valueOf(count));
     }
 
     @Override
@@ -777,7 +782,7 @@ public class GpsMainActivity extends Activity
 
     @Override
     public void OnStopLogging() {
-
+        Utilities.LogDebug("OnStopLogging");
     }
 
     @Override
@@ -813,13 +818,34 @@ public class GpsMainActivity extends Activity
         Utilities.HideProgress();
     }
 
+    //IGpsViewCallback callbacks
+    //These methods come from the fragments
     @Override
     public void onRequestStartLogging() {
         Utilities.LogInfo("START LOGGING REQUESTED BY UI");
+        this.loggingService.StartLogging();
     }
 
     @Override
     public void onRequestStopLogging() {
         Utilities.LogInfo("STOP LOGGING REQUESTED BY UI");
+        this.loggingService.StopLogging();
     }
+
+    @Override
+    public void onRequestToggleLogging() {
+        Utilities.LogInfo("TOGGLE LOGGING REQUESTED BY UI");
+
+        if(Session.isStarted()){
+            this.loggingService.StopLogging();
+        }
+        else
+        {
+            this.loggingService.StartLogging();
+        }
+
+
+    }
+
+
 }

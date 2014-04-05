@@ -2,6 +2,8 @@ package com.mendhak.gpslogger.views;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.location.Location;
+import com.mendhak.gpslogger.common.Utilities;
 
 /**
  * Common class for communicating with the parent for the
@@ -13,6 +15,8 @@ public abstract class GenericViewFragment extends Fragment {
     // Mechanism to talk back to parent
     protected IGpsViewCallback gpsCallback;
 
+    public abstract void SetLocation(Location locationInfo);
+
     protected void requestStartLogging() {
         if (gpsCallback != null) {
             gpsCallback.onRequestStartLogging();
@@ -22,6 +26,12 @@ public abstract class GenericViewFragment extends Fragment {
     protected void requestStopLogging() {
         if (gpsCallback != null) {
             gpsCallback.onRequestStopLogging();
+        }
+    }
+
+    protected void requestToggleLogging() {
+        if (gpsCallback != null) {
+            gpsCallback.onRequestToggleLogging();
         }
     }
 
@@ -51,5 +61,6 @@ public abstract class GenericViewFragment extends Fragment {
     public static interface IGpsViewCallback {
         public void onRequestStartLogging();
         public void onRequestStopLogging();
+        public void onRequestToggleLogging();
     }
 }

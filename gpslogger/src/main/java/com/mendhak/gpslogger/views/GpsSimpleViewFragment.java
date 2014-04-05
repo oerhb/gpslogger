@@ -5,6 +5,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.location.Location;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -160,6 +161,11 @@ public class GpsSimpleViewFragment extends GenericViewFragment implements Sensor
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int i) {
+
+    }
+
+    @Override
+    public void SetLocation(Location locationInfo) {
 
     }
 }

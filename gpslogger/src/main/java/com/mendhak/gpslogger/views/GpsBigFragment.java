@@ -9,35 +9,23 @@ import android.widget.Button;
 import android.widget.TextView;
 import com.mendhak.gpslogger.R;
 import com.mendhak.gpslogger.common.Session;
+import com.mendhak.gpslogger.common.Utilities;
+import org.w3c.dom.Text;
 
 /**
  * Created by mendhak on 31/03/14.
  */
-public class GpsBigFragment extends GenericViewFragment implements View.OnClickListener {
+public class GpsBigFragment extends GenericViewFragment implements View.OnTouchListener {
 
     View rootView;
 
-
-    @Override
-    public void onClick(View view) {
-
-    }
 
     public void setCurrentlyLogging(boolean loggingStatus) {
 //        TextView txt = (TextView)rootView.findViewById(R.id.textViewLocation);
 //        txt.setText("Started logging " + String.valueOf(loggingStatus));
     }
 
-    public void setLocationInfo(Location currentLocationInfo) {
-        if(currentLocationInfo != null){
-            TextView txtLat = (TextView)rootView.findViewById(R.id.textViewLat);
-            txtLat.setText(String.valueOf(currentLocationInfo.getLatitude()));
 
-            TextView txtLong = (TextView)rootView.findViewById(R.id.textViewLong);
-            txtLong.setText(String.valueOf(currentLocationInfo.getLongitude()));
-        }
-
-    }
 
 
 
@@ -62,8 +50,14 @@ public class GpsBigFragment extends GenericViewFragment implements View.OnClickL
         getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
 
+        TextView txtLat = (TextView)rootView.findViewById(R.id.textViewLat);
+        txtLat.setOnTouchListener(this);
+
+        TextView txtLong = (TextView)rootView.findViewById(R.id.textViewLong);
+        txtLong.setOnTouchListener(this);
+
         setCurrentlyLogging(Session.isStarted());
-        setLocationInfo(Session.getCurrentLocationInfo());
+        SetLocation(Session.getCurrentLocationInfo());
 
 
 
@@ -75,6 +69,17 @@ public class GpsBigFragment extends GenericViewFragment implements View.OnClickL
 //            textView.setText(getArguments().getString("parent_message"));
 
         return rootView;
+    }
+
+    @Override
+    public void SetLocation(Location locationInfo) {
+        if(locationInfo != null){
+            TextView txtLat = (TextView)rootView.findViewById(R.id.textViewLat);
+            txtLat.setText(String.valueOf(locationInfo.getLatitude()));
+
+            TextView txtLong = (TextView)rootView.findViewById(R.id.textViewLong);
+            txtLong.setText(String.valueOf(locationInfo.getLongitude()));
+        }
     }
 
     @Override
@@ -98,4 +103,10 @@ public class GpsBigFragment extends GenericViewFragment implements View.OnClickL
 
     }
 
+    @Override
+    public boolean onTouch(View view, MotionEvent motionEvent) {
+        Utilities.LogDebug("Big frament onTouch event");
+        requestToggleLogging();
+        return true;
+    }
 }

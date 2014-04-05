@@ -1,5 +1,6 @@
 package com.mendhak.gpslogger.views;
 
+import android.location.Location;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,5 +51,10 @@ public class GpsDetailedViewFragment extends GenericViewFragment {
                 .build();
 
         return mainView;
+    }
+
+    @Override
+    public void SetLocation(Location locationInfo) {
+
     }
 }
