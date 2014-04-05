@@ -47,6 +47,7 @@ public class GpsMainActivity extends Activity
     private NavigationDrawerFragment navigationDrawerFragment;
 
     MenuItem mnuAnnotate;
+    MenuItem mnuOnePoint;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -235,26 +236,31 @@ public class GpsMainActivity extends Activity
     public boolean onCreateOptionsMenu(Menu menu) {
             getMenuInflater().inflate(R.menu.gps_main, menu);
             mnuAnnotate = menu.findItem(R.id.mnuAnnotate);
+            mnuOnePoint = menu.findItem(R.id.mnuOnePoint);
             enableDisableMenuItems();
             return true;
     }
 
     private void enableDisableMenuItems() {
 
-
-        if(mnuAnnotate == null)
-        {
-            return;
+        if(mnuOnePoint != null){
+            mnuOnePoint.setEnabled(!Session.isStarted());
         }
 
-        if(!AppSettings.shouldLogToGpx() && !AppSettings.shouldLogToKml() && !AppSettings.shouldLogToCustomUrl())
+
+        if(mnuAnnotate != null)
         {
-            mnuAnnotate.setIcon(R.drawable.annotate2_disabled);
-            mnuAnnotate.setEnabled(false);
-        }
-        else
-        {
-            mnuAnnotate.setIcon(R.drawable.annotate2);
+
+            if(!AppSettings.shouldLogToGpx() && !AppSettings.shouldLogToKml() && !AppSettings.shouldLogToCustomUrl())
+            {
+                mnuAnnotate.setIcon(R.drawable.annotate2_disabled);
+                mnuAnnotate.setEnabled(false);
+            }
+            else
+            {
+                mnuAnnotate.setIcon(R.drawable.annotate2);
+            }
+
         }
     }
 
@@ -827,13 +833,13 @@ public class GpsMainActivity extends Activity
     @Override
     public void onRequestStartLogging() {
         Utilities.LogInfo("START LOGGING REQUESTED BY UI");
-        this.loggingService.StartLogging();
+        StartLogging();
     }
 
     @Override
     public void onRequestStopLogging() {
         Utilities.LogInfo("STOP LOGGING REQUESTED BY UI");
-        this.loggingService.StopLogging();
+        StopLogging();
     }
 
     @Override
@@ -841,13 +847,34 @@ public class GpsMainActivity extends Activity
         Utilities.LogInfo("TOGGLE LOGGING REQUESTED BY UI");
 
         if(Session.isStarted()){
-            this.loggingService.StopLogging();
+            StopLogging();
         }
         else
         {
-            this.loggingService.StartLogging();
+            StartLogging();
         }
 
+    }
+
+    private void StartLogging(){
+        GetPreferences();
+        loggingService.SetupAutoSendTimers();
+        loggingService.StartLogging();
+        enableDisableMenuItems();
+    }
+
+    private void StopLogging(){
+        loggingService.StopLogging();
+        enableDisableMenuItems();
+    }
+
+    /**
+     * Gets preferences chosen by the user
+     */
+    private void GetPreferences()
+    {
+        Utilities.PopulateAppSettings(getApplicationContext());
+        //ShowPreferencesSummary();
     }
 
 
