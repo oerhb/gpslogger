@@ -142,7 +142,7 @@ public class GpsMainActivity extends Activity
             default:
             case 2:
                 getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-                transaction.replace(R.id.container, GpsBigFragment.newInstance());
+                transaction.replace(R.id.container, GpsBigViewFragment.newInstance());
                 break;
         }
         transaction.commit();
@@ -773,6 +773,10 @@ public class GpsMainActivity extends Activity
     @Override
     public void OnSatelliteCount(int count) {
         Utilities.LogDebug("Satellites: " + String.valueOf(count));
+        Fragment currentFragment =  fragmentManager.findFragmentById(R.id.container);
+        if(currentFragment instanceof GenericViewFragment){
+            ((GenericViewFragment)currentFragment).SetSatelliteCount(count);
+        }
     }
 
     @Override
@@ -843,7 +847,6 @@ public class GpsMainActivity extends Activity
         {
             this.loggingService.StartLogging();
         }
-
 
     }
 

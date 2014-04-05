@@ -168,4 +168,9 @@ public class GpsSimpleViewFragment extends GenericViewFragment implements Sensor
     public void SetLocation(Location locationInfo) {
 
     }
+
+    @Override
+    public void SetSatelliteCount(int count) {
+
+    }
 }
