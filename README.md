@@ -138,3 +138,38 @@ so ensure that the emulator you are using is Android 4.2.2 (API level 17) or gre
 ![AVD](http://farm6.staticflickr.com/5322/9113255381_9fba026576_o.png)
 
 You can also debug directly against your phone - all phones Android 2.2 and above should have this framework installed.
+
+
+Overview
+======
+
+GPSLogger is composed of a few main components;
+
+![test](https://drive.google.com/uc?export=view&id=0B6IOK82n4BkAankxcFJmYk90Y0U)
+
+
+### GPS Logging Service
+
+GPSLoggingService is where all the work happens.  This service talks to the location providers (network and satellite).
+It sets up timers and alarms for the next GPS point to be requested.  It passes location info to the various loggers
+so that they can write files.  It also invokes the auto-uploaders so that they may send their files to Dropbox, etc.
+
+It also passes information to the GPSMainActivity.
+
+### GPS Main Activity
+
+This is the main visible form in the app.   It consists of several 'fragments' - the simple view, detailed view and big view.
+
+It takes care of the main screen, the menus and passing information from the GPSLoggingService to the various fragments.
+
+It also passes requests from the fragments to start or stop logging.
+
+### Session and AppSettings
+
+Floating about are two other objects.  `Session` contains various pieces of information related to the current GPSLogger run,
+such as current file name, the last known location, satellite count, and any other information which isn't static but is
+needed for the current run of GPSLogger.
+
+`AppSettings` is a representation of the user's preferences.
+
+These objects are visible throughout the application and can be accessed directly by any class, service, activity or fragment.
