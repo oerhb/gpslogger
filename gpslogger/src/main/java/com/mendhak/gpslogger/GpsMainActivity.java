@@ -22,6 +22,7 @@ import com.mendhak.gpslogger.senders.ftp.AutoFtpActivity;
 import com.mendhak.gpslogger.senders.gdocs.GDocsHelper;
 import com.mendhak.gpslogger.senders.gdocs.GDocsSettingsActivity;
 import com.mendhak.gpslogger.senders.opengts.OpenGTSActivity;
+import com.mendhak.gpslogger.senders.osm.OSMAuthorizationActivity;
 import com.mendhak.gpslogger.senders.osm.OSMHelper;
 import com.mendhak.gpslogger.settings.GeneralSettingsActivity;
 import com.mendhak.gpslogger.settings.LoggingSettingsActivity;
@@ -184,13 +185,29 @@ public class GpsMainActivity extends Activity
                 LaunchActivity(UploadSettingsActivity.class);
                 break;
             case 4:
+                LaunchActivity(AutoFtpActivity.class);
+                break;
+            case 5:
+                LaunchActivity(AutoEmailActivity.class);
+                break;
+            case 6:
+                LaunchActivity(OpenGTSActivity.class);
+                break;
+            case 7:
+                LaunchActivity(GDocsSettingsActivity.class);
+                break;
+            case 8:
+                LaunchActivity(OSMAuthorizationActivity.class);
+                break;
+            case 9:
+                LaunchActivity(DropBoxAuthorizationActivity.class);
+                break;
+            default:
                 loggingService.StopLogging();
                 loggingService.stopSelf();
                 finish();
                 break;
-            default:
 
-                break;
         }
 
     }

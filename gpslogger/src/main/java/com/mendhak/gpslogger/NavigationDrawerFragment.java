@@ -1,16 +1,15 @@
 package com.mendhak.gpslogger;
 
-;
-import android.app.Activity;
 import android.app.ActionBar;
+import android.app.Activity;
 import android.app.Fragment;
-import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,6 +17,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import java.util.ArrayList;
+
+;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
@@ -78,7 +81,7 @@ public class NavigationDrawerFragment extends Fragment {
     }
 
     @Override
-    public void onActivityCreated (Bundle savedInstanceState) {
+    public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         // Indicate that this fragment would like to influence the set of actions in the action bar.
         setHasOptionsMenu(true);
@@ -86,7 +89,7 @@ public class NavigationDrawerFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
         drawerListView = (ListView) inflater.inflate(
                 R.layout.fragment_navigation_drawer, container, false);
         drawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -95,17 +98,36 @@ public class NavigationDrawerFragment extends Fragment {
                 selectItem(position);
             }
         });
+
+        ArrayList<String> drawerMenuItems = new ArrayList<String>();
+
+        drawerMenuItems.add(getString(R.string.title_drawer_headsettings));
+        drawerMenuItems.add(getString(R.string.title_drawer_generalsettings));
+        drawerMenuItems.add(getString(R.string.title_drawer_loggingsettings));
+        drawerMenuItems.add(getString(R.string.title_drawer_uploadsettings));
+
+        drawerMenuItems.add("    " + getString(R.string.autoftp_setup_title));
+
+        drawerMenuItems.add("    " + getString(R.string.autoemail_title));
+
+        drawerMenuItems.add("    " + getString(R.string.opengts_setup_title));
+
+        drawerMenuItems.add("    " + getString(R.string.gdocs_setup_title));
+
+        drawerMenuItems.add("    " + getString(R.string.osm_setup_title));
+
+        drawerMenuItems.add("    " + getString(R.string.dropbox_setup_title));
+
+
+        drawerMenuItems.add(getString(R.string.menu_exit));
+
+
         drawerListView.setAdapter(new ArrayAdapter<String>(
                 getActionBar().getThemedContext(),
                 android.R.layout.simple_list_item_activated_1,
                 android.R.id.text1,
-                new String[]{
-                        getString(R.string.title_drawer_headsettings),
-                        getString(R.string.title_drawer_generalsettings),
-                        getString(R.string.title_drawer_loggingsettings),
-                        getString(R.string.title_drawer_uploadsettings),
-                        getString(R.string.menu_exit)
-                }));
+                drawerMenuItems.toArray(new String[0])
+        ));
         drawerListView.setItemChecked(currentSelectedPosition, true);
         return drawerListView;
     }
@@ -188,11 +210,10 @@ public class NavigationDrawerFragment extends Fragment {
         this.drawerLayout.setDrawerListener(actionBarDrawerToggle);
     }
 
-    public void toggleDrawer(){
-        if(isDrawerOpen()){
+    public void toggleDrawer() {
+        if (isDrawerOpen()) {
             drawerLayout.closeDrawer(fragmentContainerView);
-        }
-        else{
+        } else {
             drawerLayout.openDrawer(fragmentContainerView);
         }
 
@@ -239,7 +260,6 @@ public class NavigationDrawerFragment extends Fragment {
         // Forward the new configuration the drawer toggle component.
         actionBarDrawerToggle.onConfigurationChanged(newConfig);
     }
-
 
 
     @Override
