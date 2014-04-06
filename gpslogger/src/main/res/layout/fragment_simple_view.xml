@@ -116,20 +116,26 @@
                         />
 
 
-                    <ImageView
-                        android:id="@+id/simpleview_imgAccuracy"
+                    <TextView
+                        android:id="@+id/simpleview_txtAccuracyIcon"
                         android:layout_gravity="center"
+                        android:text="±"
                         android:layout_row="0"
                         android:layout_column="2"
+                        android:paddingLeft="5dp"
                         android:layout_width="@dimen/simpleview_grid_iconwidth"
-                        android:layout_height="@dimen/simlpeview_grid_iconheight"
-                        android:src="@drawable/accuracy"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/simpleview_grid_iconwidth"
+                        android:textAlignment="center"
                         />
+
+
 
                     <TextView
                         android:id="@+id/simpleview_txtAccuracy"
                         android:layout_gravity="left|center"
                         android:layout_row="0"
+
                         android:layout_column="3"
                         android:layout_width="@dimen/simpleview_grid_labelwidth"
                         android:layout_height="wrap_content"

@@ -1,6 +1,7 @@
 package com.mendhak.gpslogger.views;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -127,6 +128,15 @@ public class GpsSimpleViewFragment extends GenericViewFragment {
             else
             {
                 txtAccuracy.setText(nf.format(accuracy) +  getString(R.string.meters));
+            }
+
+
+            if(accuracy>500){
+                txtAccuracy.setTextColor(getResources().getColor(android.R.color.holo_orange_dark));
+            }
+
+            if(accuracy>900){
+                txtAccuracy.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
             }
 
 
