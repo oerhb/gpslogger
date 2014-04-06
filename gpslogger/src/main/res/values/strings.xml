@@ -454,10 +454,12 @@
     <string name="new_file_prefix_serial_title">Prefix the device serial number to the file name</string>
     <string name="new_file_prefix_serial_summary">This is the serial number found in your phone status </string>
     <string name="txt_travel_duration">Duration:</string>
+
     <string name="menu_onepoint">Log one point</string>
 
     <string name="view_simple">Simple View</string>
     <string name="view_detailed">Detailed View</string>
-    <string name="view_big">Big</string>
+    <string name="view_big">Big View</string>
+    <string name="bigview_taptotoggle">Tap to start/stop logging</string>
 
 </resources>

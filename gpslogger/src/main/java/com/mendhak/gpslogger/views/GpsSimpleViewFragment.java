@@ -104,13 +104,15 @@ public class GpsSimpleViewFragment extends GenericViewFragment {
     public void SetLocation(Location locationInfo) {
 
         NumberFormat nf = NumberFormat.getInstance();
-        nf.setMaximumFractionDigits(3);
+        nf.setMaximumFractionDigits(6);
 
         EditText txtLatitude = (EditText) rootView.findViewById(R.id.simple_lat_text);
-        txtLatitude.setText(String.valueOf(locationInfo.getLatitude()));
+        txtLatitude.setText(String.valueOf(nf.format(locationInfo.getLatitude())));
 
         EditText txtLongitude = (EditText) rootView.findViewById(R.id.simple_lon_text);
-        txtLongitude.setText(String.valueOf(locationInfo.getLongitude()));
+        txtLongitude.setText(String.valueOf(nf.format(locationInfo.getLongitude())));
+
+        nf.setMaximumFractionDigits(3);
 
         if (locationInfo.hasAccuracy()) {
             TextView txtAccuracy = (TextView) rootView.findViewById(R.id.simpleview_txtAccuracy);

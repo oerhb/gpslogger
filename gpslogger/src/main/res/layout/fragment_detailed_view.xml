@@ -81,7 +81,7 @@
                     android:layout_gravity="center"
                     android:background="?android:selectableItemBackground"
                     android:id="@+id/detailedview_play"
-                    android:src="@android:drawable/ic_media_play"
+                    android:src="@drawable/play"
                     />
 
                 <ImageView
@@ -91,7 +91,7 @@
                     android:layout_gravity="center"
                     android:background="?android:selectableItemBackground"
                     android:id="@+id/detailedview_stop"
-                    android:src="@android:drawable/ic_media_pause"
+                    android:src="@drawable/stop"
                     />
             </LinearLayout>
         </RelativeLayout>

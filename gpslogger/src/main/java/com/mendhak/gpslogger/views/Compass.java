@@ -52,7 +52,7 @@ public class Compass extends ImageView {
 
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(3);
+        paint.setStrokeWidth(5);
         paint.setColor(Color.BLACK);
 
 //        canvas.drawCircle(w / 2, h / 2, r - 2, paint);
