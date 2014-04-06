@@ -107,14 +107,16 @@ public class GpsDetailedViewFragment extends GenericViewFragment {
         }
 
         tvDateTime.setText(new Date(Session.getLatestTimeStamp()).toLocaleString()
-                + getString(R.string.providername_using, providerName));
+                + "\n" + getString(R.string.providername_using, providerName));
 
         NumberFormat nf = NumberFormat.getInstance();
+
+
+        nf.setMaximumFractionDigits(6);
+        tvLatitude.setText(String.valueOf(nf.format(locationInfo.getLatitude())));
+        tvLongitude.setText(String.valueOf(nf.format(locationInfo.getLongitude())));
+
         nf.setMaximumFractionDigits(3);
-
-
-        tvLatitude.setText(String.valueOf(   locationInfo.getLatitude()));
-        tvLongitude.setText(String.valueOf(locationInfo.getLongitude()));
 
         if (locationInfo.hasAltitude())
         {
@@ -396,7 +398,7 @@ public class GpsDetailedViewFragment extends GenericViewFragment {
         {
 
 
-            txtFilename.setText(Session.getCurrentFileName() + " (" + AppSettings.getGpsLoggerFolder() + ")" );
+            txtFilename.setText(Session.getCurrentFileName() + "\n (" + AppSettings.getGpsLoggerFolder() + ")" );
         }
         else
         {
