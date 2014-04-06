@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.mendhak.gpslogger.R;
 import com.mendhak.gpslogger.common.Session;
@@ -20,8 +21,6 @@ import java.text.NumberFormat;
 public class GpsSimpleViewFragment extends GenericViewFragment {
 
     Context context;
-
-    Compass myCompass;
 
 
     private View rootView;
@@ -79,7 +78,6 @@ public class GpsSimpleViewFragment extends GenericViewFragment {
 
         if (getActivity() != null) {
             this.context = getActivity().getApplicationContext();
-            myCompass = (Compass) rootView.findViewById(R.id.simpleview_compass);
 
         }
 
@@ -124,7 +122,7 @@ public class GpsSimpleViewFragment extends GenericViewFragment {
             txtAltitude.setText(nf.format(locationInfo.getAltitude()) + getString(R.string.meters));
         }
 
-        if (locationInfo.hasSpeed() || locationInfo.hasBearing()) {
+        if (locationInfo.hasSpeed()) {
 
             float speed = locationInfo.getSpeed();
             String unit;
@@ -136,12 +134,18 @@ public class GpsSimpleViewFragment extends GenericViewFragment {
             }
 
             TextView txtSpeed = (TextView) rootView.findViewById(R.id.simpleview_txtSpeed);
-            txtSpeed.setText(String.valueOf(nf.format(speed)) + unit + "\n"
-                    + String.valueOf(Math.round(locationInfo.getBearing()))
-                    + getString(R.string.degree_symbol));
-            if (myCompass != null) {
-                myCompass.update((float) Math.toRadians(-1 * locationInfo.getBearing()));
-            }
+            txtSpeed.setText(String.valueOf(nf.format(speed)) + unit);
+
+        }
+
+        if(locationInfo.hasBearing()){
+
+            ImageView imgDirection = (ImageView) rootView.findViewById(R.id.simpleview_imgDirection);
+            imgDirection.setRotation(locationInfo.getBearing());
+
+            TextView txtDirection = (TextView) rootView.findViewById(R.id.simpleview_txtDirection);
+            txtDirection.setText(String.valueOf(Math.round(locationInfo.getBearing())) + getString(R.string.degree_symbol));
+
         }
 
         TextView txtDuration = (TextView) rootView.findViewById(R.id.simpleview_txtDuration);
