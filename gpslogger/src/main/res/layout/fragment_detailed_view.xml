@@ -23,23 +23,22 @@
 
                 <LinearLayout
                     android:layout_margin="5dp"
-                    android:layout_alignParentLeft="true"
                     android:orientation="horizontal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
 
                     <TextView
-                        android:layout_width="60dp"
+                        android:layout_width="100dp"
                         android:layout_height="wrap_content"
-                        android:text="Lat:"
-                        android:textSize="20dp"
+                        android:text="@string/txt_latitude"
+                        android:textSize="20sp"
                         android:id="@+id/detailedview_lat_label"/>
 
                     <EditText
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:minWidth="200dp"
-                        android:textSize="50dp"
+                        android:textSize="50sp"
                         android:id="@+id/detailedview_lat_text"
                         android:text=""
                         android:editable="false"/>
@@ -47,23 +46,22 @@
 
                 <LinearLayout
                     android:layout_margin="5dp"
-                    android:layout_alignParentLeft="true"
                     android:orientation="horizontal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
 
                     <TextView
-                        android:layout_width="60dp"
+                        android:layout_width="100dp"
                         android:layout_height="wrap_content"
-                        android:text="Lon:"
-                        android:textSize="20dp"
+                        android:text="@string/txt_longitude"
+                        android:textSize="20sp"
                         android:id="@+id/detailedview_lon_label"/>
 
                     <EditText
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:minWidth="200dp"
-                        android:textSize="50dp"
+                        android:textSize="50sp"
                         android:text=""
                         android:id="@+id/detailedview_lon_text"
                         android:editable="false"/>
@@ -125,7 +123,6 @@
 
                 <LinearLayout
                     android:layout_margin="5dp"
-                    android:layout_alignParentLeft="true"
                     android:orientation="horizontal"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content">
@@ -143,7 +140,6 @@
 
                 <LinearLayout
                     android:layout_margin="5dp"
-                    android:layout_alignParentLeft="true"
                     android:orientation="horizontal"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content">
@@ -167,7 +163,6 @@
 
                 <LinearLayout
                     android:layout_margin="5dp"
-                    android:layout_alignParentLeft="true"
                     android:orientation="horizontal"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content">
@@ -191,7 +186,6 @@
 
                 <LinearLayout
                     android:layout_margin="5dp"
-                    android:layout_alignParentLeft="true"
                     android:orientation="horizontal"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content">
@@ -215,7 +209,6 @@
 
                 <LinearLayout
                     android:layout_margin="5dp"
-                    android:layout_alignParentLeft="true"
                     android:orientation="horizontal"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content">
@@ -239,7 +232,6 @@
 
                 <LinearLayout
                     android:layout_margin="5dp"
-                    android:layout_alignParentLeft="true"
                     android:orientation="horizontal"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content">
@@ -263,7 +255,6 @@
 
                 <LinearLayout
                     android:layout_margin="5dp"
-                    android:layout_alignParentLeft="true"
                     android:orientation="horizontal"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content">
@@ -287,7 +278,6 @@
 
                 <LinearLayout
                     android:layout_margin="5dp"
-                    android:layout_alignParentLeft="true"
                     android:orientation="horizontal"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content">
@@ -330,7 +320,6 @@
 
                 <LinearLayout
                     android:layout_margin="5dp"
-                    android:layout_alignParentLeft="true"
                     android:orientation="horizontal"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content">
@@ -354,7 +343,6 @@
 
                 <LinearLayout
                     android:layout_margin="5dp"
-                    android:layout_alignParentLeft="true"
                     android:orientation="horizontal"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content">
@@ -378,7 +366,6 @@
 
                 <LinearLayout
                     android:layout_margin="5dp"
-                    android:layout_alignParentLeft="true"
                     android:orientation="horizontal"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content">
@@ -402,7 +389,6 @@
 
                 <LinearLayout
                     android:layout_margin="5dp"
-                    android:layout_alignParentLeft="true"
                     android:orientation="horizontal"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content">
@@ -420,14 +406,13 @@
                         android:layout_weight="@integer/detailedview_text_weight"
                         android:layout_height="wrap_content"
                         android:id="@+id/detailedview_file_text"
-                        android:textSize="11dp"
+                        android:textSize="12sp"
                         android:text=""
                         android:editable="false"/>
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_margin="5dp"
-                    android:layout_alignParentLeft="true"
                     android:orientation="horizontal"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content">
