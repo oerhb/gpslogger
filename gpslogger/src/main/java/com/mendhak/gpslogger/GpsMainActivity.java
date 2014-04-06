@@ -162,7 +162,7 @@ public class GpsMainActivity extends Activity
                 transaction.replace(R.id.container, GpsBigViewFragment.newInstance());
                 break;
         }
-        transaction.commit();
+        transaction.commitAllowingStateLoss();
     }
 
     /**

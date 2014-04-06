@@ -250,8 +250,10 @@ public class NavigationDrawerFragment extends Fragment {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
+        //Bug: http://stackoverflow.com/questions/7575921/illegalstateexception-can-not-perform-this-action-after-onsaveinstancestate-h
         outState.putInt(STATE_SELECTED_POSITION, currentSelectedPosition);
+        super.onSaveInstanceState(outState);
+
     }
 
     @Override
