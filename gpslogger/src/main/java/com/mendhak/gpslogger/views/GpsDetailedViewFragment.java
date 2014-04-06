@@ -394,18 +394,7 @@ public class GpsDetailedViewFragment extends GenericViewFragment {
         }
 
         TextView txtFilename = (TextView) rootView.findViewById(R.id.detailedview_file_text);
-
-        if (AppSettings.shouldLogToGpx() || AppSettings.shouldLogToKml())
-        {
-
-
-            txtFilename.setText(Session.getCurrentFileName() + "\n (" + AppSettings.getGpsLoggerFolder() + ")" );
-        }
-        else
-        {
-            txtFilename.setText("");
-        }
-
+        txtFilename.setText(Session.getCurrentFileName() + "\n (" + AppSettings.getGpsLoggerFolder() + ")" );
 
     }
 
@@ -468,5 +457,10 @@ public class GpsDetailedViewFragment extends GenericViewFragment {
     public void SetFatalMessage(String message) {
         TextSwitcher txtSwitcher = (TextSwitcher)rootView.findViewById(R.id.txtswitcher_status);
         txtSwitcher.setText(message);
+    }
+
+    @Override
+    public void OnFileNameChange(String newFileName) {
+        showCurrentFileName(newFileName);
     }
 }

@@ -21,6 +21,7 @@ public abstract class GenericViewFragment extends Fragment {
     public abstract void SetLoggingStopped();
     public abstract void SetStatusMessage(String message);
     public abstract void SetFatalMessage(String message);
+    public abstract void OnFileNameChange(String newFileName);
 
     protected void requestStartLogging() {
         if (gpsCallback != null) {
@@ -57,6 +58,7 @@ public abstract class GenericViewFragment extends Fragment {
             gpsCallback = null;
         }
     }
+
 
 
 

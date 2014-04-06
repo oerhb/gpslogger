@@ -234,4 +234,9 @@ public class GpsSimpleViewFragment extends GenericViewFragment {
     public void SetFatalMessage(String message) {
 
     }
+
+    @Override
+    public void OnFileNameChange(String newFileName) {
+
+    }
 }

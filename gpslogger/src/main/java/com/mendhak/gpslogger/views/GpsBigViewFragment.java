@@ -18,16 +18,11 @@ public class GpsBigViewFragment extends GenericViewFragment implements View.OnTo
     View rootView;
 
 
-    public void setCurrentlyLogging(boolean loggingStatus) {
-//        TextView txt = (TextView)rootView.findViewById(R.id.textViewLocation);
-//        txt.setText("Started logging " + String.valueOf(loggingStatus));
-    }
-
 
     public static final GpsBigViewFragment newInstance() {
         GpsBigViewFragment fragment = new GpsBigViewFragment();
         Bundle bundle = new Bundle(1);
-        bundle.putInt("a_number",1);
+        bundle.putInt("a_number", 1);
 
         fragment.setArguments(bundle);
         return fragment;
@@ -45,7 +40,6 @@ public class GpsBigViewFragment extends GenericViewFragment implements View.OnTo
         TextView txtLong = (TextView)rootView.findViewById(R.id.bigview_text_long);
         txtLong.setOnTouchListener(this);
 
-        setCurrentlyLogging(Session.isStarted());
         SetLocation(Session.getCurrentLocationInfo());
 
         return rootView;
@@ -84,6 +78,11 @@ public class GpsBigViewFragment extends GenericViewFragment implements View.OnTo
 
     @Override
     public void SetFatalMessage(String message) {
+
+    }
+
+    @Override
+    public void OnFileNameChange(String newFileName) {
 
     }
 

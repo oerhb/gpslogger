@@ -857,7 +857,10 @@ public class GpsMainActivity extends Activity
 
     @Override
     public void onFileName(String newFileName) {
-
+        Fragment currentFragment =  fragmentManager.findFragmentById(R.id.container);
+        if(currentFragment instanceof GenericViewFragment){
+            ((GenericViewFragment)currentFragment).OnFileNameChange(newFileName);
+        }
     }
 
     @Override
