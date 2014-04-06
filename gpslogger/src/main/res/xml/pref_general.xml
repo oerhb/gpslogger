@@ -13,8 +13,8 @@
         android:summary="@string/startonbootup_summary"
         android:key="startonbootup"/>
     <CheckBoxPreference
-        android:title="@string/useimperial_title"
-        android:summary="@string/useimperial_summary"
+        android:title="@string/display_imperial_title"
+        android:summary="@string/display_imperial_summary"
         android:key="useImperial"/>
     <Preference
         android:title="@string/enabledisablegps_title"

@@ -121,14 +121,12 @@ public class GpsSimpleViewFragment extends GenericViewFragment {
 
             if (AppSettings.shouldUseImperial())
             {
-                txtAccuracy.setText(getString(R.string.accuracy_within,
-                        nf.format(Utilities.MetersToFeet(accuracy)), getString(R.string.feet)));
+                txtAccuracy.setText( nf.format(Utilities.MetersToFeet(accuracy)) +  getString(R.string.feet));
 
             }
             else
             {
-                txtAccuracy.setText(getString(R.string.accuracy_within, nf.format(accuracy),
-                        getString(R.string.meters)));
+                txtAccuracy.setText(nf.format(accuracy) +  getString(R.string.meters));
             }
 
 
