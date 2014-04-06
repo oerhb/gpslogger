@@ -122,7 +122,7 @@ public class GpsSimpleViewFragment extends GenericViewFragment {
             txtAltitude.setText(nf.format(locationInfo.getAltitude()) + getString(R.string.meters));
         }
 
-        if (locationInfo.hasSpeed() && locationInfo.hasBearing()) {
+        if (locationInfo.hasSpeed() || locationInfo.hasBearing()) {
 
             float speed = locationInfo.getSpeed();
             String unit;
@@ -215,5 +215,15 @@ public class GpsSimpleViewFragment extends GenericViewFragment {
         txtSatelliteCount.setText("-");
 
         toggleComponent.SetEnabled(true);
+    }
+
+    @Override
+    public void SetStatusMessage(String message) {
+
+    }
+
+    @Override
+    public void SetFatalMessage(String message) {
+
     }
 }

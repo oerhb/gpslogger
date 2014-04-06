@@ -96,15 +96,42 @@
             </LinearLayout>
         </RelativeLayout>
 
-        <!--
-                Altitude
-                Speed
-                Direction
-                Satellines
-                Accuracy
-                Travelled
-                Duration
-                -->
+        <RelativeLayout
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+
+            android:background="@drawable/rounded_gray_thin"
+
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+
+                <TextSwitcher
+                    android:id="@+id/txtswitcher_status"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:inAnimation="@android:anim/slide_in_left"
+                    android:outAnimation="@android:anim/slide_out_right">
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:gravity="center"/>
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:gravity="center"/>
+                    </TextSwitcher>
+
+            </LinearLayout>
+
+        </RelativeLayout>
 
         <RelativeLayout
             android:layout_marginBottom="5dp"

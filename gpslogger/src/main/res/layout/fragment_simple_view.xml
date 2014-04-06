@@ -184,6 +184,7 @@
                     android:layout_width="44dp"
                     android:layout_toRightOf="@id/simpleview_txtSatelliteCount"
                     android:layout_marginTop="11dp"
+                    android:background="@drawable/compass"
                     class="com.mendhak.gpslogger.views.Compass"/>
 
                 <TextView

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextSwitcher;
 import android.widget.TextView;
 import com.mendhak.gpslogger.R;
 import com.mendhak.gpslogger.common.AppSettings;
@@ -454,5 +455,18 @@ public class GpsDetailedViewFragment extends GenericViewFragment {
     @Override
     public void SetLoggingStopped() {
         toggleComponent.SetEnabled(true);
+    }
+
+    @Override
+    public void SetStatusMessage(String message) {
+
+        TextSwitcher txtSwitcher = (TextSwitcher)rootView.findViewById(R.id.txtswitcher_status);
+        txtSwitcher.setText(message);
+    }
+
+    @Override
+    public void SetFatalMessage(String message) {
+        TextSwitcher txtSwitcher = (TextSwitcher)rootView.findViewById(R.id.txtswitcher_status);
+        txtSwitcher.setText(message);
     }
 }

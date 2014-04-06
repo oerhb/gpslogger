@@ -77,6 +77,16 @@ public class GpsBigViewFragment extends GenericViewFragment implements View.OnTo
 
     }
 
+    @Override
+    public void SetStatusMessage(String message) {
+
+    }
+
+    @Override
+    public void SetFatalMessage(String message) {
+
+    }
+
 
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {

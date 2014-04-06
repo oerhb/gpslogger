@@ -775,11 +775,20 @@ public class GpsMainActivity extends Activity
     @Override
     public void OnStatusMessage(String message) {
         Utilities.LogDebug(message);
+
+        Fragment currentFragment =  fragmentManager.findFragmentById(R.id.container);
+        if(currentFragment instanceof GenericViewFragment){
+            ((GenericViewFragment)currentFragment).SetStatusMessage(message);
+        }
     }
 
     @Override
     public void OnFatalMessage(String message) {
         Utilities.LogDebug(message);
+        Fragment currentFragment =  fragmentManager.findFragmentById(R.id.container);
+        if(currentFragment instanceof GenericViewFragment){
+            ((GenericViewFragment)currentFragment).SetFatalMessage(message);
+        }
     }
 
     @Override

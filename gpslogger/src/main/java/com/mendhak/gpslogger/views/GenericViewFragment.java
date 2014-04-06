@@ -19,6 +19,8 @@ public abstract class GenericViewFragment extends Fragment {
     public abstract void SetSatelliteCount(int count);
     public abstract void SetLoggingStarted();
     public abstract void SetLoggingStopped();
+    public abstract void SetStatusMessage(String message);
+    public abstract void SetFatalMessage(String message);
 
     protected void requestStartLogging() {
         if (gpsCallback != null) {
@@ -55,6 +57,8 @@ public abstract class GenericViewFragment extends Fragment {
             gpsCallback = null;
         }
     }
+
+
 
     /**
      * Interface used by the different fragments to communicate with the parent activity

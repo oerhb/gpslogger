@@ -6,8 +6,10 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.ImageView;
+import com.google.android.gms.R;
 
-public class Compass extends View {
+public class Compass extends ImageView {
 
     private float direction;
 
@@ -25,6 +27,9 @@ public class Compass extends View {
         super(context, attrs, defStyle);
         // TODO Auto-generated constructor stub
     }
+
+
+
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -50,14 +55,16 @@ public class Compass extends View {
         paint.setStrokeWidth(3);
         paint.setColor(Color.BLACK);
 
-        canvas.drawCircle(w/2, h/2, r-2, paint);
+//        canvas.drawCircle(w / 2, h / 2, r - 2, paint);
+
+        r = (int)(r*0.6);
 
         paint.setColor(Color.RED);
         canvas.drawLine(
                 w/2,
                 h/2,
-                (float)(w/2-2 + r * Math.sin(-direction)),
-                (float)(h/2-2 - r * Math.cos(-direction)),
+                (float)((w/2) + r * Math.sin(-direction)),
+                (float)((h/2) - r * Math.cos(-direction)),
                 paint);
 
     }
