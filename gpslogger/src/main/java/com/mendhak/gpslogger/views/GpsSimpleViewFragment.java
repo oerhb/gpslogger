@@ -10,7 +10,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.mendhak.gpslogger.R;
+import com.mendhak.gpslogger.common.AppSettings;
 import com.mendhak.gpslogger.common.Session;
+import com.mendhak.gpslogger.common.Utilities;
 import com.mendhak.gpslogger.views.component.ToggleComponent;
 
 import java.text.NumberFormat;
@@ -113,24 +115,73 @@ public class GpsSimpleViewFragment extends GenericViewFragment {
         nf.setMaximumFractionDigits(3);
 
         if (locationInfo.hasAccuracy()) {
+
             TextView txtAccuracy = (TextView) rootView.findViewById(R.id.simpleview_txtAccuracy);
-            txtAccuracy.setText(nf.format(locationInfo.getAccuracy()) + getString(R.string.meters));
+            float accuracy = locationInfo.getAccuracy();
+
+            if (AppSettings.shouldUseImperial())
+            {
+                txtAccuracy.setText(getString(R.string.accuracy_within,
+                        nf.format(Utilities.MetersToFeet(accuracy)), getString(R.string.feet)));
+
+            }
+            else
+            {
+                txtAccuracy.setText(getString(R.string.accuracy_within, nf.format(accuracy),
+                        getString(R.string.meters)));
+            }
+
+
         }
 
         if (locationInfo.hasAltitude()) {
+
             TextView txtAltitude = (TextView) rootView.findViewById(R.id.simpleview_txtAltitude);
-            txtAltitude.setText(nf.format(locationInfo.getAltitude()) + getString(R.string.meters));
+
+            if (AppSettings.shouldUseImperial())
+            {
+                txtAltitude.setText( nf.format(Utilities.MetersToFeet(locationInfo.getAltitude()))
+                        + getString(R.string.feet));
+            }
+            else
+            {
+                txtAltitude.setText(nf.format(locationInfo.getAltitude()) + getString(R.string.meters));
+            }
+
+
+
         }
 
         if (locationInfo.hasSpeed()) {
 
+
             float speed = locationInfo.getSpeed();
             String unit;
-            if (speed > 0.277) {
-                speed = speed * 3.6f;
-                unit = getString(R.string.kilometers_per_hour);
-            } else {
-                unit = getString(R.string.meters_per_second);
+            if (AppSettings.shouldUseImperial())
+            {
+                if (speed > 1.47)
+                {
+                    speed = speed * 0.6818f;
+                    unit = getString(R.string.miles_per_hour);
+
+                }
+                else
+                {
+                    speed = Utilities.MetersToFeet(speed);
+                    unit = getString(R.string.feet_per_second);
+                }
+            }
+            else
+            {
+                if (speed > 0.277)
+                {
+                    speed = speed * 3.6f;
+                    unit = getString(R.string.kilometers_per_hour);
+                }
+                else
+                {
+                    unit = getString(R.string.meters_per_second);
+                }
             }
 
             TextView txtSpeed = (TextView) rootView.findViewById(R.id.simpleview_txtSpeed);

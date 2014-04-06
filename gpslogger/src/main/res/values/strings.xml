@@ -194,8 +194,8 @@
     <string name="timeout_time_dialog_title">Time in seconds</string>
     <string name="timeout_time_hint">Enter seconds (max 9999)</string>
 
-    <string name="useimperial_title">Use Imperial units</string>
-    <string name="useimperial_summary">Use feet, miles and pints, none of that newfangled metric stuff.</string>
+    <string name="display_imperial_title">Display Imperial units</string>
+    <string name="display_imperial_summary">Display feet, miles and pints, none of that newfangled metric stuff. (Preferences must still be in metrics)</string>
     <string name="show_notification_title">Show Notification</string>
     <string name="show_notification_summary">Displays a reminder along with coordinates in the notification bar.
     </string>
