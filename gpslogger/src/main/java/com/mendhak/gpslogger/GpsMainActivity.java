@@ -836,7 +836,7 @@ public class GpsMainActivity extends Activity
 
     private void SetBulbStatus(boolean started) {
         ImageView bulb = (ImageView)findViewById(R.id.notification_bulb);
-        bulb.setImageResource(started ? R.drawable.circle_white : R.drawable.circle_none);
+        bulb.setImageResource(started ? R.drawable.circle_green : R.drawable.circle_none);
     }
 
     @Override
