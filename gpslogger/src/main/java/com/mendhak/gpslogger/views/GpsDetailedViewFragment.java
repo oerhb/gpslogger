@@ -449,14 +449,16 @@ public class GpsDetailedViewFragment extends GenericViewFragment {
     @Override
     public void SetStatusMessage(String message) {
 
-        TextSwitcher txtSwitcher = (TextSwitcher)rootView.findViewById(R.id.txtswitcher_status);
-        txtSwitcher.setText(message);
+        TextView txtStatus = (TextView)rootView.findViewById(R.id.detailedview_txtstatus);
+
+        txtStatus.setText(message);
     }
 
     @Override
     public void SetFatalMessage(String message) {
-        TextSwitcher txtSwitcher = (TextSwitcher)rootView.findViewById(R.id.txtswitcher_status);
-        txtSwitcher.setText(message);
+        TextView txtStatus = (TextView)rootView.findViewById(R.id.detailedview_txtstatus);
+
+        txtStatus.setText(message);
     }
 
     @Override

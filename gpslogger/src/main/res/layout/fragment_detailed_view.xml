@@ -111,23 +111,14 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content">
 
-                <TextSwitcher
-                    android:id="@+id/txtswitcher_status"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:inAnimation="@android:anim/slide_in_left"
-                    android:outAnimation="@android:anim/slide_out_right">
+
                     <TextView
+                        android:id="@+id/detailedview_txtstatus"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:text=""
                         android:gravity="center"/>
-                    <TextView
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:text=""
-                        android:gravity="center"/>
-                    </TextSwitcher>
+
 
             </LinearLayout>
 

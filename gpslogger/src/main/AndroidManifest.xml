@@ -180,20 +180,24 @@
                 <action android:name="com.mendhak.gpslogger.OPENGTS_SETUP"/>
             </intent-filter>
         </activity>
+
+
+        <receiver
+            android:enabled="true"
+            android:name="com.mendhak.gpslogger.StartupReceiver"
+            android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
+
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+
+        </receiver>
+
+        <receiver android:name="com.mendhak.gpslogger.senders.AlarmReceiver"/>
+
     </application>
 
-    <receiver
-        android:enabled="true"
-        android:name="com.mendhak.gpslogger.StartupReceiver"
-        android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
 
-        <intent-filter>
-            <action android:name="android.intent.action.BOOT_COMPLETED"/>
-            <category android:name="android.intent.category.DEFAULT"/>
-        </intent-filter>
-
-    </receiver>
-
-    <receiver android:name="com.mendhak.gpslogger.senders.AlarmReceiver"/>
 
 </manifest>
