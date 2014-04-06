@@ -149,6 +149,14 @@ public class GpsSimpleViewFragment extends GenericViewFragment {
         String duration = getInterval(startTime, currentTime);
 
         txtDuration.setText(duration);
+
+        String providerName = locationInfo.getProvider();
+        if (!providerName.equalsIgnoreCase("gps"))
+        {
+            TextView txtSatelliteCount = (TextView) rootView.findViewById(R.id.simpleview_txtSatelliteCount);
+            txtSatelliteCount.setText("-");
+        }
+
     }
 
     private void clearLocationDisplay() {
