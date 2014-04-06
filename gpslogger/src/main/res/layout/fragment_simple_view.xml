@@ -81,7 +81,7 @@
             <TableRow
                 android:layout_gravity="center"
                 android:orientation="horizontal"
-                android:background="@drawable/rounded_gray">
+                >
 
                 <GridLayout
                     xmlns:android="http://schemas.android.com/apk/res/android"
