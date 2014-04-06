@@ -2,6 +2,7 @@ package com.mendhak.gpslogger;
 
 import android.app.*;
 import android.content.*;
+import android.content.pm.ActivityInfo;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
@@ -146,14 +147,17 @@ public class GpsMainActivity extends Activity
 
         switch (view) {
             case 0:
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
                 transaction.replace(R.id.container, GpsSimpleViewFragment.newInstance());
                 break;
             case 1:
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
                 transaction.replace(R.id.container, GpsDetailedViewFragment.newInstance());
                 break;
             default:
             case 2:
-                getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
                 transaction.replace(R.id.container, GpsBigViewFragment.newInstance());
                 break;
         }
@@ -166,6 +170,7 @@ public class GpsMainActivity extends Activity
     @Override
     public void onNavigationDrawerItemSelected(int position) {
 
+        Utilities.LogDebug("onNavigationDrawerItemSelected: " + String.valueOf(position));
         switch (position) {
             case 0:
                 break;

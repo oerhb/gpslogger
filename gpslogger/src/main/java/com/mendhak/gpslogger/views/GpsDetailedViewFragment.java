@@ -196,7 +196,6 @@ public class GpsDetailedViewFragment extends GenericViewFragment {
         if (!Session.isUsingGps())
         {
             txtSatellites.setText(R.string.not_applicable);
-            Session.setSatelliteCount(0);
         }
 
         if (locationInfo.hasAccuracy())
@@ -411,11 +410,43 @@ public class GpsDetailedViewFragment extends GenericViewFragment {
     @Override
     public void SetSatelliteCount(int count) {
 
+        TextView txtSatellites = (TextView) rootView.findViewById(R.id.detailedview_satellites_text);
+        txtSatellites.setText(String.valueOf(count));
     }
 
     @Override
     public void SetLoggingStarted() {
         toggleComponent.SetEnabled(false);
+        ClearDisplay();
+    }
+
+    private void ClearDisplay() {
+        TextView tvLatitude = (TextView) rootView.findViewById(R.id.detailedview_lat_text);
+        TextView tvLongitude = (TextView) rootView.findViewById(R.id.detailedview_lon_text);
+        TextView tvDateTime = (TextView) rootView.findViewById(R.id.detailedview_datetime_text);
+
+        TextView tvAltitude = (TextView) rootView.findViewById(R.id.detailedview_altitude_text);
+
+        TextView txtSpeed = (TextView) rootView.findViewById(R.id.detailedview_speed_text);
+
+        TextView txtSatellites = (TextView) rootView.findViewById(R.id.detailedview_satellites_text);
+        TextView txtDirection = (TextView) rootView.findViewById(R.id.detailedview_direction_text);
+        TextView txtAccuracy = (TextView) rootView.findViewById(R.id.detailedview_accuracy_text);
+        TextView txtTravelled = (TextView) rootView.findViewById(R.id.detailedview_travelled_text);
+        TextView txtTime = (TextView) rootView.findViewById(R.id.detailedview_duration_text);
+
+        tvLatitude.setText("");
+        tvLongitude.setText("");
+        tvDateTime.setText("");
+        tvAltitude.setText("");
+        txtSpeed.setText("");
+        txtSatellites.setText("");
+        txtAccuracy.setText("");
+        txtDirection.setText("");
+        txtTravelled.setText("");
+        txtTime.setText("");
+
+
     }
 
     @Override

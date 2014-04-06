@@ -38,7 +38,6 @@ public class GpsBigViewFragment extends GenericViewFragment implements View.OnTo
                              Bundle savedInstanceState) {
 
         rootView = inflater.inflate(R.layout.fragment_big_view, container, false);
-        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
         TextView txtLat = (TextView)rootView.findViewById(R.id.bigview_text_lat);
         txtLat.setOnTouchListener(this);
@@ -78,17 +77,6 @@ public class GpsBigViewFragment extends GenericViewFragment implements View.OnTo
 
     }
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-
-        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
-    }
 
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
