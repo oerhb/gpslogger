@@ -76,6 +76,20 @@ public class GpsDetailedViewFragment extends GenericViewFragment {
     }
 
     @Override
+    public void onStart() {
+
+        toggleComponent.SetEnabled(!Session.isStarted());
+        super.onResume();
+    }
+
+    @Override
+    public void onResume() {
+
+        toggleComponent.SetEnabled(!Session.isStarted());
+        super.onResume();
+    }
+
+    @Override
     public void SetLocation(Location locationInfo) {
         if (locationInfo == null)
         {

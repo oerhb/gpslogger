@@ -89,8 +89,16 @@ public class GpsSimpleViewFragment extends GenericViewFragment {
     }
 
     @Override
+    public void onStart() {
+
+        toggleComponent.SetEnabled(!Session.isStarted());
+        super.onResume();
+    }
+
+    @Override
     public void onResume() {
 
+        toggleComponent.SetEnabled(!Session.isStarted());
         super.onResume();
     }
 
@@ -278,6 +286,7 @@ public class GpsSimpleViewFragment extends GenericViewFragment {
 
     @Override
     public void SetLoggingStarted() {
+        Utilities.LogDebug("GpsSimpleViewFragment.SetLoggingStarted");
         clearLocationDisplay();
         toggleComponent.SetEnabled(false);
     }
