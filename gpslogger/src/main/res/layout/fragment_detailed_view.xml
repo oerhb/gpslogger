@@ -41,7 +41,10 @@
                         android:textSize="50sp"
                         android:id="@+id/detailedview_lat_text"
                         android:text=""
-                        android:editable="false"/>
+                        android:selectAllOnFocus="true"
+                        android:textIsSelectable="true"
+                        android:editable="false"
+                        />
                 </LinearLayout>
 
                 <LinearLayout
@@ -64,6 +67,8 @@
                         android:textSize="50sp"
                         android:text=""
                         android:id="@+id/detailedview_lon_text"
+                        android:selectAllOnFocus="true"
+                        android:textIsSelectable="true"
                         android:editable="false"/>
                 </LinearLayout>
             </LinearLayout>
@@ -153,6 +158,8 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/detailedview_datetime_text"
                         android:text=""
+                        android:selectAllOnFocus="true"
+                        android:textIsSelectable="true"
                         android:editable="false"/>
                 </LinearLayout>
 
@@ -176,6 +183,8 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/detailedview_altitude_text"
                         android:text=""
+                        android:selectAllOnFocus="true"
+                        android:textIsSelectable="true"
                         android:editable="false"/>
                 </LinearLayout>
 
@@ -199,6 +208,8 @@
                         android:minWidth="@dimen/view_text_width"
                         android:id="@+id/detailedview_speed_text"
                         android:text=""
+                        android:selectAllOnFocus="true"
+                        android:textIsSelectable="true"
                         android:editable="false"/>
                 </LinearLayout>
 
@@ -222,6 +233,8 @@
                         android:minWidth="@dimen/view_text_width"
                         android:id="@+id/detailedview_direction_text"
                         android:text=""
+                        android:selectAllOnFocus="true"
+                        android:textIsSelectable="true"
                         android:editable="false"/>
                 </LinearLayout>
 
@@ -245,6 +258,8 @@
                         android:minWidth="@dimen/view_text_width"
                         android:id="@+id/detailedview_satellites_text"
                         android:text=""
+                        android:selectAllOnFocus="true"
+                        android:textIsSelectable="true"
                         android:editable="false"/>
                 </LinearLayout>
 
@@ -268,6 +283,8 @@
                         android:minWidth="@dimen/view_text_width"
                         android:id="@+id/detailedview_accuracy_text"
                         android:text=""
+                        android:selectAllOnFocus="true"
+                        android:textIsSelectable="true"
                         android:editable="false"/>
                 </LinearLayout>
 
@@ -291,6 +308,8 @@
                         android:minWidth="@dimen/view_text_width"
                         android:id="@+id/detailedview_travelled_text"
                         android:text=""
+                        android:selectAllOnFocus="true"
+                        android:textIsSelectable="true"
                         android:editable="false"/>
                 </LinearLayout>
 
@@ -314,6 +333,8 @@
                         android:minWidth="@dimen/view_text_width"
                         android:id="@+id/detailedview_duration_text"
                         android:text=""
+                        android:selectAllOnFocus="true"
+                        android:textIsSelectable="true"
                         android:editable="false"/>
                 </LinearLayout>
 
@@ -356,6 +377,8 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/detailedview_loggingto_text"
                         android:text=""
+                        android:selectAllOnFocus="true"
+                        android:textIsSelectable="true"
                         android:editable="false"/>
                 </LinearLayout>
 
@@ -379,6 +402,8 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/detailedview_frequency_text"
                         android:text=""
+                        android:selectAllOnFocus="true"
+                        android:textIsSelectable="true"
                         android:editable="false"/>
                 </LinearLayout>
 
@@ -402,6 +427,8 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/detailedview_distance_text"
                         android:text=""
+                        android:selectAllOnFocus="true"
+                        android:textIsSelectable="true"
                         android:editable="false"/>
                 </LinearLayout>
 
@@ -426,6 +453,8 @@
                         android:id="@+id/detailedview_file_text"
                         android:textSize="12sp"
                         android:text=""
+                        android:selectAllOnFocus="true"
+                        android:textIsSelectable="true"
                         android:editable="false"/>
                 </LinearLayout>
 
@@ -449,6 +478,8 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/detailedview_autosend_text"
                         android:text=""
+                        android:selectAllOnFocus="true"
+                        android:textIsSelectable="true"
                         android:editable="false"/>
                 </LinearLayout>
             </LinearLayout>
