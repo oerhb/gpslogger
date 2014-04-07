@@ -38,7 +38,7 @@ public class NavigationDrawerFragment extends Fragment {
      * Per the design guidelines, you should show the drawer on launch until the user manually
      * expands it. This shared preference tracks this.
      */
-    private static final String PREF_USER_LEARNED_DRAWER = "navigation_drawer_learned";
+    private static final String PREF_USER_SEEN_DRAWER = "navigation_drawer_learned";
 
     /**
      * A pointer to the current callbacks instance (the Activity).
@@ -56,7 +56,7 @@ public class NavigationDrawerFragment extends Fragment {
 
     private int currentSelectedPosition = 0;
     private boolean fromSavedInstanceState;
-    private boolean userLearnedDrawer;
+    private boolean userHasSeenDrawer;
 
     public NavigationDrawerFragment() {
     }
@@ -66,9 +66,9 @@ public class NavigationDrawerFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         // Read in the flag indicating whether or not the user has demonstrated awareness of the
-        // drawer. See PREF_USER_LEARNED_DRAWER for details.
+        // drawer. See PREF_USER_SEEN_DRAWER for details.
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        userLearnedDrawer = sp.getBoolean(PREF_USER_LEARNED_DRAWER, false);
+        userHasSeenDrawer = sp.getBoolean(PREF_USER_SEEN_DRAWER, false);
 
         if (savedInstanceState != null) {
             currentSelectedPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION);
@@ -170,6 +170,15 @@ public class NavigationDrawerFragment extends Fragment {
                     return;
                 }
 
+                if (!userHasSeenDrawer) {
+                    // The user manually opened the drawer; store this flag to prevent auto-showing
+                    // the navigation drawer automatically in the future.
+                    userHasSeenDrawer = true;
+                    SharedPreferences sp = PreferenceManager
+                            .getDefaultSharedPreferences(getActivity());
+                    sp.edit().putBoolean(PREF_USER_SEEN_DRAWER, true).apply();
+                }
+
                 getActivity().invalidateOptionsMenu(); // calls onPrepareOptionsMenu()
             }
 
@@ -180,13 +189,13 @@ public class NavigationDrawerFragment extends Fragment {
                     return;
                 }
 
-                if (!userLearnedDrawer) {
+                if (!userHasSeenDrawer) {
                     // The user manually opened the drawer; store this flag to prevent auto-showing
                     // the navigation drawer automatically in the future.
-                    userLearnedDrawer = true;
+                    userHasSeenDrawer = true;
                     SharedPreferences sp = PreferenceManager
                             .getDefaultSharedPreferences(getActivity());
-                    sp.edit().putBoolean(PREF_USER_LEARNED_DRAWER, true).apply();
+                    sp.edit().putBoolean(PREF_USER_SEEN_DRAWER, true).apply();
                 }
 
                 getActivity().invalidateOptionsMenu(); // calls onPrepareOptionsMenu()
@@ -195,7 +204,7 @@ public class NavigationDrawerFragment extends Fragment {
 
         // If the user hasn't 'learned' about the drawer, open it to introduce them to the drawer,
         // per the navigation drawer design guidelines.
-        if (!userLearnedDrawer && !fromSavedInstanceState) {
+        if (!userHasSeenDrawer && !fromSavedInstanceState) {
             this.drawerLayout.openDrawer(fragmentContainerView);
         }
 
