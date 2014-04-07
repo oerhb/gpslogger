@@ -836,7 +836,7 @@ public class GpsMainActivity extends Activity
             ((GenericViewFragment)currentFragment).SetLoggingStarted();
         }
 
-        SetBulbStatus(true);
+        enableDisableMenuItems();
 
     }
 
@@ -848,7 +848,7 @@ public class GpsMainActivity extends Activity
             ((GenericViewFragment)currentFragment).SetLoggingStopped();
         }
 
-        SetBulbStatus(false);
+        enableDisableMenuItems();
     }
 
     private void SetBulbStatus(boolean started) {
