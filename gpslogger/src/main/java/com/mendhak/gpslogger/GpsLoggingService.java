@@ -418,6 +418,7 @@ public class GpsLoggingService extends Service implements IActionListener
         AutoSendLogFileOnStop();
         CancelAlarm();
         Session.setCurrentLocationInfo(null);
+        Session.setSinglePointMode(false);
         stopForeground(true);
 
         RemoveNotification();
