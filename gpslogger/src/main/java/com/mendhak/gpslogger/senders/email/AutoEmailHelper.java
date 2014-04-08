@@ -21,6 +21,7 @@ import com.mendhak.gpslogger.common.AppSettings;
 import com.mendhak.gpslogger.common.IActionListener;
 import com.mendhak.gpslogger.common.Utilities;
 import com.mendhak.gpslogger.senders.IFileSender;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ public class AutoEmailHelper implements IActionListener, IFileSender
 {
 
     IActionListener callback;
+    private static final org.slf4j.Logger tracer = LoggerFactory.getLogger(AutoEmailHelper.class.getSimpleName());
 
     public AutoEmailHelper(IActionListener callback)
     {
@@ -76,7 +78,7 @@ public class AutoEmailHelper implements IActionListener, IFileSender
     public void OnComplete()
     {
         // This was a success
-        Utilities.LogInfo("Email sent");
+        tracer.info("Email sent");
 
         callback.OnComplete();
     }
@@ -99,6 +101,7 @@ public class AutoEmailHelper implements IActionListener, IFileSender
 class AutoSendHandler implements Runnable
 {
 
+    private static final org.slf4j.Logger tracer = LoggerFactory.getLogger(AutoSendHandler.class.getSimpleName());
     File[] files;
     private final IActionListener helper;
 
@@ -135,7 +138,7 @@ class AutoSendHandler implements Runnable
                 m.addAttachment(f.getName(), f.getAbsolutePath());
             }
 
-            Utilities.LogInfo("Sending email...");
+            tracer.info("Sending email...");
 
             if (m.send())
             {
@@ -149,7 +152,7 @@ class AutoSendHandler implements Runnable
         catch (Exception e)
         {
             helper.OnFailure();
-            Utilities.LogError("AutoSendHandler.run", e);
+            tracer.error("AutoSendHandler.run", e);
         }
 
     }
@@ -158,6 +161,7 @@ class AutoSendHandler implements Runnable
 
 class TestEmailHandler implements Runnable
 {
+    private static final org.slf4j.Logger tracer = LoggerFactory.getLogger(TestEmailHandler.class.getSimpleName());
     String smtpServer;
     String smtpPort;
     String smtpUsername;
@@ -212,7 +216,7 @@ class TestEmailHandler implements Runnable
             m.setSsl(smtpUseSsl);
             m.setDebuggable(true);
 
-            Utilities.LogInfo("Sending email...");
+            tracer.info("Sending email...");
             if (m.send())
             {
                 helper.OnComplete();
@@ -225,7 +229,7 @@ class TestEmailHandler implements Runnable
         catch (Exception e)
         {
             helper.OnFailure();
-            Utilities.LogError("AutoSendHandler.run", e);
+            tracer.error("AutoSendHandler.run", e);
         }
 
     }

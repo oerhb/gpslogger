@@ -22,8 +22,8 @@ import android.location.Location;
 import com.mendhak.gpslogger.common.AppSettings;
 import com.mendhak.gpslogger.common.IActionListener;
 import com.mendhak.gpslogger.common.OpenGTSClient;
-import com.mendhak.gpslogger.common.Utilities;
 import com.mendhak.gpslogger.senders.IFileSender;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.Collections;
@@ -32,6 +32,7 @@ import java.util.List;
 public class OpenGTSHelper implements IActionListener, IFileSender
 {
     Context applicationContext;
+    private static final org.slf4j.Logger tracer = LoggerFactory.getLogger(OpenGTSHelper.class.getSimpleName());
     IActionListener callback;
 
     public OpenGTSHelper(Context applicationContext, IActionListener callback)
@@ -74,6 +75,7 @@ public class OpenGTSHelper implements IActionListener, IFileSender
 class OpenGTSHandler implements Runnable
 {
 
+    private static final org.slf4j.Logger tracer = LoggerFactory.getLogger(OpenGTSHandler.class.getSimpleName());
     List<Location> locations;
     Context applicationContext;
     File file;
@@ -92,7 +94,7 @@ class OpenGTSHandler implements Runnable
         {
 
             locations = getLocationsFromGPX(file);
-            Utilities.LogInfo(locations.size() + " points where read from " + file.getName());
+            tracer.info(locations.size() + " points where read from " + file.getName());
 
             if (locations.size() > 0)
             {
@@ -114,7 +116,7 @@ class OpenGTSHandler implements Runnable
         }
         catch (Exception e)
         {
-            Utilities.LogError("OpenGTSHandler.run", e);
+            tracer.error("OpenGTSHandler.run", e);
             helper.OnFailure();
         }
 
@@ -129,7 +131,7 @@ class OpenGTSHandler implements Runnable
         }
         catch (Exception e)
         {
-            Utilities.LogError("OpenGTSHelper.getLocationsFromGPX", e);
+            tracer.error("OpenGTSHelper.getLocationsFromGPX", e);
         }
         return locations;
     }

@@ -26,9 +26,11 @@ import com.mendhak.gpslogger.GpsMainActivity;
 import com.mendhak.gpslogger.R;
 import com.mendhak.gpslogger.common.IActionListener;
 import com.mendhak.gpslogger.common.Utilities;
+import org.slf4j.LoggerFactory;
 
 public class AutoFtpActivity extends PreferenceActivity implements IActionListener, Preference.OnPreferenceClickListener
 {
+    private static final org.slf4j.Logger tracer = LoggerFactory.getLogger(AutoFtpActivity.class.getSimpleName());
 
     private final Handler handler = new Handler();
 
@@ -54,7 +56,7 @@ public class AutoFtpActivity extends PreferenceActivity implements IActionListen
     {
 
         int itemId = item.getItemId();
-        Utilities.LogInfo("Option item selected - " + String.valueOf(item.getTitle()));
+        tracer.info("Option item selected - " + String.valueOf(item.getTitle()));
 
         switch (itemId)
         {

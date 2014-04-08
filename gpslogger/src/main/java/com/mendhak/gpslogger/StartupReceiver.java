@@ -18,16 +18,18 @@
 package com.mendhak.gpslogger;
 
 
-import com.mendhak.gpslogger.common.Utilities;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import org.slf4j.LoggerFactory;
 
 
 public class StartupReceiver extends BroadcastReceiver
 {
+
+    private static final org.slf4j.Logger tracer = LoggerFactory.getLogger(StartupReceiver.class.getSimpleName());
 
     @Override
     public void onReceive(Context context, Intent intent)
@@ -37,12 +39,12 @@ public class StartupReceiver extends BroadcastReceiver
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
             boolean startImmediately = prefs.getBoolean("startonbootup", false);
 
-            Utilities.LogInfo("Did the user ask for start on bootup? - "
+            tracer.info("Did the user ask for start on bootup? - "
                     + String.valueOf(startImmediately));
 
             if (startImmediately)
             {
-                Utilities.LogInfo("Launching GPSLoggingService");
+                tracer.info("Launching GPSLoggingService");
                 Intent serviceIntent = new Intent(context, GpsLoggingService.class);
                 serviceIntent.putExtra("immediate", true);
                 context.startService(serviceIntent);
@@ -50,7 +52,7 @@ public class StartupReceiver extends BroadcastReceiver
         }
         catch (Exception ex)
         {
-            Utilities.LogError("StartupReceiver", ex);
+            tracer.error("StartupReceiver", ex);
 
         }
 

@@ -32,12 +32,14 @@ import com.mendhak.gpslogger.R;
 import com.mendhak.gpslogger.common.IActionListener;
 import com.mendhak.gpslogger.common.IMessageBoxCallback;
 import com.mendhak.gpslogger.common.Utilities;
+import org.slf4j.LoggerFactory;
 
 public class AutoEmailActivity extends PreferenceActivity implements
         OnPreferenceChangeListener, IMessageBoxCallback, IActionListener,
         OnPreferenceClickListener
 {
 
+    private static final org.slf4j.Logger tracer = LoggerFactory.getLogger(AutoEmailActivity.class.getSimpleName());
     private final Handler handler = new Handler();
 
 
@@ -77,7 +79,7 @@ public class AutoEmailActivity extends PreferenceActivity implements
     {
 
         int itemId = item.getItemId();
-        Utilities.LogInfo("Option item selected - " + String.valueOf(item.getTitle()));
+        tracer.info("Option item selected - " + String.valueOf(item.getTitle()));
 
         switch (itemId)
         {

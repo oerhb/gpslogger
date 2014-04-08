@@ -25,7 +25,6 @@ import android.preference.PreferenceManager;
 import com.mendhak.gpslogger.R;
 import com.mendhak.gpslogger.common.AppSettings;
 import com.mendhak.gpslogger.common.IActionListener;
-import com.mendhak.gpslogger.common.Utilities;
 import com.mendhak.gpslogger.senders.IFileSender;
 import oauth.signpost.OAuthConsumer;
 import oauth.signpost.OAuthProvider;
@@ -38,6 +37,7 @@ import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.List;
@@ -45,6 +45,7 @@ import java.util.List;
 public class OSMHelper implements IActionListener, IFileSender
 {
 
+    private static final org.slf4j.Logger tracer = LoggerFactory.getLogger(OSMHelper.class.getSimpleName());
     IActionListener callback;
     Context ctx;
 
@@ -220,14 +221,14 @@ public class OSMHelper implements IActionListener, IFileSender
 
                 HttpResponse response = httpClient.execute(request);
                 int statusCode = response.getStatusLine().getStatusCode();
-                Utilities.LogDebug("OSM Upload - " + String.valueOf(statusCode));
+                tracer.debug("OSM Upload - " + String.valueOf(statusCode));
                 helper.OnComplete();
 
             }
             catch (Exception e)
             {
                 helper.OnFailure();
-                Utilities.LogError("OsmUploadHelper.run", e);
+                tracer.error("OsmUploadHelper.run", e);
             }
         }
     }

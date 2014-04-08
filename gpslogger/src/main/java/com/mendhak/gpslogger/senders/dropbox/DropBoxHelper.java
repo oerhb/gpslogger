@@ -28,8 +28,8 @@ import com.dropbox.client2.session.Session;
 import com.dropbox.client2.session.TokenPair;
 import com.mendhak.gpslogger.common.AppSettings;
 import com.mendhak.gpslogger.common.IActionListener;
-import com.mendhak.gpslogger.common.Utilities;
 import com.mendhak.gpslogger.senders.IFileSender;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -39,6 +39,7 @@ import java.util.List;
 public class DropBoxHelper implements IActionListener, IFileSender
 {
 
+    private static final org.slf4j.Logger tracer = LoggerFactory.getLogger(DropBoxHelper.class.getSimpleName());
     final static private String ACCESS_KEY_NAME = "DROPBOX_ACCESS_KEY";
     final static private String ACCESS_SECRET_NAME = "DROPBOX_ACCESS_SECRET";
     final static private Session.AccessType ACCESS_TYPE = Session.AccessType.APP_FOLDER;
@@ -252,12 +253,12 @@ public class DropBoxHelper implements IActionListener, IFileSender
 
                 FileInputStream fis = new FileInputStream(gpxFile);
                 DropboxAPI.Entry upEntry = api.putFileOverwrite(gpxFile.getName(), fis, gpxFile.length(), null);
-                Utilities.LogInfo("DropBox uploaded file rev is: " + upEntry.rev);
+                tracer.info("DropBox uploaded file rev is: " + upEntry.rev);
                 helper.OnComplete();
             }
             catch (Exception e)
             {
-                Utilities.LogError("DropBoxHelper.UploadFile", e);
+                tracer.error("DropBoxHelper.UploadFile", e);
             }
         }
     }

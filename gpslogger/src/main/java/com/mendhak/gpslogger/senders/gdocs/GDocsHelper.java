@@ -28,6 +28,7 @@ import com.mendhak.gpslogger.common.IActionListener;
 import com.mendhak.gpslogger.common.Utilities;
 import com.mendhak.gpslogger.senders.IFileSender;
 import org.json.JSONObject;
+import org.slf4j.LoggerFactory;
 
 import java.io.DataOutputStream;
 import java.io.File;
@@ -41,6 +42,8 @@ import java.util.List;
 
 public class GDocsHelper implements IActionListener, IFileSender
 {
+
+    private static final org.slf4j.Logger tracer = LoggerFactory.getLogger(GDocsHelper.class.getSimpleName());
     Context ctx;
     IActionListener callback;
 
@@ -103,14 +106,14 @@ public class GDocsHelper implements IActionListener, IFileSender
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(applicationContext);
             SharedPreferences.Editor editor = prefs.edit();
 
-            Utilities.LogDebug("Saving GDocs authToken: " + authToken);
+            tracer.debug("Saving GDocs authToken: " + authToken);
             editor.putString("GDRIVE_AUTH_TOKEN", authToken);
             editor.commit();
         }
         catch (Exception e)
         {
 
-            Utilities.LogError("GDocsHelper.SaveAuthToken", e);
+            tracer.error("GDocsHelper.SaveAuthToken", e);
         }
 
     }
@@ -197,7 +200,7 @@ public class GDocsHelper implements IActionListener, IFileSender
         catch (Exception e)
         {
             callback.OnFailure();
-            Utilities.LogError("GDocsHelper.UploadFile", e);
+            tracer.error("GDocsHelper.UploadFile", e);
         }
     }
 
@@ -225,7 +228,7 @@ public class GDocsHelper implements IActionListener, IFileSender
 
                 String token = GoogleAuthUtil.getTokenWithNotification(ctx, GetAccountName(ctx), GetOauth2Scope(), new Bundle());
                 GDocsHelper.SaveAuthToken(ctx, token);
-                Utilities.LogDebug(token);
+                tracer.debug(token);
 
                 String gpsLoggerFolderId = GetFileIdFromFileName(token, "GPSLogger For Android");
 
@@ -268,7 +271,7 @@ public class GDocsHelper implements IActionListener, IFileSender
             }
             catch (Exception e)
             {
-                Utilities.LogError("GDocsUploadHandler", e);
+                tracer.error("GDocsUploadHandler", e);
                 callback.OnFailure();
             }
 
@@ -317,7 +320,7 @@ public class GDocsHelper implements IActionListener, IFileSender
 
             JSONObject fileMetadataJson = new JSONObject(fileMetadata);
             fileId = fileMetadataJson.getString("id");
-            Utilities.LogDebug("File updated : " + fileId);
+            tracer.debug("File updated : " + fileId);
 
         }
         catch (Exception e)
@@ -389,7 +392,7 @@ public class GDocsHelper implements IActionListener, IFileSender
 
             JSONObject fileMetadataJson = new JSONObject(fileMetadata);
             fileId = fileMetadataJson.getString("id");
-            Utilities.LogDebug("File created with ID " + fileId + " of type " + mimeType);
+            tracer.debug("File created with ID " + fileId + " of type " + mimeType);
 
         }
         catch (Exception e)
@@ -445,13 +448,13 @@ public class GDocsHelper implements IActionListener, IFileSender
             if(fileMetadataJson.getJSONArray("items") != null && fileMetadataJson.getJSONArray("items").length() > 0)
             {
                 fileId = fileMetadataJson.getJSONArray("items").getJSONObject(0).get("id").toString();
-                Utilities.LogDebug("Found file with ID " + fileId);
+                tracer.debug("Found file with ID " + fileId);
             }
 
         }
         catch (Exception e)
         {
-            Utilities.LogError("SearchForGPSLoggerFile", e);
+            tracer.error("SearchForGPSLoggerFile", e);
         }
         finally
         {

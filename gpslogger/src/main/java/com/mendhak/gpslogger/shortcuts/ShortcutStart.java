@@ -21,15 +21,17 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import com.mendhak.gpslogger.GpsLoggingService;
-import com.mendhak.gpslogger.common.Utilities;
+import org.slf4j.LoggerFactory;
 
 public class ShortcutStart extends Activity
 {
+    private static final org.slf4j.Logger tracer = LoggerFactory.getLogger(ShortcutStart.class.getSimpleName());
+
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
 
-        Utilities.LogInfo("Shortcut - start logging");
+        tracer.info("Shortcut - start logging");
         Intent serviceIntent = new Intent(getApplicationContext(), GpsLoggingService.class);
         serviceIntent.putExtra("immediate", true);
         getApplicationContext().startService(serviceIntent);

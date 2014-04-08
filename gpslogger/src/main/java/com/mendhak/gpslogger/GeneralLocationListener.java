@@ -17,9 +17,13 @@
 
 package com.mendhak.gpslogger;
 
-import android.location.*;
+import android.location.GpsSatellite;
+import android.location.GpsStatus;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationProvider;
 import android.os.Bundle;
-import com.mendhak.gpslogger.common.Utilities;
+import org.slf4j.LoggerFactory;
 
 import java.util.Iterator;
 
@@ -27,10 +31,11 @@ class GeneralLocationListener implements LocationListener, GpsStatus.Listener
 {
 
     private static GpsLoggingService loggingService;
+    private static final org.slf4j.Logger tracer = LoggerFactory.getLogger(GeneralLocationListener.class.getSimpleName());
 
     GeneralLocationListener(GpsLoggingService activity)
     {
-        Utilities.LogDebug("GeneralLocationListener constructor");
+        tracer.debug("GeneralLocationListener constructor");
         loggingService = activity;
     }
 
@@ -44,14 +49,14 @@ class GeneralLocationListener implements LocationListener, GpsStatus.Listener
         {
             if (loc != null)
             {
-                Utilities.LogVerbose("GeneralLocationListener.onLocationChanged");
+                tracer.debug("GeneralLocationListener.onLocationChanged");
                 loggingService.OnLocationChanged(loc);
             }
 
         }
         catch (Exception ex)
         {
-            Utilities.LogError("GeneralLocationListener.onLocationChanged", ex);
+            tracer.error("GeneralLocationListener.onLocationChanged", ex);
             loggingService.SetStatus(ex.getMessage());
         }
 
@@ -59,14 +64,14 @@ class GeneralLocationListener implements LocationListener, GpsStatus.Listener
 
     public void onProviderDisabled(String provider)
     {
-        Utilities.LogInfo("Provider disabled: " + provider);
+        tracer.info("Provider disabled: " + provider);
         loggingService.RestartGpsManagers();
     }
 
     public void onProviderEnabled(String provider)
     {
 
-        Utilities.LogInfo("Provider enabled: " + provider);
+        tracer.info("Provider enabled: " + provider);
         loggingService.RestartGpsManagers();
     }
 
@@ -74,18 +79,18 @@ class GeneralLocationListener implements LocationListener, GpsStatus.Listener
     {
         if (status == LocationProvider.OUT_OF_SERVICE)
         {
-            Utilities.LogDebug(provider + " is out of service");
+            tracer.debug(provider + " is out of service");
             loggingService.StopManagerAndResetAlarm();
         }
 
         if (status == LocationProvider.AVAILABLE)
         {
-            Utilities.LogDebug(provider + " is available");
+            tracer.debug(provider + " is available");
         }
 
         if (status == LocationProvider.TEMPORARILY_UNAVAILABLE)
         {
-            Utilities.LogDebug(provider + " is temporarily unavailable");
+            tracer.debug(provider + " is temporarily unavailable");
             loggingService.StopManagerAndResetAlarm();
         }
     }
@@ -96,13 +101,13 @@ class GeneralLocationListener implements LocationListener, GpsStatus.Listener
         switch (event)
         {
             case GpsStatus.GPS_EVENT_FIRST_FIX:
-                Utilities.LogDebug("GPS Event First Fix");
+                tracer.debug("GPS Event First Fix");
                 loggingService.SetStatus(loggingService.getString(R.string.fix_obtained));
                 break;
 
             case GpsStatus.GPS_EVENT_SATELLITE_STATUS:
 
-                Utilities.LogDebug("GPS Satellite status obtained");
+                tracer.debug("GPS Satellite status obtained");
                 GpsStatus status = loggingService.gpsLocationManager.getGpsStatus(null);
 
                 int maxSatellites = status.getMaxSatellites();
@@ -120,12 +125,12 @@ class GeneralLocationListener implements LocationListener, GpsStatus.Listener
                 break;
 
             case GpsStatus.GPS_EVENT_STARTED:
-                Utilities.LogInfo("GPS started, waiting for fix");
+                tracer.info("GPS started, waiting for fix");
                 loggingService.SetStatus(loggingService.getString(R.string.started_waiting));
                 break;
 
             case GpsStatus.GPS_EVENT_STOPPED:
-                Utilities.LogInfo("GPS Stopped");
+                tracer.info("GPS Stopped");
                 loggingService.SetStatus(loggingService.getString(R.string.gps_stopped));
                 break;
 

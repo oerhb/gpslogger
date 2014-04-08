@@ -1,15 +1,15 @@
 package com.mendhak.gpslogger.views;
 
-import android.app.Activity;
-import android.content.pm.ActivityInfo;
 import android.location.Location;
 import android.os.Bundle;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 import com.mendhak.gpslogger.R;
 import com.mendhak.gpslogger.common.Session;
-import com.mendhak.gpslogger.common.Utilities;
+import org.slf4j.LoggerFactory;
 
 import java.text.NumberFormat;
 
@@ -19,7 +19,7 @@ import java.text.NumberFormat;
 public class GpsBigViewFragment extends GenericViewFragment implements View.OnTouchListener {
 
     View rootView;
-
+    private static final org.slf4j.Logger tracer = LoggerFactory.getLogger(GpsBigViewFragment.class.getSimpleName());
 
 
     public static final GpsBigViewFragment newInstance() {
@@ -107,7 +107,7 @@ public class GpsBigViewFragment extends GenericViewFragment implements View.OnTo
     public boolean onTouch(View view, MotionEvent motionEvent) {
         if (motionEvent.getAction() == MotionEvent.ACTION_DOWN)
         {
-            Utilities.LogDebug("Big frame - onTouch event");
+            tracer.debug("Big frame - onTouch event");
             requestToggleLogging();
             return true;
         }

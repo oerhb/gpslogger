@@ -20,9 +20,12 @@ package com.mendhak.gpslogger.common;
 
 import android.app.Application;
 import android.location.Location;
+import org.slf4j.LoggerFactory;
 
 public class Session extends Application
 {
+
+    private static org.slf4j.Logger tracer = LoggerFactory.getLogger(Session.class.getSimpleName());
 
     // ---------------------------------------------------
     // Session values - updated as the app runs
@@ -156,7 +159,7 @@ public class Session extends Application
      */
     public static void setCurrentFileName(String currentFileName)
     {
-        Utilities.LogInfo("Setting file name - " + currentFileName);
+        tracer.info("Setting file name - " + currentFileName);
         Session.currentFileName = currentFileName;
     }
 

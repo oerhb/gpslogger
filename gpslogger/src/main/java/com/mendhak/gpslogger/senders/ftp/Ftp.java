@@ -19,10 +19,11 @@
 package com.mendhak.gpslogger.senders.ftp;
 
 
-import com.mendhak.gpslogger.common.Utilities;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.FTPSClient;
+import org.slf4j.LoggerFactory;
+
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.KeyManagerFactory;
 import java.io.IOException;
@@ -30,6 +31,9 @@ import java.io.InputStream;
 
 public class Ftp
 {
+
+    private static final org.slf4j.Logger tracer = LoggerFactory.getLogger(Ftp.class.getSimpleName());
+
     public static boolean Upload(String server, String username, String password, String directory, int port,
                                  boolean useFtps, String protocol, boolean implicit,
                                  InputStream inputStream, String fileName)
@@ -55,32 +59,32 @@ public class Ftp
         }
         catch (Exception e)
         {
-            Utilities.LogError("Could not create FTP Client", e);
+            tracer.error("Could not create FTP Client", e);
             return false;
         }
 
 
         try
         {
-            Utilities.LogDebug("Connecting to FTP");
+            tracer.debug("Connecting to FTP");
             client.connect(server, port);
             showServerReply(client);
 
-            Utilities.LogDebug("Logging in to FTP server");
+            tracer.debug("Logging in to FTP server");
             if (client.login(username, password))
             {
                 client.enterLocalPassiveMode();
                 showServerReply(client);
 
-                Utilities.LogDebug("Uploading file to FTP server " + server);
+                tracer.debug("Uploading file to FTP server " + server);
 
-                Utilities.LogDebug("Checking for FTP directory " + directory);
+                tracer.debug("Checking for FTP directory " + directory);
                 FTPFile[] existingDirectory = client.listFiles(directory);
                 showServerReply(client);
 
                 if(existingDirectory.length <= 0)
                 {
-                    Utilities.LogDebug("Attempting to create FTP directory " + directory);
+                    tracer.debug("Attempting to create FTP directory " + directory);
                     //client.makeDirectory(directory);
                     ftpCreateDirectoryTree(client, directory);
                     showServerReply(client);
@@ -93,42 +97,42 @@ public class Ftp
                 showServerReply(client);
                 if (result)
                 {
-                    Utilities.LogDebug("Successfully FTPd file " + fileName);
+                    tracer.debug("Successfully FTPd file " + fileName);
                 }
                 else
                 {
-                    Utilities.LogDebug("Failed to FTP file " + fileName);
+                    tracer.debug("Failed to FTP file " + fileName);
                     return false;
                 }
 
             }
             else
             {
-                Utilities.LogDebug("Could not log in to FTP server");
+                tracer.debug("Could not log in to FTP server");
                 return false;
             }
 
         }
         catch (Exception e)
         {
-            Utilities.LogError("Could not connect or upload to FTP server.", e);
+            tracer.error("Could not connect or upload to FTP server.", e);
             return false;
         }
         finally
         {
             try
             {
-                Utilities.LogDebug("Logging out of FTP server");
+                tracer.debug("Logging out of FTP server");
                 client.logout();
                 showServerReply(client);
 
-                Utilities.LogDebug("Disconnecting from FTP server");
+                tracer.debug("Disconnecting from FTP server");
                 client.disconnect();
                 showServerReply(client);
             }
             catch (Exception e)
             {
-                Utilities.LogError("Could not logout or disconnect", e);
+                tracer.error("Could not logout or disconnect", e);
                 return false;
             }
         }
@@ -163,7 +167,7 @@ public class Ftp
         String[] replies = client.getReplyStrings();
         if (replies != null && replies.length > 0) {
             for (String aReply : replies) {
-                Utilities.LogDebug("FTP SERVER: " + aReply);
+                tracer.debug("FTP SERVER: " + aReply);
             }
         }
     }

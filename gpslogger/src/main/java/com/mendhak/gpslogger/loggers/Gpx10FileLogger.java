@@ -20,6 +20,7 @@ package com.mendhak.gpslogger.loggers;
 import android.location.Location;
 import com.mendhak.gpslogger.common.RejectionHandler;
 import com.mendhak.gpslogger.common.Utilities;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.util.Date;
@@ -38,6 +39,7 @@ class Gpx10FileLogger implements IFileLogger
     private final boolean addNewTrackSegment;
     private final int satelliteCount;
     protected final String name = "GPX";
+    private static final org.slf4j.Logger tracer = LoggerFactory.getLogger(Gpx10FileLogger.class.getSimpleName());
 
     Gpx10FileLogger(File gpxFile, boolean addNewTrackSegment, int satelliteCount)
     {
@@ -57,7 +59,7 @@ class Gpx10FileLogger implements IFileLogger
         String dateTimeString = Utilities.GetIsoDateTime(new Date(time));
 
         Gpx10WriteHandler writeHandler = new Gpx10WriteHandler(dateTimeString, gpxFile, loc, addNewTrackSegment, satelliteCount);
-        Utilities.LogDebug(String.format("There are currently %s tasks waiting on the GPX10 EXECUTOR.", EXECUTOR.getQueue().size()));
+        tracer.debug(String.format("There are currently %s tasks waiting on the GPX10 EXECUTOR.", EXECUTOR.getQueue().size()));
         EXECUTOR.execute(writeHandler);
     }
 
@@ -72,7 +74,7 @@ class Gpx10FileLogger implements IFileLogger
         String dateTimeString = Utilities.GetIsoDateTime(new Date(time));
 
         Gpx10AnnotateHandler annotateHandler = new Gpx10AnnotateHandler(description, gpxFile, loc, dateTimeString);
-        Utilities.LogDebug(String.format("There are currently %s tasks waiting on the GPX10 EXECUTOR.", EXECUTOR.getQueue().size()));
+        tracer.debug(String.format("There are currently %s tasks waiting on the GPX10 EXECUTOR.", EXECUTOR.getQueue().size()));
         EXECUTOR.execute(annotateHandler);
 
     }
@@ -88,6 +90,7 @@ class Gpx10FileLogger implements IFileLogger
 
 class Gpx10AnnotateHandler implements Runnable
 {
+    private static final org.slf4j.Logger tracer = LoggerFactory.getLogger(Gpx10AnnotateHandler.class.getSimpleName());
     String description;
     File gpxFile;
     Location loc;
@@ -154,11 +157,11 @@ class Gpx10AnnotateHandler implements Runnable
                 gpxFile.delete();
                 gpxTempFile.renameTo(gpxFile);
 
-                Utilities.LogDebug("Finished annotation to GPX10 File");
+                tracer.debug("Finished annotation to GPX10 File");
             }
             catch (Exception e)
             {
-                Utilities.LogError("Gpx10FileLogger.Annotate", e);
+                tracer.error("Gpx10FileLogger.Annotate", e);
             }
 
         }
@@ -193,6 +196,7 @@ class Gpx10AnnotateHandler implements Runnable
 
 class Gpx10WriteHandler implements Runnable
 {
+    private static final org.slf4j.Logger tracer = LoggerFactory.getLogger(Gpx10WriteHandler.class.getSimpleName());
     String dateTimeString;
     Location loc;
     private File gpxFile = null;
@@ -248,12 +252,12 @@ class Gpx10WriteHandler implements Runnable
                 raf.seek(startPosition);
                 raf.write(trackPoint.getBytes());
                 raf.close();
-                Utilities.LogDebug("Finished writing to GPX10 file");
+                tracer.debug("Finished writing to GPX10 file");
 
             }
             catch (Exception e)
             {
-                Utilities.LogError("Gpx10FileLogger.Write", e);
+                tracer.error("Gpx10FileLogger.Write", e);
             }
 
         }

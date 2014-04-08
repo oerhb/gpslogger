@@ -11,7 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import com.mendhak.gpslogger.GpsMainActivity;
 import com.mendhak.gpslogger.R;
-import com.mendhak.gpslogger.common.Utilities;
+import org.slf4j.LoggerFactory;
 
 import java.text.MessageFormat;
 
@@ -19,9 +19,11 @@ import java.text.MessageFormat;
 public class CustomUrlLoggerActivity extends Activity {
 
 
+    private static final org.slf4j.Logger tracer = LoggerFactory.getLogger(CustomUrlLoggerActivity.class.getSimpleName());
+
     public void onCreate(Bundle savedInstanceState)
     {
-        Utilities.LogDebug("CustomUrlLogger Settings Screen");
+        tracer.debug("CustomUrlLogger Settings Screen");
         super.onCreate(savedInstanceState);
         // enable the home button so you can go back to the main screen
         getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -62,7 +64,7 @@ public class CustomUrlLoggerActivity extends Activity {
     {
 
         int itemId = item.getItemId();
-        Utilities.LogInfo("Option item selected - " + String.valueOf(item.getTitle()));
+        tracer.info("Option item selected - " + String.valueOf(item.getTitle()));
 
         switch (itemId)
         {
@@ -79,7 +81,7 @@ public class CustomUrlLoggerActivity extends Activity {
     @Override
     public void onBackPressed()
     {
-        Utilities.LogDebug("CustomUrlLoggerActivity - Back pressed, saving values");
+        tracer.debug("CustomUrlLoggerActivity - Back pressed, saving values");
         EditText urlText = (EditText)findViewById(R.id.customUrlText);
         CheckBox urlEnabled = (CheckBox)findViewById(R.id.customUrlEnabled);
 

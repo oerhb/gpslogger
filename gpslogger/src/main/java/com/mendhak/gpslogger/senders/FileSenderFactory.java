@@ -21,13 +21,13 @@ import android.content.Context;
 import com.mendhak.gpslogger.common.AppSettings;
 import com.mendhak.gpslogger.common.IActionListener;
 import com.mendhak.gpslogger.common.Session;
-import com.mendhak.gpslogger.common.Utilities;
 import com.mendhak.gpslogger.senders.dropbox.DropBoxHelper;
 import com.mendhak.gpslogger.senders.email.AutoEmailHelper;
 import com.mendhak.gpslogger.senders.ftp.FtpHelper;
 import com.mendhak.gpslogger.senders.gdocs.GDocsHelper;
 import com.mendhak.gpslogger.senders.opengts.OpenGTSHelper;
 import com.mendhak.gpslogger.senders.osm.OSMHelper;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -37,6 +37,8 @@ import java.util.List;
 
 public class FileSenderFactory
 {
+
+    private static final org.slf4j.Logger tracer = LoggerFactory.getLogger(FileSenderFactory.class.getSimpleName());
 
     public static IFileSender GetOsmSender(Context applicationContext, IActionListener callback)
     {
@@ -107,7 +109,7 @@ public class FileSenderFactory
                 filePaths.add(f.getAbsolutePath());
             }
 
-            Utilities.LogInfo("Zipping file");
+            tracer.info("Zipping file");
             ZipHelper zh = new ZipHelper(filePaths.toArray(new String[filePaths.size()]), zipFile.getAbsolutePath());
             zh.Zip();
 

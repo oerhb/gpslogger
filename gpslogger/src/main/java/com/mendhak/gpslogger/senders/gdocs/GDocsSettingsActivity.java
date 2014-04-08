@@ -38,6 +38,7 @@ import com.mendhak.gpslogger.R;
 import com.mendhak.gpslogger.common.AppSettings;
 import com.mendhak.gpslogger.common.IActionListener;
 import com.mendhak.gpslogger.common.Utilities;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -49,6 +50,8 @@ import java.util.ArrayList;
 public class GDocsSettingsActivity extends PreferenceActivity
         implements Preference.OnPreferenceClickListener, IActionListener
 {
+
+    private static final org.slf4j.Logger tracer = LoggerFactory.getLogger(GDocsSettingsActivity.class.getSimpleName());
     private final Handler handler = new Handler();
     boolean messageShown = false;
     String accountName;
@@ -117,7 +120,7 @@ public class GDocsSettingsActivity extends PreferenceActivity
     {
 
         int itemId = item.getItemId();
-        Utilities.LogInfo("Option item selected - " + String.valueOf(item.getTitle()));
+        tracer.info("Option item selected - " + String.valueOf(item.getTitle()));
 
         switch (itemId)
         {
@@ -204,7 +207,7 @@ public class GDocsSettingsActivity extends PreferenceActivity
                             AccountManager.KEY_ACCOUNT_NAME);
 
                     GDocsHelper.SetAccountName(getApplicationContext(),accountName);
-                    Utilities.LogDebug(accountName);
+                    tracer.debug(accountName);
                     getAndUseAuthTokenInAsyncTask();
                 }
                 break;
@@ -283,7 +286,7 @@ public class GDocsSettingsActivity extends PreferenceActivity
                 if(authToken != null)
                 {
                     GDocsHelper.SaveAuthToken(getApplicationContext(),authToken);
-                    Utilities.LogDebug(authToken);
+                    tracer.debug(authToken);
                     VerifyGooglePlayServices();
                 }
 
@@ -303,7 +306,7 @@ public class GDocsSettingsActivity extends PreferenceActivity
             gpxFolder.mkdirs();
         }
 
-        Utilities.LogDebug("Creating gpslogger_test.xml");
+        tracer.debug("Creating gpslogger_test.xml");
         File testFile = new File(gpxFolder.getPath(), "gpslogger_test.xml");
 
         try

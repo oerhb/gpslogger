@@ -22,6 +22,7 @@ import android.location.Location;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+import org.slf4j.LoggerFactory;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -38,6 +39,8 @@ import java.util.TimeZone;
  */
 public class OpenGTSClient
 {
+
+    private static final org.slf4j.Logger tracer = LoggerFactory.getLogger(OpenGTSClient.class.getSimpleName());
 
     private Context applicationContext;
     private IActionListener callback;
@@ -93,13 +96,13 @@ public class OpenGTSClient
                 params.put("alt", String.valueOf(loc.getAltitude()));
 
 
-                Utilities.LogDebug("Sending URL " + url + " with params " + params.toString());
+                tracer.debug("Sending URL " + url + " with params " + params.toString());
                 httpClient.get(applicationContext, url.toString(), params, new MyAsyncHttpResponseHandler(this));
             }
         }
         catch (Exception e)
         {
-            Utilities.LogError("OpenGTSClient.sendHTTP", e);
+            tracer.error("OpenGTSClient.sendHTTP", e);
             OnFailure();
         }
     }
@@ -144,14 +147,14 @@ public class OpenGTSClient
         @Override
         public void onSuccess(String response)
         {
-            Utilities.LogInfo("Response Success :" + response);
+            tracer.info("Response Success :" + response);
             callback.OnCompleteLocation();
         }
 
         @Override
         public void onFailure(Throwable e, String response)
         {
-            Utilities.LogError("OnCompleteLocation.MyAsyncHttpResponseHandler Failure with response :" + response, new Exception(e));
+            tracer.error("OnCompleteLocation.MyAsyncHttpResponseHandler Failure with response :" + response, new Exception(e));
             callback.OnFailure();
         }
     }
@@ -159,7 +162,7 @@ public class OpenGTSClient
     public void OnCompleteLocation()
     {
         sentLocationsCount += 1;
-        Utilities.LogDebug("Sent locations count: " + sentLocationsCount + "/" + locationsCount);
+        tracer.debug("Sent locations count: " + sentLocationsCount + "/" + locationsCount);
         if (locationsCount == sentLocationsCount)
         {
             OnComplete();

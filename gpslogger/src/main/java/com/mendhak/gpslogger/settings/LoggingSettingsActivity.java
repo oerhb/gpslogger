@@ -7,12 +7,17 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.preference.*;
+import android.preference.CheckBoxPreference;
+import android.preference.ListPreference;
+import android.preference.Preference;
+import android.preference.PreferenceActivity;
+import android.preference.PreferenceManager;
 import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
 import com.mendhak.gpslogger.R;
 import com.mendhak.gpslogger.common.FileDialog.FileDialog;
 import com.mendhak.gpslogger.common.Utilities;
+import org.slf4j.LoggerFactory;
 
 /**
  * A {@link android.preference.PreferenceActivity} that presents a set of application settings. On
@@ -28,6 +33,7 @@ import com.mendhak.gpslogger.common.Utilities;
 @SuppressWarnings("deprecation")
 public class LoggingSettingsActivity extends PreferenceActivity implements Preference.OnPreferenceClickListener, Preference.OnPreferenceChangeListener {
 
+    private static final org.slf4j.Logger tracer = LoggerFactory.getLogger(LoggingSettingsActivity.class.getSimpleName());
     SharedPreferences prefs;
     private final static int SELECT_FOLDER_DIALOG = 420;
 
@@ -135,7 +141,7 @@ public class LoggingSettingsActivity extends PreferenceActivity implements Prefe
         if (requestCode == SELECT_FOLDER_DIALOG) {
             if (resultCode == Activity.RESULT_OK) {
                 String filePath = data.getStringExtra(FileDialog.RESULT_PATH);
-                Utilities.LogDebug("Folder path selected" + filePath);
+                tracer.debug("Folder path selected" + filePath);
 
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                 SharedPreferences.Editor editor = prefs.edit();
@@ -146,7 +152,7 @@ public class LoggingSettingsActivity extends PreferenceActivity implements Prefe
                 gpsloggerFolder.setSummary(filePath);
 
             } else if (resultCode == Activity.RESULT_CANCELED) {
-                Utilities.LogDebug("No file selected");
+                tracer.debug("No file selected");
             }
         }
     }

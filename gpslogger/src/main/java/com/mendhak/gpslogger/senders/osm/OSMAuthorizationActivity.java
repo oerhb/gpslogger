@@ -32,10 +32,12 @@ import com.mendhak.gpslogger.common.Utilities;
 import oauth.signpost.OAuth;
 import oauth.signpost.OAuthConsumer;
 import oauth.signpost.OAuthProvider;
+import org.slf4j.LoggerFactory;
 
 public class OSMAuthorizationActivity extends PreferenceActivity
 {
 
+    private static final org.slf4j.Logger tracer = LoggerFactory.getLogger(OSMAuthorizationActivity.class.getSimpleName());
     private static OAuthProvider provider;
     private static OAuthConsumer consumer;
 
@@ -92,7 +94,7 @@ public class OSMAuthorizationActivity extends PreferenceActivity
             }
             catch (Exception e)
             {
-                Utilities.LogError("OSMAuthorizationActivity.onCreate - user has returned", e);
+                tracer.error("OSMAuthorizationActivity.onCreate - user has returned", e);
                 Utilities.MsgBox(getString(R.string.sorry), getString(R.string.osm_auth_error), this);
             }
         }
@@ -169,7 +171,7 @@ public class OSMAuthorizationActivity extends PreferenceActivity
                     }
                     catch (Exception e)
                     {
-                        Utilities.LogError("OSMAuthorizationActivity.onClick", e);
+                        tracer.error("OSMAuthorizationActivity.onClick", e);
                         Utilities.MsgBox(getString(R.string.sorry), getString(R.string.osm_auth_error),
                                 OSMAuthorizationActivity.this);
                     }
@@ -193,7 +195,7 @@ public class OSMAuthorizationActivity extends PreferenceActivity
     {
 
         int itemId = item.getItemId();
-        Utilities.LogInfo("Option item selected - " + String.valueOf(item.getTitle()));
+        tracer.info("Option item selected - " + String.valueOf(item.getTitle()));
 
         switch (itemId)
         {

@@ -21,15 +21,19 @@ package com.mendhak.gpslogger.senders.ftp;
 
 import com.mendhak.gpslogger.common.AppSettings;
 import com.mendhak.gpslogger.common.IActionListener;
-import com.mendhak.gpslogger.common.Utilities;
 import com.mendhak.gpslogger.senders.IFileSender;
+import org.slf4j.LoggerFactory;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 
 public class FtpHelper implements IFileSender
 {
+    private static final org.slf4j.Logger tracer = LoggerFactory.getLogger(FtpHelper.class.getSimpleName());
     IActionListener callback;
 
     public FtpHelper(IActionListener callback)
@@ -97,7 +101,7 @@ public class FtpHelper implements IFileSender
         }
         catch (Exception e)
         {
-            Utilities.LogError("Could not prepare file for upload.", e);
+            tracer.error("Could not prepare file for upload.", e);
         }
     }
 

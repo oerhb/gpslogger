@@ -23,6 +23,7 @@ import com.mendhak.gpslogger.common.RejectionHandler;
 import com.mendhak.gpslogger.common.Session;
 import com.mendhak.gpslogger.common.Utilities;
 import com.mendhak.gpslogger.loggers.IFileLogger;
+import org.slf4j.LoggerFactory;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -37,6 +38,8 @@ public class HttpUrlLogger implements IFileLogger {
 
     private final static ThreadPoolExecutor EXECUTOR = new ThreadPoolExecutor(1, 1, 60, TimeUnit.SECONDS,
             new LinkedBlockingQueue<Runnable>(128), new RejectionHandler());
+
+    private static final org.slf4j.Logger tracer = LoggerFactory.getLogger(HttpUrlLogger.class.getSimpleName());
     private final String name = "URL";
     private final int satellites;
     private final String customLoggingUrl;
@@ -62,7 +65,7 @@ public class HttpUrlLogger implements IFileLogger {
     @Override
     public void Annotate(String description, Location loc) throws Exception {
         HttpUrlLogHandler writeHandler = new HttpUrlLogHandler(customLoggingUrl, loc, description, satellites, batteryLevel, androidId);
-        Utilities.LogDebug(String.format("There are currently %s tasks waiting on the GPX10 EXECUTOR.", EXECUTOR.getQueue().size()));
+        tracer.debug(String.format("There are currently %s tasks waiting on the GPX10 EXECUTOR.", EXECUTOR.getQueue().size()));
         EXECUTOR.execute(writeHandler);
     }
 
@@ -74,6 +77,7 @@ public class HttpUrlLogger implements IFileLogger {
 
 class HttpUrlLogHandler implements Runnable {
 
+    private static final org.slf4j.Logger tracer = LoggerFactory.getLogger(HttpUrlLogHandler.class.getSimpleName());
     private Location loc;
     private String annotation;
     private int satellites;
@@ -93,7 +97,7 @@ class HttpUrlLogHandler implements Runnable {
     @Override
     public void run() {
         try {
-            Utilities.LogDebug("Writing HTTP URL Logger");
+            tracer.debug("Writing HTTP URL Logger");
             HttpURLConnection conn = null;
 
             //String logUrl = "http://192.168.1.65:8000/test?lat=%LAT&lon=%LON&sat=%SAT&desc=%DESC&alt=%ALT&acc=%ACC&dir=%DIR&prov=%PROV
@@ -115,7 +119,7 @@ class HttpUrlLogHandler implements Runnable {
 
 
 
-            Utilities.LogDebug(logUrl);
+            tracer.debug(logUrl);
 
 
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.FROYO) {
@@ -131,7 +135,7 @@ class HttpUrlLogHandler implements Runnable {
             conn.setRequestProperty("User-Agent", "GPSLogger for Android");
             InputStream response = conn.getInputStream();
         } catch (Exception e) {
-            Utilities.LogError("HttpUrlLogHandler.run", e);
+            tracer.error("HttpUrlLogHandler.run", e);
 
         }
     }

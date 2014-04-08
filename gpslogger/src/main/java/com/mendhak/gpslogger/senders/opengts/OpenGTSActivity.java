@@ -28,11 +28,14 @@ import android.view.MenuItem;
 import com.mendhak.gpslogger.GpsMainActivity;
 import com.mendhak.gpslogger.R;
 import com.mendhak.gpslogger.common.Utilities;
+import org.slf4j.LoggerFactory;
 
 public class OpenGTSActivity extends PreferenceActivity implements
         OnPreferenceChangeListener,
         OnPreferenceClickListener
 {
+
+    private static final org.slf4j.Logger tracer = LoggerFactory.getLogger(OpenGTSActivity.class.getSimpleName());
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -68,7 +71,7 @@ public class OpenGTSActivity extends PreferenceActivity implements
     {
 
         int itemId = item.getItemId();
-        Utilities.LogInfo("Option item selected - " + String.valueOf(item.getTitle()));
+        tracer.info("Option item selected - " + String.valueOf(item.getTitle()));
 
         switch (itemId)
         {

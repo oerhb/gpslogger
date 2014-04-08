@@ -19,23 +19,35 @@ package com.mendhak.gpslogger.common;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.*;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.BatteryManager;
 import android.os.Build;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
-import android.util.Log;
-
+import ch.qos.logback.classic.LoggerContext;
+import ch.qos.logback.classic.android.LogcatAppender;
+import ch.qos.logback.classic.encoder.PatternLayoutEncoder;
+import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.core.rolling.TimeBasedRollingPolicy;
 import com.mendhak.gpslogger.R;
 import com.mendhak.gpslogger.senders.ftp.FtpHelper;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -46,72 +58,63 @@ public class Utilities
 
     private static final int LOGLEVEL = 5;
     private static ProgressDialog pd;
+    private static org.slf4j.Logger tracer = LoggerFactory.getLogger(Utilities.class.getSimpleName());
 
-    private static void LogToDebugFile(String message)
-    {
-        if (AppSettings.isDebugToFile())
-        {
-            DebugLogger.Write(message);
-        }
+
+    public static void ConfigureLogbackDirectly(Context context) {
+        // reset the default context (which may already have been initialized)
+        // since we want to reconfigure it
+        LoggerContext lc = (LoggerContext) LoggerFactory.getILoggerFactory();
+        lc.reset();
+
+        //final String LOG_DIR = "/sdcard/GPSLogger";
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        final String LOG_DIR = prefs.getString("gpslogger_folder", Environment.getExternalStorageDirectory() + "/GPSLogger");
+
+        GpsRollingFileAppender<ILoggingEvent> rollingFileAppender = new GpsRollingFileAppender<ILoggingEvent>();
+        rollingFileAppender.setAppend(true);
+        rollingFileAppender.setContext(lc);
+
+        // OPTIONAL: Set an active log file (separate from the rollover files).
+        // If rollingPolicy.fileNamePattern already set, you don't need this.
+        rollingFileAppender.setFile(LOG_DIR + "/debuglog.txt");
+        rollingFileAppender.setLazy(true);
+
+        TimeBasedRollingPolicy<ILoggingEvent> rollingPolicy = new TimeBasedRollingPolicy<ILoggingEvent>();
+        rollingPolicy.setFileNamePattern(LOG_DIR + "/debuglog.%d.txt");
+        rollingPolicy.setMaxHistory(3);
+        rollingPolicy.setParent(rollingFileAppender);  // parent and context required!
+        rollingPolicy.setContext(lc);
+        rollingPolicy.start();
+
+        rollingFileAppender.setRollingPolicy(rollingPolicy);
+
+        PatternLayoutEncoder encoder = new PatternLayoutEncoder();
+        encoder.setPattern("%d{HH:mm:ss} %-5p %class{0}.%method:%L - %m%n");
+        encoder.setContext(lc);
+        encoder.start();
+
+        rollingFileAppender.setEncoder(encoder);
+        rollingFileAppender.start();
+
+        // setup LogcatAppender
+        PatternLayoutEncoder encoder2 = new PatternLayoutEncoder();
+        encoder2.setContext(lc);
+        encoder2.setPattern("%method:%L - %m%n");
+        encoder2.start();
+
+        LogcatAppender logcatAppender = new LogcatAppender();
+        logcatAppender.setContext(lc);
+        logcatAppender.setEncoder(encoder2);
+        logcatAppender.start();
+
+        // add the newly created appenders to the root logger;
+        // qualify Logger to disambiguate from org.slf4j.Logger
+        ch.qos.logback.classic.Logger root = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
+        root.addAppender(rollingFileAppender);
+        root.addAppender(logcatAppender);
     }
 
-    public static void LogInfo(String message)
-    {
-
-
-        if (LOGLEVEL >= 3)
-        {
-            Log.i("GPSLogger", message);
-        }
-
-        LogToDebugFile(message);
-
-    }
-
-    public static void LogError(String methodName, Exception ex)
-    {
-        try
-        {
-            LogError(methodName + ":" + ex.getMessage());
-        }
-        catch (Exception e)
-        {
-            /**/
-        }
-    }
-
-    private static void LogError(String message)
-    {
-        Log.e("GPSLogger", message);
-        LogToDebugFile(message);
-    }
-
-    public static void LogDebug(String message)
-    {
-        if (LOGLEVEL >= 4)
-        {
-            Log.d("GPSLogger", message);
-        }
-        LogToDebugFile(message);
-    }
-
-    public static void LogWarning(String message)
-    {
-        if (LOGLEVEL >= 2)
-        {
-            Log.w("GPSLogger", message);
-        }
-        LogToDebugFile(message);
-    }
-
-    public static void LogVerbose(String message)
-    {
-        if (LOGLEVEL >= 5)
-        {
-            Log.v("GPSLogger", message);
-        }
-        LogToDebugFile(message);
-    }
 
     /**
      * Gets user preferences, populates the AppSettings class.
@@ -119,7 +122,7 @@ public class Utilities
     public static void PopulateAppSettings(Context context)
     {
 
-        Utilities.LogInfo("Getting preferences");
+        tracer.info("Getting preferences");
         SharedPreferences prefs = PreferenceManager
                 .getDefaultSharedPreferences(context);
 
@@ -278,6 +281,7 @@ public class Utilities
         AppSettings.setFileNamePrefixSerial(prefs.getBoolean("new_file_prefix_serial",false));
 
     }
+
 
     public static void ShowProgress(Context ctx, String title, String message)
     {
@@ -720,7 +724,7 @@ public class Utilities
             }
             catch (Exception e)
             {
-                Utilities.LogWarning("GetStringFromInputStream - could not close stream");
+                tracer.warn("GetStringFromInputStream - could not close stream");
             }
         }
 
@@ -762,7 +766,7 @@ public class Utilities
             }
             catch (Exception e)
             {
-                Utilities.LogWarning("GetStringFromInputStream - could not close stream");
+                tracer.warn("GetStringFromInputStream - could not close stream");
             }
         }
 

@@ -24,12 +24,13 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import com.mendhak.gpslogger.common.Utilities;
+import org.slf4j.LoggerFactory;
 
 public class Faqtivity extends Activity
 {
 
 
+    private static final org.slf4j.Logger tracer = LoggerFactory.getLogger(Faqtivity.class.getSimpleName());
     /**
      * Event raised when the form is created for the first time
      */
@@ -37,7 +38,7 @@ public class Faqtivity extends Activity
     public void onCreate(Bundle savedInstanceState)
     {
 
-        Utilities.LogDebug("Faqtivity.onCreate");
+        tracer.debug("Faqtivity.onCreate");
 
         super.onCreate(savedInstanceState);
 
@@ -60,7 +61,7 @@ public class Faqtivity extends Activity
     {
 
         int itemId = item.getItemId();
-        Utilities.LogInfo("Option item selected - " + String.valueOf(item.getTitle()));
+        tracer.info("Option item selected - " + String.valueOf(item.getTitle()));
 
         switch (itemId)
         {

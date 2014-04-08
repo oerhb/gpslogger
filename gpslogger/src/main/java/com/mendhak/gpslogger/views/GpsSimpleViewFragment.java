@@ -1,7 +1,6 @@
 package com.mendhak.gpslogger.views;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,6 +14,7 @@ import com.mendhak.gpslogger.common.AppSettings;
 import com.mendhak.gpslogger.common.Session;
 import com.mendhak.gpslogger.common.Utilities;
 import com.mendhak.gpslogger.views.component.ToggleComponent;
+import org.slf4j.LoggerFactory;
 
 import java.text.NumberFormat;
 
@@ -24,6 +24,7 @@ import java.text.NumberFormat;
 public class GpsSimpleViewFragment extends GenericViewFragment {
 
     Context context;
+    private static final org.slf4j.Logger tracer = LoggerFactory.getLogger(GpsSimpleViewFragment.class.getSimpleName());
 
 
     private View rootView;
@@ -287,7 +288,7 @@ public class GpsSimpleViewFragment extends GenericViewFragment {
 
     @Override
     public void SetLoggingStarted() {
-        Utilities.LogDebug("GpsSimpleViewFragment.SetLoggingStarted");
+        tracer.debug("GpsSimpleViewFragment.SetLoggingStarted");
         clearLocationDisplay();
         toggleComponent.SetEnabled(false);
     }

@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextSwitcher;
 import android.widget.TextView;
 import com.mendhak.gpslogger.R;
 import com.mendhak.gpslogger.common.AppSettings;
@@ -14,6 +13,7 @@ import com.mendhak.gpslogger.common.Utilities;
 import com.mendhak.gpslogger.loggers.FileLoggerFactory;
 import com.mendhak.gpslogger.loggers.IFileLogger;
 import com.mendhak.gpslogger.views.component.ToggleComponent;
+import org.slf4j.LoggerFactory;
 
 import java.text.DateFormat;
 import java.text.NumberFormat;
@@ -29,6 +29,7 @@ public class GpsDetailedViewFragment extends GenericViewFragment {
 
     private ToggleComponent toggleComponent;
     private View rootView;
+    private static final org.slf4j.Logger tracer = LoggerFactory.getLogger(GpsDetailedViewFragment.class.getSimpleName());
 
     public static final GpsDetailedViewFragment newInstance() {
 
@@ -304,7 +305,7 @@ public class GpsDetailedViewFragment extends GenericViewFragment {
      */
     private void ShowPreferencesSummary()
     {
-        Utilities.LogDebug("GpsDetailedViewFragment.ShowPreferencesSummary");
+        tracer.debug("GpsDetailedViewFragment.ShowPreferencesSummary");
         try
         {
             TextView txtLoggingTo = (TextView) rootView.findViewById(R.id.detailedview_loggingto_text);
@@ -394,7 +395,7 @@ public class GpsDetailedViewFragment extends GenericViewFragment {
         }
         catch (Exception ex)
         {
-            Utilities.LogError("ShowPreferencesSummary", ex);
+            tracer.error("ShowPreferencesSummary", ex);
         }
 
 

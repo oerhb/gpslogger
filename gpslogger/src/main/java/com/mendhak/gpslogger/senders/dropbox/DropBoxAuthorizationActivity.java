@@ -27,10 +27,12 @@ import android.view.MenuItem;
 import com.mendhak.gpslogger.GpsMainActivity;
 import com.mendhak.gpslogger.R;
 import com.mendhak.gpslogger.common.Utilities;
+import org.slf4j.LoggerFactory;
 
 public class DropBoxAuthorizationActivity extends PreferenceActivity
 {
 
+    private static final org.slf4j.Logger tracer = LoggerFactory.getLogger(DropBoxAuthorizationActivity.class.getSimpleName());
     DropBoxHelper helper;
 
     @Override
@@ -78,7 +80,7 @@ public class DropBoxAuthorizationActivity extends PreferenceActivity
                     }
                     catch (Exception e)
                     {
-                        Utilities.LogError("DropBoxAuthorizationActivity.onPreferenceClick", e);
+                        tracer.error("DropBoxAuthorizationActivity.onPreferenceClick", e);
                     }
                 }
 
@@ -96,7 +98,7 @@ public class DropBoxAuthorizationActivity extends PreferenceActivity
     {
 
         int itemId = item.getItemId();
-        Utilities.LogInfo("Option item selected - " + String.valueOf(item.getTitle()));
+        tracer.info("Option item selected - " + String.valueOf(item.getTitle()));
 
         switch (itemId)
         {
@@ -131,7 +133,7 @@ public class DropBoxAuthorizationActivity extends PreferenceActivity
         {
             Utilities.MsgBox(getString(R.string.error), getString(R.string.dropbox_couldnotauthorize),
                     DropBoxAuthorizationActivity.this);
-            Utilities.LogError("DropBoxAuthorizationActivity.onResume", e);
+            tracer.error("DropBoxAuthorizationActivity.onResume", e);
         }
 
     }
