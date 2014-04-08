@@ -63,8 +63,11 @@ public class GpsBigViewFragment extends GenericViewFragment implements View.OnTo
 
             txtLong.setText(String.valueOf(nf.format(locationInfo.getLongitude())));
         }
-        else
+        else if (Session.isStarted())
         {
+            txtLat.setText("...");
+        }
+        else {
             txtLat.setText(R.string.bigview_taptotoggle);
         }
     }
