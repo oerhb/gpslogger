@@ -141,10 +141,10 @@ public class GpsSimpleViewFragment extends GenericViewFragment {
 
             if(accuracy>500){
                 txtAccuracy.setTextColor(getResources().getColor(android.R.color.holo_orange_dark));
-            }
-
-            if(accuracy>900){
+            } else if(accuracy>900){
                 txtAccuracy.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
+            } else {
+                txtAccuracy.setTextColor(getResources().getColor(android.R.color.black));
             }
 
 
@@ -245,6 +245,7 @@ public class GpsSimpleViewFragment extends GenericViewFragment {
 
         TextView txtAccuracy = (TextView) rootView.findViewById(R.id.simpleview_txtAccuracy);
         txtAccuracy.setText("-");
+        txtAccuracy.setTextColor(getResources().getColor(android.R.color.black));
 
 
         TextView txtAltitude = (TextView) rootView.findViewById(R.id.simpleview_txtAltitude);
