@@ -40,8 +40,8 @@ public class DropBoxHelper implements IActionListener, IFileSender
 {
 
     private static final org.slf4j.Logger tracer = LoggerFactory.getLogger(DropBoxHelper.class.getSimpleName());
-    final static private String ACCESS_KEY_NAME = "DROPBOX_ACCESS_KEY";
-    final static private String ACCESS_SECRET_NAME = "DROPBOX_ACCESS_SECRET";
+    final static public String ACCESS_KEY_NAME = "DROPBOX_ACCESS_KEY";
+    final static public String ACCESS_SECRET_NAME = "DROPBOX_ACCESS_SECRET";
     final static private Session.AccessType ACCESS_TYPE = Session.AccessType.APP_FOLDER;
     Context ctx;
     DropboxAPI<AndroidAuthSession> dropboxApi;

@@ -461,5 +461,6 @@
     <string name="view_detailed">Detailed View</string>
     <string name="view_big">Big View</string>
     <string name="bigview_taptotoggle">Tap to start/stop logging</string>
+    <string name="summary_autosendtargets">Upload to:</string>
 
 </resources>

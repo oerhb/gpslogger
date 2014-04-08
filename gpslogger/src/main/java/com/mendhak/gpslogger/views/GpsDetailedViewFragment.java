@@ -12,6 +12,8 @@ import com.mendhak.gpslogger.common.Session;
 import com.mendhak.gpslogger.common.Utilities;
 import com.mendhak.gpslogger.loggers.FileLoggerFactory;
 import com.mendhak.gpslogger.loggers.IFileLogger;
+import com.mendhak.gpslogger.senders.gdocs.GDocsHelper;
+import com.mendhak.gpslogger.senders.osm.OSMHelper;
 import com.mendhak.gpslogger.views.component.ToggleComponent;
 import org.slf4j.LoggerFactory;
 
@@ -392,6 +394,38 @@ public class GpsDetailedViewFragment extends GenericViewFragment {
 
 
             showCurrentFileName(Session.getCurrentFileName());
+
+
+            StringBuilder sb = new StringBuilder();
+            if(Utilities.IsEmailSetup()){
+                sb.append("Email\n");
+            }
+
+            if(Utilities.IsFtpSetup()){
+                sb.append("FTP\n");
+            }
+
+            if(GDocsHelper.IsLinked(getActivity().getApplicationContext())){
+                sb.append("Google Docs\n");
+            }
+
+            if(OSMHelper.IsOsmAuthorized(getActivity().getApplicationContext())){
+                sb.append("OpenStreetMap\n");
+            }
+
+            if(Utilities.IsDropBoxSetup(getActivity().getApplicationContext())){
+                sb.append("Dropbox\n");
+            }
+
+            if(Utilities.IsOpenGTSSetup()){
+                sb.append("OpenGTS\n");
+            }
+
+            TextView txtTargets = (TextView)rootView.findViewById(R.id.detailedview_autosendtargets_text);
+            txtTargets.setText(sb.toString());
+
+
+
         }
         catch (Exception ex)
         {

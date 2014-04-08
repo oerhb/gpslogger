@@ -35,6 +35,7 @@ import ch.qos.logback.classic.encoder.PatternLayoutEncoder;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.rolling.TimeBasedRollingPolicy;
 import com.mendhak.gpslogger.R;
+import com.mendhak.gpslogger.senders.dropbox.DropBoxHelper;
 import com.mendhak.gpslogger.senders.ftp.FtpHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -637,6 +638,11 @@ public class Utilities
                 AppSettings.getFtpProtocol(), AppSettings.FtpImplicit());
     }
 
+    public static boolean IsDropBoxSetup(Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return prefs.contains(DropBoxHelper.ACCESS_KEY_NAME) && prefs.contains(DropBoxHelper.ACCESS_SECRET_NAME);
+    }
+
     /**
      * Uses the Haversine formula to calculate the distnace between to lat-long coordinates
      *
@@ -881,6 +887,7 @@ public class Utilities
             return "";
         }
     }
+
 
 
 }

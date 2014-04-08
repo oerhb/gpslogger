@@ -7,6 +7,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 import com.mendhak.gpslogger.R;
 import com.mendhak.gpslogger.common.Session;
 import org.slf4j.LoggerFactory;
@@ -45,7 +46,10 @@ public class GpsBigViewFragment extends GenericViewFragment implements View.OnTo
 
         SetLocation(Session.getCurrentLocationInfo());
 
-        //Toast.makeText(getActivity().getApplicationContext(), R.string.bigview_taptotoggle, Toast.LENGTH_LONG).show();
+        if(Session.isStarted()){
+            Toast.makeText(getActivity().getApplicationContext(), R.string.bigview_taptotoggle, Toast.LENGTH_LONG).show();
+        }
+
 
         return rootView;
     }
