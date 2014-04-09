@@ -142,7 +142,9 @@ public class GpsSimpleViewFragment extends GenericViewFragment {
 
             if(accuracy>500){
                 txtAccuracy.setTextColor(getResources().getColor(android.R.color.holo_orange_dark));
-            } else if(accuracy>900){
+            }
+
+            if(accuracy>900){
                 txtAccuracy.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
             } else {
                 txtAccuracy.setTextColor(getResources().getColor(android.R.color.black));
