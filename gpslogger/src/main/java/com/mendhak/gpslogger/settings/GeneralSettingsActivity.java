@@ -1,28 +1,16 @@
 package com.mendhak.gpslogger.settings;
 
 import android.annotation.TargetApi;
-import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
-import android.media.Ringtone;
-import android.media.RingtoneManager;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
-import android.preference.PreferenceCategory;
-import android.preference.PreferenceFragment;
-import android.preference.PreferenceManager;
-import android.preference.RingtonePreference;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
+import android.view.MenuItem;
 import com.mendhak.gpslogger.R;
-
-import java.util.List;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
@@ -37,6 +25,8 @@ import java.util.List;
  */
 @SuppressWarnings("deprecation")
 public class GeneralSettingsActivity extends PreferenceActivity implements Preference.OnPreferenceClickListener {
+
+    int aboutClickCounter=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +72,15 @@ public class GeneralSettingsActivity extends PreferenceActivity implements Prefe
 
         Preference enableDisablePref = findPreference("enableDisableGps");
         enableDisablePref.setOnPreferenceClickListener(this);
+
+        Preference aboutInfo = findPreference("about_version_info");
+        try {
+
+            aboutInfo.setTitle("GPSLogger version " + getPackageManager().getPackageInfo(getPackageName(), 0).versionName);
+            aboutInfo.setOnPreferenceClickListener(this);
+        } catch (PackageManager.NameNotFoundException e) {
+
+        }
     }
 
 
@@ -91,6 +90,16 @@ public class GeneralSettingsActivity extends PreferenceActivity implements Prefe
         if(preference.getKey().equals("enableDisableGps")){
             startActivity(new Intent("android.settings.LOCATION_SOURCE_SETTINGS"));
             return true;
+        }
+
+        if(preference.getKey().equals("about_version_info")){
+            aboutClickCounter++;
+
+            if(aboutClickCounter==3){
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube://dQw4w9WgXcQ"));
+                startActivity(intent);
+            }
+
         }
         return false;
     }
