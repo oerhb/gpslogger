@@ -90,13 +90,13 @@ public class GpsMainActivity extends Activity
         Utilities.ConfigureLogbackDirectly(getApplicationContext());
         tracer = LoggerFactory.getLogger(GpsMainActivity.class.getSimpleName());
 
-        tracer.debug("GpsMainActivity.onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gps_main);
 
         SetUpNavigationDrawer();
 
         if (fragmentManager == null) {
+            tracer.debug("Creating fragmentManager");
             fragmentManager = getFragmentManager();
         }
 
@@ -109,34 +109,26 @@ public class GpsMainActivity extends Activity
 
     @Override
     protected void onStart() {
-        tracer.debug("GpsMainActivity.onStart");
         super.onStart();
         StartAndBindService();
     }
 
     @Override
     protected void onResume() {
-        tracer.warn("On Resume");
-
-
-        tracer.debug("GpsMainActivity.onResume");
         super.onResume();
         GetPreferences();
         StartAndBindService();
         enableDisableMenuItems();
-
     }
 
     @Override
     protected void onPause() {
-        tracer.debug("GpsMainActivity.onPause");
         StopAndUnbindServiceIfRequired();
         super.onPause();
     }
 
     @Override
     protected void onDestroy() {
-        tracer.debug("GpsMainActivity.onDestroy");
         StopAndUnbindServiceIfRequired();
         super.onDestroy();
 
@@ -144,7 +136,6 @@ public class GpsMainActivity extends Activity
 
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_MENU) {
-            tracer.info("KeyUp Menu");
             navigationDrawerFragment.toggleDrawer();
         }
 
@@ -155,8 +146,6 @@ public class GpsMainActivity extends Activity
      * Handles the hardware back-button press
      */
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        tracer.info("KeyDown - " + String.valueOf(keyCode));
-
         if (keyCode == KeyEvent.KEYCODE_BACK && Session.isBoundToService()) {
             StopAndUnbindServiceIfRequired();
         }
@@ -174,33 +163,7 @@ public class GpsMainActivity extends Activity
         navigationDrawerFragment.setUp(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout));
     }
 
-    private void changeMainView(int view) {
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putInt("dropdownview", view);
-        editor.commit();
-
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-
-        switch (view) {
-            case 0:
-                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
-                transaction.replace(R.id.container, GpsSimpleViewFragment.newInstance());
-                break;
-            case 1:
-                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
-                transaction.replace(R.id.container, GpsDetailedViewFragment.newInstance());
-                break;
-            default:
-            case 2:
-                //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-                transaction.replace(R.id.container, GpsBigViewFragment.newInstance());
-                break;
-        }
-        transaction.commitAllowingStateLoss();
-    }
 
     /**
      * Handles drawer item selection
@@ -208,7 +171,7 @@ public class GpsMainActivity extends Activity
     @Override
     public void onNavigationDrawerItemSelected(int position) {
 
-        tracer.debug("onNavigationDrawerItemSelected: " + String.valueOf(position));
+        tracer.debug("Navigation menu item: " + String.valueOf(position));
         switch (position) {
             case 0:
                 break;
@@ -296,9 +259,34 @@ public class GpsMainActivity extends Activity
      */
     @Override
     public boolean onNavigationItemSelected(int position, long id) {
-        changeMainView(position);
-        return true;
 
+        tracer.debug("Changing main view: " + String.valueOf(position));
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt("dropdownview", position);
+        editor.commit();
+
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+        switch (position) {
+            case 0:
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
+                transaction.replace(R.id.container, GpsSimpleViewFragment.newInstance());
+                break;
+            case 1:
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
+                transaction.replace(R.id.container, GpsDetailedViewFragment.newInstance());
+                break;
+            default:
+            case 2:
+                //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                transaction.replace(R.id.container, GpsBigViewFragment.newInstance());
+                break;
+        }
+        transaction.commitAllowingStateLoss();
+
+        return true;
     }
 
 
@@ -351,6 +339,8 @@ public class GpsMainActivity extends Activity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
+        tracer.debug("Menu Item: " + String.valueOf(item.getTitle()));
+
         switch (id) {
             case R.id.mnuAnnotate:
                 Annotate();
@@ -402,17 +392,14 @@ public class GpsMainActivity extends Activity
      * description is given, the logging service starts in single point mode.
      */
     private void Annotate() {
-        tracer.debug("GpsMainActivity.Annotate");
 
         if (!AppSettings.shouldLogToGpx() && !AppSettings.shouldLogToKml() && !AppSettings.shouldLogToCustomUrl()) {
+            tracer.debug("GPX, KML, URL disabled; annotation shouldn't work");
             Toast.makeText(getApplicationContext(), getString(R.string.annotation_requires_logging), 1000).show();
-
             return;
         }
 
         AlertDialog.Builder alert = new AlertDialog.Builder(GpsMainActivity.this);
-
-
         alert.setTitle(R.string.add_description);
         alert.setMessage(R.string.letters_numbers);
 
@@ -427,13 +414,16 @@ public class GpsMainActivity extends Activity
             public void onClick(DialogInterface dialog, int whichButton) {
                 final String desc = Utilities.CleanDescription(input.getText().toString());
                 if (desc.length() == 0) {
+                    tracer.debug("Clearing annotation");
                     Session.clearDescription();
                     OnClearAnnotation();
                 } else {
+                    tracer.debug("Setting annotation: " + desc);
                     Session.setDescription(desc);
                     OnSetAnnotation();
                     // logOnce will start single point mode.
                     if (!Session.isStarted()) {
+                        tracer.debug("Will start log-single-point");
                         LogSinglePoint();
                     }
                 }
@@ -450,7 +440,6 @@ public class GpsMainActivity extends Activity
         AlertDialog alertDialog = alert.create();
         alertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         alertDialog.show();
-        //alert.show();
     }
 
 
@@ -458,40 +447,34 @@ public class GpsMainActivity extends Activity
      * Uploads a GPS Trace to OpenStreetMap.org.
      */
     private void UploadToOpenStreetMap() {
-        tracer.debug("GpsMainactivity.UploadToOpenStreetMap");
-
         if (!OSMHelper.IsOsmAuthorized(getApplicationContext())) {
+            tracer.debug("Not authorized, opening OSM activity");
             startActivity(OSMHelper.GetOsmSettingsIntent(getApplicationContext()));
             return;
         }
 
         Intent settingsIntent = OSMHelper.GetOsmSettingsIntent(getApplicationContext());
-
         ShowFileListDialog(settingsIntent, FileSenderFactory.GetOsmSender(getApplicationContext(), this));
-
     }
 
     private void UploadToDropBox() {
-        tracer.debug("GpsMainActivity.UploadToDropBox");
-
         final DropBoxHelper dropBoxHelper = new DropBoxHelper(getApplicationContext(), this);
 
         if (!dropBoxHelper.IsLinked()) {
+            tracer.debug("Not linked, opening Dropbox activity");
             startActivity(new Intent("com.mendhak.gpslogger.DROPBOX_SETUP"));
             return;
         }
 
         Intent settingsIntent = new Intent(GpsMainActivity.this, DropBoxAuthorizationActivity.class);
         ShowFileListDialog(settingsIntent, FileSenderFactory.GetDropBoxSender(getApplication(), this));
-
     }
 
     private void SendToOpenGTS() {
-        tracer.debug("GpsMainActivity.SendToOpenGTS");
-
         Intent settingsIntent = new Intent(getApplicationContext(), OpenGTSActivity.class);
 
         if (!Utilities.IsOpenGTSSetup()) {
+            tracer.debug("Not set up, opening OpenGTS activity");
             startActivity(settingsIntent);
         } else {
             IFileSender fs = FileSenderFactory.GetOpenGTSSender(getApplicationContext(), this);
@@ -500,9 +483,8 @@ public class GpsMainActivity extends Activity
     }
 
     private void UploadToGoogleDocs() {
-        tracer.debug("GpsMainActivity.UploadToGoogleDocs");
-
         if (!GDocsHelper.IsLinked(getApplicationContext())) {
+            tracer.debug("Not linked, opening Google Docs setup activity");
             startActivity(new Intent(GpsMainActivity.this, GDocsSettingsActivity.class));
             return;
         }
@@ -512,11 +494,10 @@ public class GpsMainActivity extends Activity
     }
 
     private void SendToFtp() {
-        tracer.debug("GpsMainActivity.SendToFTP");
-
         Intent settingsIntent = new Intent(getApplicationContext(), AutoFtpActivity.class);
 
         if (!Utilities.IsFtpSetup()) {
+            tracer.debug("Not setup, opening FTP setup activity");
             startActivity(settingsIntent);
         } else {
             IFileSender fs = FileSenderFactory.GetFtpSender(getApplicationContext(), this);
@@ -526,12 +507,10 @@ public class GpsMainActivity extends Activity
     }
 
     private void SelectAndEmailFile() {
-        tracer.debug("GpsMainActivity.SelectAndEmailFile");
-
         Intent settingsIntent = new Intent(getApplicationContext(), AutoEmailActivity.class);
 
         if (!Utilities.IsEmailSetup()) {
-
+            tracer.debug("Not set up, opening email setup activity");
             startActivity(settingsIntent);
         } else {
             ShowFileListDialog(settingsIntent, FileSenderFactory.GetEmailSender(this));
@@ -578,8 +557,10 @@ public class GpsMainActivity extends Activity
                     String chosenFileName = files[index];
 
                     if (chosenFileName.equalsIgnoreCase(settingsText)) {
+                        tracer.debug("User chose to open settings");
                         startActivity(settingsIntent);
                     } else {
+                        tracer.info("Selected file to upload- " + chosenFileName);
                         Utilities.ShowProgress(GpsMainActivity.this, getString(R.string.please_wait),
                                 getString(R.string.please_wait));
                         List<File> files = new ArrayList<File>();
@@ -644,6 +625,7 @@ public class GpsMainActivity extends Activity
                         intent.setType("*/*");
 
                         if (chosenFileName.equalsIgnoreCase(locationOnly)) {
+                            tracer.debug("User selected location only");
                             intent.setType("text/plain");
                         }
 
@@ -658,6 +640,8 @@ public class GpsMainActivity extends Activity
 
                         if (chosenFileName.length() > 0
                                 && !chosenFileName.equalsIgnoreCase(locationOnly)) {
+
+                            tracer.info("Selected file to share - " + chosenFileName);
                             intent.putExtra(Intent.EXTRA_STREAM,
                                     Uri.fromFile(new File(gpxFolder, chosenFileName)));
                         }
@@ -683,36 +667,14 @@ public class GpsMainActivity extends Activity
     private final ServiceConnection gpsServiceConnection = new ServiceConnection() {
 
         public void onServiceDisconnected(ComponentName name) {
+            tracer.debug("Disconnected from GPSLoggingService from MainActivity");
             loggingService = null;
         }
 
         public void onServiceConnected(ComponentName name, IBinder service) {
+            tracer.debug("Connected to GPSLoggingService from MainActivity");
             loggingService = ((GpsLoggingService.GpsLoggingBinder) service).getService();
             GpsLoggingService.SetServiceClient(GpsMainActivity.this);
-
-
-//            Button buttonSinglePoint = (Button) findViewById(R.id.buttonSinglePoint);
-//
-//            buttonSinglePoint.setOnClickListener(GpsMainActivity.this);
-
-//            if (Session.isStarted())
-//            {
-//                if (Session.isSinglePointMode())
-//                {
-//                    SetMainButtonEnabled(false);
-//                }
-//                else
-//                {
-//                    SetMainButtonChecked(true);
-//                    SetSinglePointButtonEnabled(false);
-//                }
-//
-//                DisplayLocationInfo(Session.getCurrentLocationInfo());
-//            }
-
-//            // Form setup - toggle button, display existing location info
-//            ToggleButton buttonOnOff = (ToggleButton) findViewById(R.id.buttonOnOff);
-//            buttonOnOff.setOnCheckedChangeListener(GpsMainActivity.this);
 
             if (Session.hasDescription()) {
                 OnSetAnnotation();
@@ -726,7 +688,7 @@ public class GpsMainActivity extends Activity
      * Starts the service and binds the activity to it.
      */
     private void StartAndBindService() {
-        tracer.debug("StartAndBindService - binding now");
+        tracer.debug(".");
         serviceIntent = new Intent(this, GpsLoggingService.class);
         // Start the service in case it isn't already running
         startService(serviceIntent);
@@ -740,14 +702,14 @@ public class GpsMainActivity extends Activity
      * Stops the service if it isn't logging. Also unbinds.
      */
     private void StopAndUnbindServiceIfRequired() {
-        tracer.debug("GpsMainActivity.StopAndUnbindServiceIfRequired");
+        tracer.debug(".");
         if (Session.isBoundToService()) {
             unbindService(gpsServiceConnection);
             Session.setBoundToService(false);
         }
 
         if (!Session.isStarted()) {
-            tracer.debug("StopServiceIfRequired - Stopping the service");
+            tracer.debug("Stopping the service");
             //serviceIntent = new Intent(this, GpsLoggingService.class);
             stopService(serviceIntent);
         }
@@ -777,7 +739,7 @@ public class GpsMainActivity extends Activity
 
     @Override
     public void OnLocationUpdate(Location loc) {
-        tracer.debug("Received location update");
+        tracer.debug(".");
         Fragment currentFragment = fragmentManager.findFragmentById(R.id.container);
         if (currentFragment instanceof GenericViewFragment) {
             ((GenericViewFragment) currentFragment).SetLocation(loc);
@@ -787,7 +749,6 @@ public class GpsMainActivity extends Activity
 
     @Override
     public void OnSatelliteCount(int count) {
-        tracer.debug("Satellites: " + String.valueOf(count));
         Fragment currentFragment = fragmentManager.findFragmentById(R.id.container);
         if (currentFragment instanceof GenericViewFragment) {
             ((GenericViewFragment) currentFragment).SetSatelliteCount(count);
@@ -796,7 +757,7 @@ public class GpsMainActivity extends Activity
 
     @Override
     public void OnStartLogging() {
-        tracer.debug("OnStartLogging");
+        tracer.debug(".");
 
         Fragment currentFragment = fragmentManager.findFragmentById(R.id.container);
         if (currentFragment instanceof GenericViewFragment) {
@@ -809,7 +770,7 @@ public class GpsMainActivity extends Activity
 
     @Override
     public void OnStopLogging() {
-        tracer.debug("OnStopLogging");
+        tracer.debug(".");
         Fragment currentFragment = fragmentManager.findFragmentById(R.id.container);
         if (currentFragment instanceof GenericViewFragment) {
             ((GenericViewFragment) currentFragment).SetLoggingStopped();
@@ -819,20 +780,21 @@ public class GpsMainActivity extends Activity
     }
 
     private void SetBulbStatus(boolean started) {
+        tracer.debug( ((started) ? "Bulb Started" : "Bulb Stopped"));
         ImageView bulb = (ImageView) findViewById(R.id.notification_bulb);
         bulb.setImageResource(started ? R.drawable.circle_green : R.drawable.circle_none);
     }
 
     @Override
     public void OnSetAnnotation() {
-        tracer.debug("GpsMainActivity.OnSetAnnotation");
+        tracer.debug(".");
         this.annotationMarked = true;
         enableDisableMenuItems();
     }
 
     @Override
     public void OnClearAnnotation() {
-        tracer.debug("GpsMainActivity.OnClearAnnotation");
+        tracer.debug(".");
         this.annotationMarked = false;
         enableDisableMenuItems();
 
@@ -849,6 +811,7 @@ public class GpsMainActivity extends Activity
 
     @Override
     public void OnWaitingForLocation(boolean inProgress) {
+        tracer.debug((inProgress) ? "Waiting":"Not waiting");
         ProgressBar fixBar = (ProgressBar) findViewById(R.id.progressBarGpsFix);
         fixBar.setVisibility(inProgress ? View.VISIBLE : View.INVISIBLE);
     }
@@ -857,11 +820,13 @@ public class GpsMainActivity extends Activity
     // IActionListener callbacks
     @Override
     public void OnComplete() {
+        tracer.debug(".");
         Utilities.HideProgress();
     }
 
     @Override
     public void OnFailure() {
+        tracer.debug(".");
         Utilities.HideProgress();
     }
 
@@ -869,23 +834,25 @@ public class GpsMainActivity extends Activity
     //These methods come from the fragments
     @Override
     public void onRequestStartLogging() {
-        tracer.info("GpsMainActivity.onRequestStartLogging");
+        tracer.info(".");
         StartLogging();
     }
 
     @Override
     public void onRequestStopLogging() {
-        tracer.info("GpsMainActivity.onRequestStopLogging");
+        tracer.info(".");
         StopLogging();
     }
 
     @Override
     public void onRequestToggleLogging() {
-        tracer.info("GpsMainActivity.onRequestToggleLogging");
+        tracer.info(".");
 
         if (Session.isStarted()) {
+            tracer.info("Toggle requested - stopping");
             StopLogging();
         } else {
+            tracer.info("Toggle requested - starting");
             StartLogging();
         }
 
@@ -907,7 +874,6 @@ public class GpsMainActivity extends Activity
      * Gets preferences chosen by the user
      */
     private void GetPreferences() {
-        tracer.debug("GpsMainActivity.GetPreferences");
         Utilities.PopulateAppSettings(getApplicationContext());
         //ShowPreferencesSummary();
     }

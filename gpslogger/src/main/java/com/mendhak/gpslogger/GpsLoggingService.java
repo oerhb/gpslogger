@@ -523,7 +523,7 @@ public class GpsLoggingService extends Service implements IActionListener {
      */
     private void ResetCurrentFileName(boolean newLogEachStart) {
 
-        tracer.debug("GpsLoggingService.ResetCurrentFileName");
+        tracer.debug(".");
 
         /* Pick up saved settings, if any. (Saved static file) */
         String newFileName = Session.getCurrentFileName();
@@ -545,6 +545,7 @@ public class GpsLoggingService extends Service implements IActionListener {
         }
 
         if (IsMainFormVisible()) {
+            tracer.info("File name: " + newFileName);
             mainServiceClient.onFileName(newFileName);
         }
 

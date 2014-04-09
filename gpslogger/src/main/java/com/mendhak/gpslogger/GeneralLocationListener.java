@@ -107,7 +107,6 @@ class GeneralLocationListener implements LocationListener, GpsStatus.Listener
 
             case GpsStatus.GPS_EVENT_SATELLITE_STATUS:
 
-                tracer.debug("GPS Satellite status obtained");
                 GpsStatus status = loggingService.gpsLocationManager.getGpsStatus(null);
 
                 int maxSatellites = status.getMaxSatellites();
@@ -121,6 +120,7 @@ class GeneralLocationListener implements LocationListener, GpsStatus.Listener
                     count++;
                 }
 
+                tracer.debug(String.valueOf(count) + " satellites");
                 loggingService.SetSatelliteInfo(count);
                 break;
 
@@ -130,7 +130,7 @@ class GeneralLocationListener implements LocationListener, GpsStatus.Listener
                 break;
 
             case GpsStatus.GPS_EVENT_STOPPED:
-                tracer.info("GPS Stopped");
+                tracer.info("GPS Event Stopped");
                 loggingService.SetStatus(loggingService.getString(R.string.gps_stopped));
                 break;
 
