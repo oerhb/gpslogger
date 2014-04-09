@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -287,6 +288,12 @@ public class GpsSimpleViewFragment extends GenericViewFragment {
     @Override
     public void SetSatelliteCount(int count) {
         TextView txtSatelliteCount = (TextView) rootView.findViewById(R.id.simpleview_txtSatelliteCount);
+
+
+        AlphaAnimation fadeIn = new AlphaAnimation(0.6f , 1.0f ) ;
+        fadeIn.setDuration(1200);
+        fadeIn.setFillAfter(true);
+        txtSatelliteCount.startAnimation(fadeIn);
         txtSatelliteCount.setText(String.valueOf(count));
     }
 
