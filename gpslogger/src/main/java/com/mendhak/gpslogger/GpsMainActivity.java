@@ -783,7 +783,6 @@ public class GpsMainActivity extends Activity
     }
 
     private void SetBulbStatus(boolean started) {
-        tracer.debug( ((started) ? "Bulb Started" : "Bulb Stopped"));
         ImageView bulb = (ImageView) findViewById(R.id.notification_bulb);
         bulb.setImageResource(started ? R.drawable.circle_green : R.drawable.circle_none);
     }
@@ -814,7 +813,6 @@ public class GpsMainActivity extends Activity
 
     @Override
     public void OnWaitingForLocation(boolean inProgress) {
-        tracer.debug((inProgress) ? "Waiting":"Not waiting");
         ProgressBar fixBar = (ProgressBar) findViewById(R.id.progressBarGpsFix);
         fixBar.setVisibility(inProgress ? View.VISIBLE : View.INVISIBLE);
     }
