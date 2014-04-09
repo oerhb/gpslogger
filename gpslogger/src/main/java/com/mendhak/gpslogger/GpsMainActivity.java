@@ -527,7 +527,10 @@ public class GpsMainActivity extends Activity
 
             Arrays.sort(enumeratedFiles, new Comparator<File>() {
                 public int compare(File f1, File f2) {
-                    return -1 * Long.valueOf(f1.lastModified()).compareTo(f2.lastModified());
+                    if(f1 != null && f2 != null){
+                        return -1 * Long.valueOf(f1.lastModified()).compareTo(f2.lastModified());
+                    }
+                    return -1;
                 }
             });
 

@@ -17,6 +17,7 @@
 
 package com.mendhak.gpslogger.common;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -349,8 +350,14 @@ public class Utilities
                     );
     	
         AlertDialog alertDialog = alertBuilder.create();
-        
-        alertDialog.show();
+
+        if(className instanceof Activity && !((Activity)className).isFinishing()){
+            alertDialog.show();
+        }
+        else {
+            alertDialog.show();
+        }
+
     }
 
     /**
