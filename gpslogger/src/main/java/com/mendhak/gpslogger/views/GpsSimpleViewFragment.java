@@ -254,6 +254,8 @@ public class GpsSimpleViewFragment extends GenericViewFragment {
         TextView txtAltitude = (TextView) rootView.findViewById(R.id.simpleview_txtAltitude);
         txtAltitude.setText("-");
 
+        TextView txtDirection = (TextView) rootView.findViewById(R.id.simpleview_txtDirection);
+        txtDirection.setText("-");
 
         TextView txtSpeed = (TextView) rootView.findViewById(R.id.simpleview_txtSpeed);
         txtSpeed.setText("-");
