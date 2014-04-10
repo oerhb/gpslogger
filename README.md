@@ -36,17 +36,44 @@ Feel free to adopt and document your own OS and IDEs.  These instructions are fo
 
 Follow the instructions on the [Android Developer Website](http://developer.android.com/sdk/installing/index.html) to set up your computer for development.
 
+On Ubuntu 64bit, you'll also need `ia32-libs`, follow [these instructions](http://stackoverflow.com/a/21956268/974369).
+
+### Get Gradle
+
+If you don't already have Gradle, download it to `/opt/gradle/gradle-1.x`.  Add the following to your `~/.bashrc` so that it is available to IntelliJ later on
+
+    GRADLE_HOME=/opt/gradle/gradle-1.11/bin
+    export GRADLE_HOME
+    PATH=$PATH:$GRADLE_HOME
+    export PATH
+
+
 ### Get IntelliJ IDEA
 
-Download and install [IntelliJ IDEA Community Edition](http://www.jetbrains.com/idea/download/index.html), which is free.  I am choosing to use this instead of Eclipse.
+Download and install [IntelliJ IDEA Community Edition](http://www.jetbrains.com/idea/download/index.html), which is free.
 
 ### Install Git
 
     sudo apt-get install git
 
-### Clone the repository
+### Get the Android SDK extra repositories
+
+This project uses certain Google libraries, you will need to add them. Run
+
+    <AndroidSDK>/tools/android
+
+Which brings up the Android SDK manager.  In here, choose
+
+*  Tools > Android SDK build tools 19.0.1
+*  Extras > Android Support Repository
+*  Extras > Android Support Library
+*  Extras > Google Play services
+*  Extras > Google Repository
+
+### Clone the GPSLogger repository
 
     git clone git://github.com/mendhak/gpslogger.git
+
 
 ### Create local.properties
 
@@ -57,15 +84,19 @@ IntelliJ/Android Studio [may not detect](http://stackoverflow.com/questions/1979
 
 ### Import the project
 
-Open up IntelliJ and choose to import a project.  Under the Import dialog, choose to *Import project from external model*
+Open up IntelliJ and choose to import a project.  Select the topmost `build.gradle` file under GPSLogger.
+
+If you get an Import dialog, choose to *Import project from external model*
 
 ![import](https://farm3.staticflickr.com/2808/13543335914_3b709dca56_o.png)
 
-On the next screen, choose the defaults and proceed
+On the next screen, choose the defaults and proceed (default gradle wrapper)
 
 ![import](https://farm3.staticflickr.com/2861/13543635053_042a02c11d_b.jpg)
 
-Give it a minute and IntelliJ may ask you to choose your Android SDK.  You can find this under *File > Project Structure...* where you should set the Project SDK.  You will want to use Java 1.6 with Android 4 or above.
+Give it a minute and IntelliJ/Gradle will configure the projects and download the various libraries.
+
+IntelliJ may not know where your Android SDK is.  You can find this under *File > Project Structure...* where you should set the Project SDK.  You will want to use Java 1.6 with Android 4 or above.
 
 
 ### Test.xml
@@ -74,7 +105,7 @@ Create a test.xml in the project at res/values/test.xml with an empty resources 
 
     <resource />
 
-This file can be used to store OAuth keys if you want OpenStreetMap and DropBox functionality.  This file is ignored in the .gitignore file and will not be committed.
+This file can be used to store OAuth keys if you want OpenStreetMap and DropBox functionality (below).  This file is ignored in the .gitignore file and will not be committed.
 
 ### OpenStreetMap Setup (Optional)
 
