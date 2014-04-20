@@ -581,16 +581,15 @@ public class GpsMainActivity extends Activity
 
                                     if (isChecked) {
 
-                                        if(which==0){
+                                        if (which == 0) {
                                             //Unselect all others
                                             ((AlertDialog) dialog).getListView().clearChoices();
                                             ((AlertDialog) dialog).getListView().setItemChecked(which, isChecked);
                                             selectedItems.clear();
-                                        }
-                                        else{
+                                        } else {
                                             //Unselect the settings item
                                             ((AlertDialog) dialog).getListView().setItemChecked(0, false);
-                                            if(selectedItems.contains(0)) {
+                                            if (selectedItems.contains(0)) {
                                                 selectedItems.remove(selectedItems.indexOf(0));
                                             }
                                         }
@@ -602,7 +601,8 @@ public class GpsMainActivity extends Activity
                                     }
 
                                 }
-                            })
+                            }
+                    )
                             // Set the action buttons
                     .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                         @Override
@@ -610,22 +610,26 @@ public class GpsMainActivity extends Activity
                             // User clicked OK, so save the mSelectedItems results somewhere
                             // or return them to the component that opened the dialog
                             ///...
-                            if( selectedItems.size() > 0 && selectedItems.get(0).equals(0)){
+                            if (selectedItems.size() > 0 && selectedItems.get(0).equals(0)) {
                                 startActivity(settingsIntent);
-                            }
-                            else{
+                            } else {
 
-                                Utilities.ShowProgress(GpsMainActivity.this, getString(R.string.please_wait),
-                                getString(R.string.please_wait));
+
                                 List<File> chosenFiles = new ArrayList<File>();
 
-                                for(Object item : selectedItems){
+                                for (Object item : selectedItems) {
                                     tracer.info("Selected file to upload- " + files[Integer.valueOf(item.toString())]);
                                     chosenFiles.add(new File(gpxFolder, files[Integer.valueOf(item.toString())]));
                                 }
 
                                 selectedItems.clear();
-                                sender.UploadFile(chosenFiles);
+
+                                if (chosenFiles.size() > 0) {
+                                    Utilities.ShowProgress(GpsMainActivity.this, getString(R.string.please_wait),
+                                            getString(R.string.please_wait));
+                                    sender.UploadFile(chosenFiles);
+                                }
+
                             }
 
                         }
