@@ -607,9 +607,7 @@ public class GpsMainActivity extends Activity
                     .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int id) {
-                            // User clicked OK, so save the mSelectedItems results somewhere
-                            // or return them to the component that opened the dialog
-                            ///...
+
                             if (selectedItems.size() > 0 && selectedItems.get(0).equals(0)) {
                                 startActivity(settingsIntent);
                             } else {
@@ -644,39 +642,6 @@ public class GpsMainActivity extends Activity
             builder.create();
             builder.show();
 
-
-//
-//
-//
-//
-//            final Dialog dialog = new Dialog(this);
-//            dialog.setTitle(R.string.osm_pick_file);
-//            dialog.setContentView(R.layout.common_filelist);
-//            ListView displayList = (ListView) dialog.findViewById(R.id.listViewFiles);
-//
-//            displayList.setAdapter(new ArrayAdapter<String>(getApplicationContext(),
-//                    R.layout.common_list_black_text, R.id.list_content, files));
-//
-//            displayList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//                public void onItemClick(AdapterView<?> av, View v, int index, long arg) {
-//
-//                    dialog.dismiss();
-//                    String chosenFileName = files[index];
-//
-//                    if (chosenFileName.equalsIgnoreCase(settingsText)) {
-//                        tracer.debug("User chose to open settings");
-//                        startActivity(settingsIntent);
-//                    } else {
-//                        tracer.info("Selected file to upload- " + chosenFileName);
-//                        Utilities.ShowProgress(GpsMainActivity.this, getString(R.string.please_wait),
-//                                getString(R.string.please_wait));
-//                        List<File> files = new ArrayList<File>();
-//                        files.add(new File(gpxFolder, chosenFileName));
-//                        sender.UploadFile(files);
-//                    }
-//                }
-//            });
-//            dialog.show();
         } else {
             Utilities.MsgBox(getString(R.string.sorry), getString(R.string.no_files_found), this);
         }
@@ -712,52 +677,95 @@ public class GpsMainActivity extends Activity
                 fileList.add(0, locationOnly);
                 final String[] files = fileList.toArray(new String[fileList.size()]);
 
-                final Dialog dialog = new Dialog(this);
-                dialog.setTitle(R.string.sharing_pick_file);
-                dialog.setContentView(R.layout.common_filelist);
-                ListView thelist = (ListView) dialog.findViewById(R.id.listViewFiles);
 
-                thelist.setAdapter(new ArrayAdapter<String>(getApplicationContext(),
-                        R.layout.common_list_black_text, R.id.list_content, files));
+                final ArrayList selectedItems = new ArrayList();  // Where we track the selected items
 
-                thelist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                // Set the dialog title
+                builder.setTitle(R.string.osm_pick_file)
+                        .setMultiChoiceItems(files, null,
+                                new DialogInterface.OnMultiChoiceClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which,
+                                                        boolean isChecked) {
 
-                    public void onItemClick(AdapterView<?> av, View v, int index, long arg) {
-                        dialog.dismiss();
-                        String chosenFileName = files[index];
+                                        if (isChecked) {
 
-                        final Intent intent = new Intent(Intent.ACTION_SEND);
+                                            if (which == 0) {
+                                                //Unselect all others
+                                                ((AlertDialog) dialog).getListView().clearChoices();
+                                                ((AlertDialog) dialog).getListView().setItemChecked(which, isChecked);
+                                                selectedItems.clear();
+                                            } else {
+                                                //Unselect the settings item
+                                                ((AlertDialog) dialog).getListView().setItemChecked(0, false);
+                                                if (selectedItems.contains(0)) {
+                                                    selectedItems.remove(selectedItems.indexOf(0));
+                                                }
+                                            }
 
-                        // intent.setType("text/plain");
-                        intent.setType("*/*");
+                                            selectedItems.add(which);
+                                        } else if (selectedItems.contains(which)) {
+                                            // Else, if the item is already in the array, remove it
+                                            selectedItems.remove(Integer.valueOf(which));
+                                        }
+                                    }
+                                }
+                        )
+                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int id) {
 
-                        if (chosenFileName.equalsIgnoreCase(locationOnly)) {
-                            tracer.debug("User selected location only");
-                            intent.setType("text/plain");
-                        }
+                                if(selectedItems.size() <= 0){
+                                    return;
+                                }
 
-                        intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.sharing_mylocation));
-                        if (Session.hasValidLocation()) {
-                            String bodyText = getString(R.string.sharing_googlemaps_link,
-                                    String.valueOf(Session.getCurrentLatitude()),
-                                    String.valueOf(Session.getCurrentLongitude()));
-                            intent.putExtra(Intent.EXTRA_TEXT, bodyText);
-                            intent.putExtra("sms_body", bodyText);
-                        }
+                                final Intent intent = new Intent(Intent.ACTION_SEND);
+                                intent.setType("*/*");
 
-                        if (chosenFileName.length() > 0
-                                && !chosenFileName.equalsIgnoreCase(locationOnly)) {
+                                if (selectedItems.get(0).equals(0)) {
 
-                            tracer.info("Selected file to share - " + chosenFileName);
-                            intent.putExtra(Intent.EXTRA_STREAM,
-                                    Uri.fromFile(new File(gpxFolder, chosenFileName)));
-                        }
+                                    tracer.debug("User selected location only");
+                                    intent.setType("text/plain");
 
-                        startActivity(Intent.createChooser(intent, getString(R.string.sharing_via)));
+                                    intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.sharing_mylocation));
+                                    if (Session.hasValidLocation()) {
+                                        String bodyText = getString(R.string.sharing_googlemaps_link,
+                                                String.valueOf(Session.getCurrentLatitude()),
+                                                String.valueOf(Session.getCurrentLongitude()));
+                                        intent.putExtra(Intent.EXTRA_TEXT, bodyText);
+                                        intent.putExtra("sms_body", bodyText);
+                                        startActivity(Intent.createChooser(intent, getString(R.string.sharing_via)));
+                                    }
 
-                    }
-                });
-                dialog.show();
+                                } else {
+                                    intent.setAction(Intent.ACTION_SEND_MULTIPLE);
+                                    intent.putExtra(Intent.EXTRA_SUBJECT, "Here are some files.");
+                                    intent.setType("*/*");
+
+                                    ArrayList<Uri> chosenFiles = new ArrayList<Uri>();
+
+                                    for (Object path : selectedItems) {
+                                        File file = new File(gpxFolder, files[Integer.valueOf(path.toString())]);
+                                        Uri uri = Uri.fromFile(file);
+                                        chosenFiles.add(uri);
+                                    }
+
+                                    intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, chosenFiles);
+                                    startActivity(Intent.createChooser(intent, getString(R.string.sharing_via)));
+                                }
+                            }
+                        })
+                        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int id) {
+                                selectedItems.clear();
+                            }
+                        });
+
+                builder.create();
+                builder.show();
+
             } else {
                 Utilities.MsgBox(getString(R.string.sorry), getString(R.string.no_files_found), this);
             }
