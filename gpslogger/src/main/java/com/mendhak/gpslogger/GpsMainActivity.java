@@ -542,6 +542,7 @@ public class GpsMainActivity extends Activity
         if (gpxFolder != null && gpxFolder.exists()) {
             File[] enumeratedFiles = Utilities.GetFilesInFolder(gpxFolder, sender);
 
+            //Order by last modified
             Arrays.sort(enumeratedFiles, new Comparator<File>() {
                 public int compare(File f1, File f2) {
                     if (f1 != null && f2 != null) {
@@ -559,37 +560,119 @@ public class GpsMainActivity extends Activity
 
             final String settingsText = getString(R.string.menu_settings);
 
+            //Add 'settings' to top of list
             fileList.add(0, settingsText);
             final String[] files = fileList.toArray(new String[fileList.size()]);
 
-            final Dialog dialog = new Dialog(this);
-            dialog.setTitle(R.string.osm_pick_file);
-            dialog.setContentView(R.layout.common_filelist);
-            ListView displayList = (ListView) dialog.findViewById(R.id.listViewFiles);
 
-            displayList.setAdapter(new ArrayAdapter<String>(getApplicationContext(),
-                    R.layout.common_list_black_text, R.id.list_content, files));
+            final ArrayList selectedItems = new ArrayList();  // Where we track the selected items
 
-            displayList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                public void onItemClick(AdapterView<?> av, View v, int index, long arg) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            // Set the dialog title
+            builder.setTitle(R.string.osm_pick_file)
+                    // Specify the list array, the items to be selected by default (null for none),
+                    // and the listener through which to receive callbacks when items are selected
+                    .setMultiChoiceItems(files, null,
+                            new DialogInterface.OnMultiChoiceClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which,
+                                                    boolean isChecked) {
 
-                    dialog.dismiss();
-                    String chosenFileName = files[index];
 
-                    if (chosenFileName.equalsIgnoreCase(settingsText)) {
-                        tracer.debug("User chose to open settings");
-                        startActivity(settingsIntent);
-                    } else {
-                        tracer.info("Selected file to upload- " + chosenFileName);
-                        Utilities.ShowProgress(GpsMainActivity.this, getString(R.string.please_wait),
+                                    if (isChecked) {
+
+                                        if(which==0){
+                                            //Unselect all others
+                                            ((AlertDialog) dialog).getListView().clearChoices();
+                                            ((AlertDialog) dialog).getListView().setItemChecked(which, isChecked);
+                                            selectedItems.clear();
+                                        }
+                                        else{
+                                            //Unselect the settings item
+                                            ((AlertDialog) dialog).getListView().setItemChecked(0, false);
+                                            if(selectedItems.contains(0)) {
+                                                selectedItems.remove(selectedItems.indexOf(0));
+                                            }
+                                        }
+
+                                        selectedItems.add(which);
+                                    } else if (selectedItems.contains(which)) {
+                                        // Else, if the item is already in the array, remove it
+                                        selectedItems.remove(Integer.valueOf(which));
+                                    }
+
+                                }
+                            })
+                            // Set the action buttons
+                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int id) {
+                            // User clicked OK, so save the mSelectedItems results somewhere
+                            // or return them to the component that opened the dialog
+                            ///...
+                            if( selectedItems.size() > 0 && selectedItems.get(0).equals(0)){
+                                startActivity(settingsIntent);
+                            }
+                            else{
+
+                                Utilities.ShowProgress(GpsMainActivity.this, getString(R.string.please_wait),
                                 getString(R.string.please_wait));
-                        List<File> files = new ArrayList<File>();
-                        files.add(new File(gpxFolder, chosenFileName));
-                        sender.UploadFile(files);
-                    }
-                }
-            });
-            dialog.show();
+                                List<File> chosenFiles = new ArrayList<File>();
+
+                                for(Object item : selectedItems){
+                                    tracer.info("Selected file to upload- " + files[Integer.valueOf(item.toString())]);
+                                    chosenFiles.add(new File(gpxFolder, files[Integer.valueOf(item.toString())]));
+                                }
+
+                                selectedItems.clear();
+                                sender.UploadFile(chosenFiles);
+                            }
+
+                        }
+                    })
+                    .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int id) {
+                            selectedItems.clear();
+                        }
+                    });
+
+            builder.create();
+            builder.show();
+
+
+//
+//
+//
+//
+//            final Dialog dialog = new Dialog(this);
+//            dialog.setTitle(R.string.osm_pick_file);
+//            dialog.setContentView(R.layout.common_filelist);
+//            ListView displayList = (ListView) dialog.findViewById(R.id.listViewFiles);
+//
+//            displayList.setAdapter(new ArrayAdapter<String>(getApplicationContext(),
+//                    R.layout.common_list_black_text, R.id.list_content, files));
+//
+//            displayList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//                public void onItemClick(AdapterView<?> av, View v, int index, long arg) {
+//
+//                    dialog.dismiss();
+//                    String chosenFileName = files[index];
+//
+//                    if (chosenFileName.equalsIgnoreCase(settingsText)) {
+//                        tracer.debug("User chose to open settings");
+//                        startActivity(settingsIntent);
+//                    } else {
+//                        tracer.info("Selected file to upload- " + chosenFileName);
+//                        Utilities.ShowProgress(GpsMainActivity.this, getString(R.string.please_wait),
+//                                getString(R.string.please_wait));
+//                        List<File> files = new ArrayList<File>();
+//                        files.add(new File(gpxFolder, chosenFileName));
+//                        sender.UploadFile(files);
+//                    }
+//                }
+//            });
+//            dialog.show();
         } else {
             Utilities.MsgBox(getString(R.string.sorry), getString(R.string.no_files_found), this);
         }
