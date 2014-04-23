@@ -19,17 +19,21 @@ package com.mendhak.gpslogger.common;
 
 import android.content.Context;
 import android.location.Location;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
 import org.slf4j.LoggerFactory;
 
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Scanner;
 import java.util.TimeZone;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -37,73 +41,34 @@ import java.util.TimeZone;
  *
  * @author Francisco Reynoso <franole @ gmail.com>
  */
-public class OpenGTSClient {
+public class OpenGTSClient implements IActionListener {
 
     private static final org.slf4j.Logger tracer = LoggerFactory.getLogger(OpenGTSClient.class.getSimpleName());
 
-    private Context applicationContext;
+
+    private final static ThreadPoolExecutor EXECUTOR = new ThreadPoolExecutor(1, 1, 60, TimeUnit.SECONDS,
+            new LinkedBlockingQueue<Runnable>(128), new RejectionHandler());
+
     private IActionListener callback;
     private String server;
     private Integer port;
     private String path;
-    private AsyncHttpClient httpClient;
-    private int locationsCount = 0;
-    private int sentLocationsCount = 0;
 
-
-    public OpenGTSClient(String server, Integer port, String path, IActionListener callback, Context applicationContext) {
+    public OpenGTSClient(String server, Integer port, String path, IActionListener callback) {
         this.server = server;
         this.port = port;
         this.path = path;
         this.callback = callback;
-        this.applicationContext = applicationContext;
     }
 
     public void sendHTTP(String id, String accountName, Location location) {
         sendHTTP(id, accountName, new Location[]{location});
     }
 
-    /**
-     * Send locations sing HTTP GET request to the server
-     * <p/>
-     * See <a href="http://opengts.sourceforge.net/OpenGTS_Config.pdf">OpenGTS_Config.pdf</a>
-     * section 9.1.2 Default "gprmc" Configuration
-     *
-     * @param id        id of the device
-     * @param locations locations
-     */
-
     public void sendHTTP(String id, String accountName, Location[] locations) {
-        try {
-            locationsCount = locations.length;
-            StringBuilder url = new StringBuilder();
-            url.append("http://");
-            url.append(getURL());
 
-            httpClient = new AsyncHttpClient();
-
-            for (Location loc : locations) {
-                RequestParams params = new RequestParams();
-                params.put("id", id);
-                params.put("dev", id);
-
-                params.put("acct", id);
-                if(!Utilities.IsNullOrEmpty(accountName)){
-                    params.put("acct", accountName);
-                }
-
-                params.put("code", "0xF020");
-                params.put("gprmc", OpenGTSClient.GPRMCEncode(loc));
-                params.put("alt", String.valueOf(loc.getAltitude()));
-
-
-                tracer.debug("Sending URL " + url + " with params " + params.toString());
-                httpClient.get(applicationContext, url.toString(), params, new MyAsyncHttpResponseHandler(this));
-            }
-        } catch (Exception e) {
-            tracer.error("OpenGTSClient.sendHTTP", e);
-            OnFailure();
-        }
+        OpenGtsUrlLogHandler handler = new OpenGtsUrlLogHandler( server, port, path, id, accountName, locations, this);
+        EXECUTOR.execute(handler);
     }
 
     public void sendRAW(String id, Location location) {
@@ -113,6 +78,44 @@ public class OpenGTSClient {
     private void sendRAW(String id, Location[] locations) {
         // TODO
     }
+
+
+    @Override
+    public void OnComplete() {
+        callback.OnComplete();
+    }
+
+    @Override
+    public void OnFailure() {
+        callback.OnFailure();
+    }
+}
+
+class OpenGtsUrlLogHandler implements Runnable {
+
+    private static final org.slf4j.Logger tracer = LoggerFactory.getLogger(OpenGtsUrlLogHandler.class.getSimpleName());
+
+    String server;
+    Integer port;
+    String path;
+    String id;
+    String accountName;
+    Location[] locations;
+    private int locationsCount = 0;
+    private int sentLocationsCount = 0;
+    private IActionListener callback;
+
+    OpenGtsUrlLogHandler(String server, Integer port, String path, String id, String accountName,
+                         Location[] locations, IActionListener callback){
+        this.id = id;
+        this.accountName = accountName;
+        this.locations = locations;
+        this.server = server;
+        this.port = port;
+        this.path = path;
+        this.callback = callback;
+    }
+
 
     private String getURL() {
         StringBuilder url = new StringBuilder();
@@ -127,43 +130,61 @@ public class OpenGTSClient {
         return url.toString();
     }
 
+    /**
+     * Send locations sing HTTP GET request to the server
+     * <p/>
+     * See <a href="http://opengts.sourceforge.net/OpenGTS_Config.pdf">OpenGTS_Config.pdf</a>
+     * section 9.1.2 Default "gprmc" Configuration
+     *
+     */
+    @Override
+    public void run() {
+        try {
+            HttpURLConnection conn = null;
+            locationsCount = locations.length;
+            StringBuilder url = new StringBuilder();
+            url.append("http://");
+            url.append(getURL());
 
-    private class MyAsyncHttpResponseHandler extends AsyncHttpResponseHandler {
-        private OpenGTSClient callback;
+            for (Location loc : locations) {
 
-        public MyAsyncHttpResponseHandler(OpenGTSClient callback) {
-            super();
-            this.callback = callback;
+                url.append("?id=" + URLEncoder.encode(id, "UTF-8"));
+                url.append("&dev=" + URLEncoder.encode(id, "UTF-8"));
+
+                if(!Utilities.IsNullOrEmpty(accountName)){
+                    url.append("&acct=" + URLEncoder.encode(accountName, "UTF-8"));
+                } else {
+                    url.append("&acct=" + URLEncoder.encode(id, "UTF-8"));
+                }
+
+                url.append("&code=0xF020");
+                url.append("&gprmc=" + URLEncoder.encode(GPRMCEncode(loc), "UTF-8"));
+                url.append("&alt=" + URLEncoder.encode( String.valueOf(loc.getAltitude()), "UTF-8"));
+
+                tracer.debug("Sending to URL: " + url.toString());
+                URL gtsUrl = new URL(url.toString());
+
+                conn = (HttpURLConnection) gtsUrl.openConnection();
+                conn.setRequestMethod("GET");
+
+                Scanner s;
+                if(conn.getResponseCode() != 200){
+                    s = new Scanner(conn.getErrorStream());
+                    tracer.error("Status code: " + String.valueOf(conn.getResponseCode()));
+                    tracer.error(s.useDelimiter("\\A").next());
+                    OnFailure();
+                } else {
+                    s = new Scanner(conn.getInputStream());
+                    tracer.debug("Status code: " + String.valueOf(conn.getResponseCode()));
+                    tracer.debug(s.useDelimiter("\\A").next());
+                    OnCompleteLocation();
+                }
+
+            }
+        } catch (Exception e) {
+            tracer.error("OpenGTSClient.sendHTTP", e);
+            OnFailure();
         }
-
-        @Override
-        public void onSuccess(String response) {
-            tracer.info("Response Success :" + response);
-            callback.OnCompleteLocation();
-        }
-
-        @Override
-        public void onFailure(Throwable e, String response) {
-            tracer.error("OnCompleteLocation.MyAsyncHttpResponseHandler Failure with response :" + response, new Exception(e));
-            callback.OnFailure();
-        }
-    }
-
-    public void OnCompleteLocation() {
-        sentLocationsCount += 1;
-        tracer.debug("Sent locations count: " + sentLocationsCount + "/" + locationsCount);
-        if (locationsCount == sentLocationsCount) {
-            OnComplete();
-        }
-    }
-
-    public void OnComplete() {
-        callback.OnComplete();
-    }
-
-    public void OnFailure() {
-        httpClient.cancelRequests(applicationContext, true);
-        callback.OnFailure();
     }
 
     /**
@@ -246,4 +267,20 @@ public class OpenGTSClient {
         return mps * 1.94384449;
     }
 
+    public void OnCompleteLocation() {
+        sentLocationsCount += 1;
+        tracer.debug("Sent locations count: " + sentLocationsCount + "/" + locationsCount);
+        if (locationsCount == sentLocationsCount) {
+            OnComplete();
+        }
+    }
+
+    public void OnComplete() {
+        callback.OnComplete();
+    }
+
+    public void OnFailure() {
+        //httpClient.cancelRequests(applicationContext, true);
+        callback.OnFailure();
+    }
 }

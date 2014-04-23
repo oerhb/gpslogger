@@ -55,7 +55,7 @@ public class OpenGTSLogger implements IFileLogger {
             }
         };
 
-        OpenGTSClient openGTSClient = new OpenGTSClient(server, port, path, al, null);
+        OpenGTSClient openGTSClient = new OpenGTSClient(server, port, path, al);
         openGTSClient.sendHTTP(deviceId, accountName, loc);
 
     }
