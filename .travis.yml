@@ -19,6 +19,10 @@ before_script:
   - emulator -avd test -no-skin -no-audio -no-window &
   - adb wait-for-device
   - adb shell input keyevent 82 &
+  - adb devices
+
+script:
+  - ./gradlew connectedAndroidTest -x uninstallAll -PtestSize=small --info  || (adb logcat -d && echo "TESTS FAILED" && exit  1)
 
 #script:
 #  # Performs tests (which will do a ./gradlew build task first)
