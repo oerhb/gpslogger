@@ -21,13 +21,13 @@ before_script:
   - adb shell input keyevent 82 &
   - adb devices
 
-script:
-  - ./gradlew connectedAndroidTest -x uninstallAll -PtestSize=small --info  || (adb logcat -d && echo "TESTS FAILED" && exit  1)
+#script:
+#  - ./gradlew connectedAndroidTest -x uninstallAll -PtestSize=small --info  || (adb logcat -d && echo "TESTS FAILED" && exit  1)
 
 #script:
-#  # Performs tests (which will do a ./gradlew build task first)
-#  # Skips the uninstallAll task as it's always a fresh emulator
-#  # Does a logcat dump if anything fails
-#  #- ./gradlew connectedAndroidTest -x uninstallAll -PtestSize=small --info  || (adb logcat -d && echo "TESTS FAILED" && exit  1)
-#  - ./gradlew --version
-#  - ./gradlew connectedAndroidTest
+  # Performs tests (which will do a ./gradlew build task first)
+  # Skips the uninstallAll task as it's always a fresh emulator
+  # Does a logcat dump if anything fails
+  #- ./gradlew connectedAndroidTest -x uninstallAll -PtestSize=small --info  || (adb logcat -d && echo "TESTS FAILED" && exit  1)
+  #- ./gradlew --version
+  #- ./gradlew check connectedCheck --debug --stacktrace
