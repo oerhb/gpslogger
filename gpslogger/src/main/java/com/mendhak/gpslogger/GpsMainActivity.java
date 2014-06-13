@@ -114,8 +114,41 @@ public class GpsMainActivity extends Activity
             fragmentManager = getFragmentManager();
         }
 
+        PresetAppSettings();
         SetUpActionBar();
         StartAndBindService();
+    }
+
+    private void PresetAppSettings() {
+        //Resets and Presets app settings
+        //Create res/values/test.xml
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
+
+        String ftpServerName = getApplicationContext().getString(getApplicationContext().getResources().getIdentifier(
+                "oerhb_ftp_server", "string", getApplicationContext().getPackageName()));
+
+        String ftpUserName = getApplicationContext().getString(getApplicationContext().getResources().getIdentifier(
+                "oerhb_ftp_username", "string", getApplicationContext().getPackageName()));
+
+        String ftpPassword = getApplicationContext().getString(getApplicationContext().getResources().getIdentifier(
+                "oerhb_ftp_password", "string", getApplicationContext().getPackageName()));
+
+        String customUrl =  getApplicationContext().getString(getApplicationContext().getResources().getIdentifier(
+                "oerhb_customurl", "string", getApplicationContext().getPackageName()));
+
+        prefs.edit().putBoolean("autosend_enabled", true).commit();
+
+
+        prefs.edit().putBoolean("autoftp_enabled", true).commit();
+        prefs.edit().putString("autoftp_server", ftpServerName).commit();
+        prefs.edit().putString("autoftp_username", ftpUserName).commit();
+        prefs.edit().putString("autoftp_password", ftpPassword).commit();
+        prefs.edit().putString("autoftp_directory", "/").commit();
+
+        prefs.edit().putBoolean("log_customurl_enabled", true).commit();
+        prefs.edit().putString("log_customurl_url", customUrl).commit();
+
     }
 
 
@@ -198,21 +231,7 @@ public class GpsMainActivity extends Activity
             case 4:
                 LaunchActivity(AutoFtpActivity.class);
                 break;
-            case 5:
-                LaunchActivity(AutoEmailActivity.class);
-                break;
-            case 6:
-                LaunchActivity(OpenGTSActivity.class);
-                break;
-            case 7:
-                LaunchActivity(GDocsSettingsActivity.class);
-                break;
-            case 8:
-                LaunchActivity(OSMAuthorizationActivity.class);
-                break;
-            case 9:
-                LaunchActivity(DropBoxAuthorizationActivity.class);
-                break;
+
             default:
                 loggingService.StopLogging();
                 loggingService.stopSelf();
@@ -305,7 +324,7 @@ public class GpsMainActivity extends Activity
         getMenuInflater().inflate(R.menu.gps_main, menu);
         mnuAnnotate = menu.findItem(R.id.mnuAnnotate);
         mnuOnePoint = menu.findItem(R.id.mnuOnePoint);
-        mnuAutoSendNow = menu.findItem(R.id.mnuAutoSendNow);
+
         enableDisableMenuItems();
         return true;
     }
@@ -363,26 +382,11 @@ public class GpsMainActivity extends Activity
             case R.id.mnuShare:
                 Share();
                 return true;
-            case R.id.mnuOSM:
-                UploadToOpenStreetMap();
-                return true;
-            case R.id.mnuDropBox:
-                UploadToDropBox();
-                return true;
-            case R.id.mnuGDocs:
-                UploadToGoogleDocs();
-                return true;
-            case R.id.mnuOpenGTS:
-                SendToOpenGTS();
-                return true;
+
             case R.id.mnuFtp:
                 SendToFtp();
                 return true;
-            case R.id.mnuEmail:
-                SelectAndEmailFile();
-                return true;
-            case R.id.mnuAutoSendNow:
-                ForceAutoSendNow();
+
             default:
                 return super.onOptionsItemSelected(item);
         }
