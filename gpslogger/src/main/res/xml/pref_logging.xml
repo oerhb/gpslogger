@@ -9,9 +9,13 @@
             android:key="log_gpx"
             android:title="@string/log_gpx_title"
             android:summary="@string/log_gpx_summary"
+            android:defaultValue="false"/>
+
+       <CheckBoxPreference
+            android:key="log_plain_text"
+            android:summary="@string/log_plain_text_summary"
+            android:title="@string/log_plain_text_title"
             android:defaultValue="true"/>
-
-
 
         <Preference
             android:title="@string/log_customurl_title"
