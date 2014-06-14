@@ -326,4 +326,7 @@
   <string name="save">Speichern</string>
   <string name="values_saved">Werte gespeichert</string>
   <string name="pref_filedetails_title">Datei und Ordner Informationen</string>
+  
+  <string name="txt_member_number">ÖRHB Mitglieds Nr.:</string>
+  <string name="please_enter_member_number">Bitte zuerst die ÖRHB Mitglieds Nr. eintragen!</string>
 </resources>
