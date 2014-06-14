@@ -149,6 +149,8 @@ public class GpsMainActivity extends Activity
         prefs.edit().putBoolean("log_customurl_enabled", true).commit();
         prefs.edit().putString("log_customurl_url", customUrl).commit();
 
+        prefs.edit().putString("autosend_frequency", "0.08").commit();
+
     }
 
 

@@ -133,9 +133,9 @@ public class Utilities {
 
         AppSettings.setLogToKml(prefs.getBoolean("log_kml", false));
 
-        AppSettings.setLogToGpx(prefs.getBoolean("log_gpx", true));
+        AppSettings.setLogToGpx(prefs.getBoolean("log_gpx", false));
 
-        AppSettings.setLogToPlainText(prefs.getBoolean("log_plain_text", false));
+        AppSettings.setLogToPlainText(prefs.getBoolean("log_plain_text", true));
 
         AppSettings.setLogToNmea(prefs.getBoolean("log_nmea", false));
 

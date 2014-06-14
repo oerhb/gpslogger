@@ -81,6 +81,10 @@ public class GpsSimpleViewFragment extends GenericViewFragment implements View.O
         setImageTooltips();
         showPreferencesSummary();
 
+        SharedPreferences prefs = PreferenceManager
+                .getDefaultSharedPreferences(getActivity());
+        EditText txtMemberNumber = (EditText) rootView.findViewById(R.id.simple_member_number);
+        txtMemberNumber.setText(prefs.getString("oerhb_member_number",""));
 
         // Toggle the play and pause.
         toggleComponent = ToggleComponent.getBuilder()
